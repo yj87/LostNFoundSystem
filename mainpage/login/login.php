@@ -1,90 +1,80 @@
 <?php
 header('Content-Type: application/json');
-
 session_start();
 
-// If user is already logged in
 if (isset($_SESSION['user_id'])) {
     echo json_encode([
-        'success' => true, 
-        'message' => 'Already logged in!',
+        'success'  => true,
+        'message'  => 'Already logged in!',
         'redirect' => getDashboardUrl($_SESSION['role'])
     ]);
     exit();
 }
 
-// Database connection
-$host = 'localhost';
+$host   = 'localhost';
 $dbname = 'lost_and_found_db';
-$username = 'root';
-$password = '';
+$dbuser = 'root';
+$dbpass = '';
 
-$conn = mysqli_connect($host, $username, $password, $dbname);
+$conn = mysqli_connect($host, $dbuser, $dbpass, $dbname);
 
 if (!$conn) {
     echo json_encode(['success' => false, 'message' => 'Database connection failed!']);
     exit();
 }
 
-// Check if request is POST
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
     exit();
 }
 
-// Get and sanitize input
-$email = mysqli_real_escape_string($conn, $_POST['email'] ?? '');
-$password = mysqli_real_escape_string($conn, $_POST['password'] ?? '');
+// ✅ No manual escaping needed with prepared statements
+$email    = trim($_POST['email']    ?? '');
+$password = trim($_POST['password'] ?? '');
 
-// Validate input
 if (empty($email) || empty($password)) {
     echo json_encode(['success' => false, 'message' => 'Please fill in all fields']);
     exit();
 }
 
-// Query database
-$sql = "SELECT user_id, name, email, role FROM users WHERE email = '$email' AND password = MD5('$password')";
-$result = mysqli_query($conn, $sql);
+// ✅ Use prepared statement — safe from SQL injection
+$stmt = mysqli_prepare($conn, "SELECT user_id, name, email, role FROM users WHERE email = ? AND password = MD5(?)");
 
-if (!$result) {
-    echo json_encode(['success' => false, 'message' => 'Database error']);
+if (!$stmt) {
+    echo json_encode(['success' => false, 'message' => 'Query preparation failed']);
     exit();
 }
 
+mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
 if (mysqli_num_rows($result) == 1) {
     $user = mysqli_fetch_assoc($result);
-    
-    // Set session variables
-    $_SESSION['user_id'] = $user['user_id'];
-    $_SESSION['user_name'] = $user['name'];
+
+    $_SESSION['user_id']    = $user['user_id'];
+    $_SESSION['user_name']  = $user['name'];
     $_SESSION['user_email'] = $user['email'];
-    $_SESSION['role'] = $user['role'];
-    
-    // Determine redirect URL
-    $redirect = getDashboardUrl($user['role']);
-    
+    $_SESSION['role']       = $user['role'];
+
     echo json_encode([
-        'success' => true,
-        'message' => 'Login successful! Redirecting...',
-        'redirect' => $redirect
+        'success'  => true,
+        'message'  => 'Login successful! Redirecting...',
+        'redirect' => getDashboardUrl($user['role'])
     ]);
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid email or password!']);
 }
 
+mysqli_stmt_close($stmt);
 mysqli_close($conn);
 
-// Helper function to get dashboard URL based on role
 function getDashboardUrl($role) {
-    switch($role) {
-        case 'admin':
-            return '../user_page/admin/dashboard.html';
-        case 'staff':
-            return '../user_page/staff/dashboard.html';
-        case 'student':
-            return '../user_page/student/dashboard.html';
-        default:
-            return 'user/dashboard.html';
+    switch ($role) {
+        case 'admin': return '../../user_page/admin/dashboard.html';
+        case 'staff': return '../../user_page/staff/dashboard.html';
+        case 'user':  return '../../user_page/user/dashboard.html'; // ✅ Fixed from 'student'
+        default:      return 'dashboard.html';
     }
 }
 ?>

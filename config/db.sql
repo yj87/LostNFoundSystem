@@ -11,7 +11,7 @@ CREATE TABLE users (
   name       VARCHAR(100) NOT NULL,
   email      VARCHAR(100) NOT NULL UNIQUE,
   password   VARCHAR(255) NOT NULL,
-  role       ENUM('admin','staff','student') NOT NULL,
+  role       ENUM('admin','staff','user') NOT NULL,
   phone      VARCHAR(20),
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -70,4 +70,4 @@ INSERT INTO categories (category_name) VALUES
 INSERT INTO users (username, name, email, password, role, phone) VALUES
 ('admin_utm',   'Admin UTM',   'admin@utm.my',    MD5('admin123'),   'admin',   '0112345678'),
 ('siti_staff',  'Puan Siti',   'siti@utm.my',     MD5('staff123'),   'staff',   '0123456789'),
-('ahmad_faris', 'Ahmad Faris', 'ahmad@utm.my',    MD5('student123'), 'student', '0134567890');
+('ahmad_faris', 'Ahmad Faris', 'ahmad@utm.my',    MD5('student123'), 'user', '0134567890');
