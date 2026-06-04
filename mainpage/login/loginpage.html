@@ -18,10 +18,10 @@
 
         <form id="loginForm">
             <div class="input-group">
-                <label for="email">Email Address</label>
+                <label for="username">Username</label>
                 <div class="input-wrapper">
                     <span class="icon">📧</span>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
                 </div>
             </div>
 
@@ -41,15 +41,15 @@
         </form>
 
         <div class="register-link">
-            Don't have an account? <a href="register.html">Register here</a>
+            Don't have an account? <a href="../register/register.php">Register here</a>
         </div>
 
         <div class="demo-credentials">
             <p>Demo Credentials:</p>
             <div class="cred-buttons">
-                <button type="button" class="cred-btn" onclick="fillCredentials('admin@utm.my', 'admin123')">Admin</button>
-                <button type="button" class="cred-btn" onclick="fillCredentials('siti@utm.my', 'staff123')">Staff</button>
-                <button type="button" class="cred-btn" onclick="fillCredentials('ahmad@utm.my', 'student123')">Student</button>
+                <button type="button" class="cred-btn" onclick="fillCredentials('admin_utm', 'admin123')">Admin</button>
+                <button type="button" class="cred-btn" onclick="fillCredentials('siti_staff', 'staff123')">Staff</button>
+                <button type="button" class="cred-btn" onclick="fillCredentials('ahmad_faris', 'student123')">User</button>
             </div>
         </div>
     </div>

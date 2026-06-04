@@ -75,7 +75,7 @@
         }
         
         // Fill demo credentials
-        function fillCredentials(email, password) {
-            document.getElementById('email').value = email;
+        function fillCredentials(username, password) {
+            document.getElementById('username').value = username;
             document.getElementById('password').value = password;
         }

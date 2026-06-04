@@ -29,23 +29,23 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 // ✅ No manual escaping needed with prepared statements
-$email    = trim($_POST['email']    ?? '');
+$username    = trim($_POST['username'] ?? '');
 $password = trim($_POST['password'] ?? '');
 
-if (empty($email) || empty($password)) {
+if (empty($username) || empty($password)) {
     echo json_encode(['success' => false, 'message' => 'Please fill in all fields']);
     exit();
 }
 
 // ✅ Use prepared statement — safe from SQL injection
-$stmt = mysqli_prepare($conn, "SELECT user_id, name, email, role FROM users WHERE email = ? AND password = MD5(?)");
+$stmt = mysqli_prepare($conn, "SELECT user_id, username, name, email, role FROM users WHERE username = ? AND password = MD5(?)");
 
 if (!$stmt) {
     echo json_encode(['success' => false, 'message' => 'Query preparation failed']);
     exit();
 }
 
-mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+mysqli_stmt_bind_param($stmt, "ss", $username, $password);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
