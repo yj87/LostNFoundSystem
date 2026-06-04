@@ -1,8 +1,201 @@
 <!DOCTYPE html>
-<html>
-<head><title>Admin Dashboard</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Lost & Found System</title>
+    <link rel="stylesheet" href="../../css/dashboard/dashboard.css">
+    <link rel="stylesheet" href="../../css/sidebar/sidebar.css">
+    <link rel="stylesheet" href="admin_dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 <body>
-    <h1>Admin Dashboard</h1>
-    <a href="../../mainpage/logout/logout.php">Logout</a>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🔍</div>
+                <h3>Lost & Found</h3>
+                <p>UTM System</p>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <div class="menu-group">
+                    <div class="menu-group-title">Main</div>
+                    <div class="menu-item active" onclick="location.href='dashboard.php'">
+                        <span class="icon">📊</span>
+                        <span>Dashboard</span>
+                    </div>
+                </div>
+
+                <div class="menu-group">
+                    <div class="menu-group-title">User Management</div>
+                    <div class="menu-item" onclick="location.href='manage_users.php'">
+                        <span class="icon">👥</span>
+                        <span>Manage Users</span>
+                    </div>
+                    <div class="menu-item" onclick="location.href='add_user.php'">
+                        <span class="icon">➕</span>
+                        <span>Add User</span>
+                    </div>
+                </div>
+
+                <div class="menu-group">
+                    <div class="menu-group-title">Item Management</div>
+                    <div class="menu-item" onclick="location.href='admin_found_items.php'">
+                        <span class="icon">📦</span>
+                        <span>All Found Items</span>
+                    </div>
+                    <div class="menu-item" onclick="location.href='admin_lost_reports.php'">
+                        <span class="icon">🔍</span>
+                        <span>Lost Reports</span>
+                    </div>
+                </div>
+
+                <div class="menu-group">
+                    <div class="menu-group-title">Claims</div>
+                    <div class="menu-item" onclick="location.href='admin_claims.php'">
+                        <span class="icon">📋</span>
+                        <span>All Claims</span>
+                    </div>
+                </div>
+
+                <div class="menu-group">
+                    <div class="menu-group-title">Account</div>
+                    <div class="menu-item" onclick="location.href='profile.php'">
+                        <span class="icon">👤</span>
+                        <span>My Profile</span>
+                    </div>
+                    <div class="menu-item" onclick="logoutUser()">
+    <span class="icon">🚪</span>
+    <span>Logout</span>
+</div>
+                </div>
+            </nav>
+        </aside>
+        
+        <div class="main-content">
+            <!-- Header - Fixed Layout -->
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="page-title-header">Admin Dashboard</div>
+                </div>
+                <div class="header-right">
+                    <!-- Notification Bell -->
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    
+                    <!-- User Menu -->
+                    <div class="user-menu">
+                        <div class="user-menu-btn">
+                            <div class="user-avatar" id="user-avatar">A</div>
+                            <div class="user-info-text">
+                                <span class="user-name-header" id="user-name">Admin User</span>
+                                <span class="user-role">Administrator</span>
+                            </div>
+                            <i class="fas fa-chevron-down dropdown-icon"></i>
+                        </div>
+                        <div class="dropdown-menu">
+                            <a href="profile.php">
+                                <i class="fas fa-user"></i>
+                                My Profile
+                            </a>
+                            <a href="settings.php">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="../../mainpage/logout/logout.php">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="content-area fade-in">
+                <div class="page-title">
+                    <h1>Admin Dashboard</h1>
+                    <p id="welcome-message">Loading...</p>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Total Users</h3>
+                            <div class="stat-number" id="total-users">-</div>
+                        </div>
+                        <div class="stat-icon">👥</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Found Items</h3>
+                            <div class="stat-number" id="total-items">-</div>
+                        </div>
+                        <div class="stat-icon">📦</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Total Claims</h3>
+                            <div class="stat-number" id="total-claims">-</div>
+                        </div>
+                        <div class="stat-icon">📋</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Pending Claims</h3>
+                            <div class="stat-number" id="pending-claims">-</div>
+                        </div>
+                        <div class="stat-icon">⏳</div>
+                    </div>
+                </div>
+                
+                <!-- Charts -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Claims by Status</h3>
+                        <canvas id="claimsChart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Items by Category</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Recent Claims -->
+                <div class="recent-section">
+                    <div class="section-header">
+                        <h3>Recent Claims</h3>
+                        <a href="admin_claims.php" class="view-all">View All →</a>
+                    </div>
+                    <div class="data-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Item</th>
+                                    <th>Claimant</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="claims-table-body">
+                                <tr><td colspan="6" class="loading">Loading claims...</td><ensuring
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -1,0 +1,77 @@
+.sidebar {
+            width: 260px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+
+        .sidebar-header .logo {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .sidebar-menu {
+            padding: 0 15px;
+        }
+
+        .menu-group {
+            margin-bottom: 20px;
+        }
+
+        .menu-group-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            padding: 10px 15px;
+            margin-top: 10px;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            margin: 5px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(5px);
+        }
+
+        .menu-item.active {
+            background: rgba(255,255,255,0.2);
+            border-left: 3px solid #ff9800;
+        }
+
+        .menu-item .icon {
+            font-size: 20px;
+            width: 25px;
+        }
+
+        
