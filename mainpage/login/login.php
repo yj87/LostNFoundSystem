@@ -36,32 +36,34 @@ if (empty($username) || empty($password)) {
     exit();
 }
 
-// ✅ Using MD5 - matches your database
-$stmt = mysqli_prepare($conn, "SELECT user_id, username, name, email, role FROM users WHERE username = ? AND password = MD5(?)");
-
-if (!$stmt) {
-    echo json_encode(['success' => false, 'message' => 'Query preparation failed']);
-    exit();
-}
-
-mysqli_stmt_bind_param($stmt, "ss", $username, $password);
+// ✅ FIRST get the user by username
+$stmt = mysqli_prepare($conn, "SELECT user_id, username, name, email, role, password FROM users WHERE username = ?");
+mysqli_stmt_bind_param($stmt, "s", $username);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 
 if (mysqli_num_rows($result) == 1) {
     $user = mysqli_fetch_assoc($result);
+    
+    // ✅ THEN verify password using MD5
+    if ($user['password'] === md5($password)) {
+        // Password is correct
+        $_SESSION['user_id']    = $user['user_id'];
+        $_SESSION['user_name']  = $user['name'];
+        $_SESSION['user_email'] = $user['email'];
+        $_SESSION['role']       = $user['role'];
 
-    $_SESSION['user_id']    = $user['user_id'];
-    $_SESSION['user_name']  = $user['name'];
-    $_SESSION['user_email'] = $user['email'];
-    $_SESSION['role']       = $user['role'];
-
-    echo json_encode([
-        'success'  => true,
-        'message'  => 'Login successful! Redirecting...',
-        'redirect' => getDashboardUrl($user['role'])
-    ]);
+        echo json_encode([
+            'success'  => true,
+            'message'  => 'Login successful! Redirecting...',
+            'redirect' => getDashboardUrl($user['role'])
+        ]);
+    } else {
+        // Password is wrong
+        echo json_encode(['success' => false, 'message' => 'Invalid username or password!']);
+    }
 } else {
+    // Username not found
     echo json_encode(['success' => false, 'message' => 'Invalid username or password!']);
 }
 

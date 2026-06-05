@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - Lost & Found System</title>
+    <link rel="stylesheet" href="forgot.css">
+</head>
+<body>
+    <div class="forgot-container">
+        <div class="forgot-header">
+            <a href="../login/loginpage.html" class="back-link">← Back to Login</a>
+            <h2>Reset Password</h2>
+            <p>Enter your username and email to verify your account.</p>
+        </div>
+
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        <div id="successMessage" class="success-message" style="display: none;"></div>
+
+        <form id="verifyForm">
+            <div class="input-group">
+                <label>Username *</label>
+                <div class="input-wrapper">
+                    <span class="icon">👤</span>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Email Address *</label>
+                <div class="input-wrapper">
+                    <span class="icon">📧</span>
+                    <input type="email" id="email" placeholder="Enter your registered email" required>
+                </div>
+            </div>
+
+            <button type="submit" class="verify-btn" id="verifyBtn">Verify & Continue</button>
+        </form>
+
+        <div class="help-text">
+            <p>Remember your password? <a href="../login/loginpage.html">Login here</a></p>
+        </div>
+    </div>
+
+    <script src="forgot.js"></script>
+</body>
+</html>

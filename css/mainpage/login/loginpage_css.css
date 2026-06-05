@@ -197,3 +197,22 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        /* Add this to your existing CSS file */
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.forgot-password a {
+    color: #667eea;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.forgot-password a:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
