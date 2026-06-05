@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Lost & Found System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+    <div class="container my-5">
+        <div class="row">
+            <!-- Sidebar / Profile Card -->
+            <div class="col-md-4 mb-4">
+                <div class="card profile-sidebar">
+                    <div class="card-body text-center">
+                        <!-- Avatar Icon (instead of profile picture) -->
+                        <div class="avatar-container mb-3">
+                            <i class="fas fa-user-circle fa-5x"></i>
+                        </div>
+                        
+                        <h3 id="userFullName" class="mt-2">Loading...</h3>
+                        <p id="userName" class="text-muted">@<span id="username"></span></p>
+                        <p>
+                            <span id="userRole"></span>
+                            <span id="userStatus" class="badge bg-success ms-2">Active</span>
+                        </p>
+                        
+                        <hr>
+                        
+                        <!-- Role-specific Stats -->
+                        <div id="statsContainer" class="mt-3">
+                            <!-- Stats loaded by JS -->
+                        </div>
+                        
+                        <hr>
+                        
+                        <p class="small text-muted">
+                            <i class="fas fa-calendar-alt"></i> Member since: <span id="memberSince"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content - Edit Form -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user-edit"></i> Edit Profile
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <!-- Loading Spinner -->
+                        <div id="loadingSpinner" class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading profile data...</p>
+                        </div>
+                        
+                        <!-- Edit Form -->
+                        <form id="profileForm" class="d-none">
+                            <input type="hidden" name="user_id" id="userId">
+                            
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label fw-bold">Username</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" id="username_display" disabled>
+                                    <small class="text-muted">Username cannot be changed</small>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label fw-bold">Full Name *</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="name" id="name">
+                                    <small class="text-danger error-message" id="nameError"></small>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label fw-bold">Email *</label>
+                                <div class="col-sm-9">
+                                    <input type="email" class="form-control" name="email" id="email">
+                                    <small class="text-danger error-message" id="emailError"></small>
+                                </div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <label class="col-sm-3 col-form-label fw-bold">Phone</label>
+                                <div class="col-sm-9">
+                                    <input type="tel" class="form-control" name="phone" id="phone" placeholder="e.g., 0123456789">
+                                    <small class="text-danger error-message" id="phoneError"></small>
+                                </div>
+                            </div>
+                            
+                            <!-- Change Password Section -->
+                            <div class="row mb-3">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="changePasswordCheck">
+                                        <label class="form-check-label" for="changePasswordCheck">
+                                            <i class="fas fa-key"></i> Change Password
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div id="passwordSection" class="d-none">
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label fw-bold">Current Password *</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" class="form-control" id="currentPassword">
+                                        <small class="text-danger error-message" id="currentPasswordError"></small>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label fw-bold">New Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" class="form-control" name="new_password" id="newPassword">
+                                        <small class="text-muted">Minimum 8 characters</small>
+                                        <small class="text-danger error-message" id="newPasswordError"></small>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <label class="col-sm-3 col-form-label fw-bold">Confirm Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" class="form-control" id="confirmPassword">
+                                        <small class="text-danger error-message" id="confirmPasswordError"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="offset-sm-3 col-sm-9">
+                                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                                        <i class="fas fa-save"></i> Save Changes
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="cancelBtn">
+                                        <i class="fas fa-undo"></i> Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>
