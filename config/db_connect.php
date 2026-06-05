@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$dbname = 'db';
+$dbname = 'lost_and_found_db';
 $username = 'root';
 $password = '';
 

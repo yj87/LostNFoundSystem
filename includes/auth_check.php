@@ -1,13 +1,11 @@
 <?php
-if (!isset($required_role)) {
-    die("Role not specified");
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../../../mainpage/login/login.php");
+    exit();
 }
-
-// Convert single role to array for multiple role support
-$allowed_roles = is_array($required_role) ? $required_role : [$required_role];
-
-if (!in_array($_SESSION['role'], $allowed_roles)) {
-    header("Location: ../login.php");
+if ($_SESSION['role'] !== 'admin') {
+    header("Location: ../../../mainpage/login/login.php");
     exit();
 }
 ?>
