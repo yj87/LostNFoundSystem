@@ -28,8 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit();
 }
 
-// ✅ No manual escaping needed with prepared statements
-$username    = trim($_POST['username'] ?? '');
+$username = trim($_POST['username'] ?? '');
 $password = trim($_POST['password'] ?? '');
 
 if (empty($username) || empty($password)) {
@@ -37,7 +36,7 @@ if (empty($username) || empty($password)) {
     exit();
 }
 
-// ✅ Use prepared statement — safe from SQL injection
+// ✅ Using MD5 - matches your database
 $stmt = mysqli_prepare($conn, "SELECT user_id, username, name, email, role FROM users WHERE username = ? AND password = MD5(?)");
 
 if (!$stmt) {
@@ -63,7 +62,7 @@ if (mysqli_num_rows($result) == 1) {
         'redirect' => getDashboardUrl($user['role'])
     ]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Invalid email or password!']);
+    echo json_encode(['success' => false, 'message' => 'Invalid username or password!']);
 }
 
 mysqli_stmt_close($stmt);
@@ -73,7 +72,7 @@ function getDashboardUrl($role) {
     switch ($role) {
         case 'admin': return '../../user_page/admin/dashboard.html';
         case 'staff': return '../../user_page/staff/dashboard.html';
-        case 'user':  return '../../user_page/user/dashboard.html'; // ✅ Fixed from 'student'
+        case 'user':  return '../../user_page/user/dashboard.html';
         default:      return 'dashboard.html';
     }
 }

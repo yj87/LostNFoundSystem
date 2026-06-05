@@ -1,65 +1,71 @@
 <?php
-session_start();
-
-// Redirect if already logged in
-if (isset($_SESSION['user_id'])) {
-    if ($_SESSION['role'] === 'admin') {
-        header("Location: admin/dashboard.html");
-    } elseif ($_SESSION['role'] === 'staff') {
-        header("Location: staff/dashboard.html");
-    } elseif ($_SESSION['role'] === 'user') {
-        header("Location: user/dashboard.html");
-    } else {
-        header("Location: ori_page.html");
-    }
-    exit();
-}
+header('Content-Type: application/json');
 
 $host = 'localhost';
-$dbname = 'db';
-$username = 'root';
-$password = '';
+$dbname = 'lost_and_found_db';
+$dbuser = 'root';
+$dbpass = '';
 
-$conn = mysqli_connect($host, $username, $password, $dbname);
+$conn = mysqli_connect($host, $dbuser, $dbpass, $dbname);
 
 if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+    echo json_encode(['success' => false, 'message' => 'Database connection failed']);
+    exit;
 }
 
-$error = '';
-$success = '';
+$data = json_decode(file_get_contents('php://input'), true);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = mysqli_real_escape_string($conn, $_POST['name']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
-    $confirm_password = mysqli_real_escape_string($conn, $_POST['confirm_password']);
-    $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-    $role = mysqli_real_escape_string($conn, $_POST['role']);
-    
-    // Validation
-    if ($password !== $confirm_password) {
-        $error = "Passwords do not match!";
-    } else {
-        // Check if email already exists
-        $check_sql = "SELECT user_id FROM users WHERE email = '$email'";
-        $check_result = mysqli_query($conn, $check_sql);
-        
-        if (mysqli_num_rows($check_result) > 0) {
-            $error = "Email already registered!";
-        } else {
-            // Insert new user (using MD5 as per your schema)
-            $insert_sql = "INSERT INTO users (name, email, password, role, phone) 
-                           VALUES ('$name', '$email', MD5('$password'), '$role', '$phone')";
-            
-            if (mysqli_query($conn, $insert_sql)) {
-                $success = "Registration successful! You can now login.";
-                // Clear form data
-                $name = $email = $phone = $role = '';
-            } else {
-                $error = "Registration failed: " . mysqli_error($conn);
-            }
-        }
-    }
+$username = trim($data['username'] ?? '');
+$name = trim($data['name'] ?? '');
+$email = trim($data['email'] ?? '');
+$phone = trim($data['phone'] ?? '');
+$password = $data['password'] ?? '';
+
+// Validate
+if (empty($username) || empty($name) || empty($email) || empty($password)) {
+    echo json_encode(['success' => false, 'message' => 'All required fields must be filled']);
+    exit;
 }
+
+if (strlen($password) < 6) {
+    echo json_encode(['success' => false, 'message' => 'Password must be at least 6 characters']);
+    exit;
+}
+
+// Check username exists
+$stmt = mysqli_prepare($conn, "SELECT user_id FROM users WHERE username = ?");
+mysqli_stmt_bind_param($stmt, "s", $username);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_store_result($stmt);
+if (mysqli_stmt_num_rows($stmt) > 0) {
+    echo json_encode(['success' => false, 'message' => 'Username already taken']);
+    exit;
+}
+mysqli_stmt_close($stmt);
+
+// Check email exists
+$stmt = mysqli_prepare($conn, "SELECT user_id FROM users WHERE email = ?");
+mysqli_stmt_bind_param($stmt, "s", $email);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_store_result($stmt);
+if (mysqli_stmt_num_rows($stmt) > 0) {
+    echo json_encode(['success' => false, 'message' => 'Email already registered']);
+    exit;
+}
+mysqli_stmt_close($stmt);
+
+// ✅ Using MD5 - matches login.php
+$role = 'user';
+
+$stmt = mysqli_prepare($conn, "INSERT INTO users (username, name, email, password, role, phone) VALUES (?, ?, ?, MD5(?), ?, ?)");
+mysqli_stmt_bind_param($stmt, "ssssss", $username, $name, $email, $password, $role, $phone);
+
+if (mysqli_stmt_execute($stmt)) {
+    echo json_encode(['success' => true, 'message' => 'Registration successful! Please login.']);
+} else {
+    echo json_encode(['success' => false, 'message' => 'Registration failed. Please try again.']);
+}
+
+mysqli_stmt_close($stmt);
+mysqli_close($conn);
 ?>
