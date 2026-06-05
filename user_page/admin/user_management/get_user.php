@@ -1,9 +1,10 @@
 <?php
 header('Content-Type: application/json');
-$required_role = 'admin'; 
-require_once("../../../config/db_connect.php");
+$required_role = 'admin';
+
 require_once("../../../includes/auth_check.php");
 require_once("../../../includes/role_check.php");
+require_once("../../../config/db_connect.php");
 
 $id = $_GET['id'] ?? 0;
 
