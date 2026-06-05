@@ -1,6 +1,6 @@
 <?php
-require_once("../includes/db_connect.php");
-require_once("../includes/auth_check.php");
+require_once("../../config/db_connect.php");
+require_once("../../includes/auth_check.php");
 
 session_start();
 header('Content-Type: application/json');
