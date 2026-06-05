@@ -79,9 +79,9 @@ nav {
 }
 
 .nav-item.active {
-    background: #F5D3D6;
+    background: #A5CBD7;
     color: #2b2d42;
-    border-left: 4px solid #F8E2E4;
+    border-left: 4px solid #C2DCE4;
 }
 
 .nav-item .icon {
@@ -97,7 +97,7 @@ nav {
 
 /* HEADER */
 .top-header {
-    background: #FDF5F6;
+    background: #E4F2F6;
     height: 60px;
     display: flex;
     justify-content: space-between;
@@ -136,7 +136,7 @@ nav {
 .user-avatar {
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, #F5D3D6 0%, #F6DADF 100%);
+    background: linear-gradient(135deg, #A5CBD7 0%, #B3D4DF 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -154,7 +154,7 @@ nav {
 }
 
 .user-role-badge {
-    background: #F6DADF;
+    background: #B3D4DF;
     color: #2b2d42;
     padding: 4px 10px;
     border-radius: 20px;
@@ -231,7 +231,7 @@ nav {
 /* ARTICLE - Content Area */
 article {
     padding: 30px;
-    background-color: #FEFAF9;
+    background-color: #F1F8FA;
     min-height: calc(100vh - 60px);
 }
 
@@ -258,7 +258,7 @@ article {
 }
 
 .stat-card {
-    background: #F8E2E4;
+    background: #C2DCE4;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -272,7 +272,7 @@ article {
 .stat-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-    background: #F6DADF;
+    background: #B3D4DF;
 }
 
 .stat-info h3 {
@@ -302,7 +302,7 @@ article {
 }
 
 .action-card {
-    background: #F8E2E4;
+    background: #C2DCE4;
     border-radius: 12px;
     padding: 25px;
     text-align: center;
@@ -314,7 +314,7 @@ article {
 .action-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    background: #F6DADF;
+    background: #B3D4DF;
 }
 
 .action-card i {
@@ -337,7 +337,7 @@ article {
 
 /* Recent Tables */
 .recent-section {
-    background: #FDF5F6;
+    background: #E4F2F6;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -369,17 +369,17 @@ table {
 th, td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #F5D3D6;
+    border-bottom: 1px solid #A5CBD7;
 }
 
 th {
-    background: #F5D3D6;
+    background: #A5CBD7;
     font-weight: 600;
     color: #2b2d42;
 }
 
 tr:hover {
-    background: #FEFAF9;
+    background: #F1F8FA;
 }
 
 .status-badge {
@@ -420,21 +420,21 @@ tr:hover {
 }
 
 .btn-primary {
-    background: #F5D3D6;
+    background: #A5CBD7;
     color: #2b2d42;
 }
 
 .btn-primary:hover {
-    background: #F6DADF;
+    background: #B3D4DF;
     color: #2b2d42;
 }
 
 /* FOOTER */
 footer {
-    background: #FDF5F6;
+    background: #E4F2F6;
     padding: 20px 30px;
     text-align: center;
-    border-top: 1px solid #F5D3D6;
+    border-top: 1px solid #A5CBD7;
     margin-top: 30px;
     color: #6c757d;
     font-size: 14px;

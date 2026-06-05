@@ -1,84 +1,69 @@
-        // Toggle sidebar for mobile
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
+// Toggle sidebar on mobile
+function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('active');
+}
 
-        // Fetch dashboard data
-        async function loadDashboardData() {
-            try {
-                const response = await fetch('admin_dashboard_data.php');
-                const data = await response.json();
-                
-                // Update stats
-                document.getElementById('total-users').textContent = data.total_users;
-                document.getElementById('total-items').textContent = data.total_items;
-                document.getElementById('total-claims').textContent = data.total_claims;
-                document.getElementById('pending-claims').textContent = data.pending_claims;
-                document.getElementById('welcome-message').textContent = `Welcome back, ${data.user_name}! Here's what's happening today.`;
-                document.getElementById('user-name').textContent = data.user_name;
-                
-                // Claims Chart
-                new Chart(document.getElementById('claimsChart'), {
-                    type: 'doughnut',
-                    data: {
-                        labels: data.status_labels,
-                        datasets: [{
-                            data: data.status_data,
-                            backgroundColor: ['#ff9800', '#4caf50', '#f44336', '#2196f3']
-                        }]
-                    }
-                });
-                
-                // Category Chart
-                new Chart(document.getElementById('categoryChart'), {
-                    type: 'bar',
-                    data: {
-                        labels: data.category_labels,
-                        datasets: [{
-                            label: 'Number of Items',
-                            data: data.category_data,
-                            backgroundColor: '#4361ee'
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: { y: { beginAtZero: true } }
-                    }
-                });
-                
-                // Recent Claims Table
-                const tbody = document.getElementById('claims-table-body');
-                tbody.innerHTML = '';
-                data.recent_claims.forEach(claim => {
-                    const row = tbody.insertRow();
-                    row.innerHTML = `
-                        <td>#${claim.claim_id}</td>
-                        <td>${escapeHtml(claim.item_name)}</td>
-                        <td>${escapeHtml(claim.claimant_name)}</td>
-                        <td><span class="status-badge status-${claim.claim_status}">${claim.claim_status}</span></td>
-                        <td>${new Date(claim.submitted_at).toLocaleDateString()}</td>
-                        <td><a href="review_claim.php?id=${claim.claim_id}" class="btn btn-primary btn-sm">Review</a></td>
-                    `;
-                });
-            } catch (error) {
-                console.error('Error loading dashboard:', error);
-                document.getElementById('claims-table-body').innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error loading data</td></tr>';
+// Logout function - CORRECTED PATH
+function logoutUser() {
+    if (confirm('Are you sure you want to logout?')) {
+        window.location.href = '../../../mainpage/logout/logout.php';
+    }
+}
+
+// Navigate to page
+function navigateTo(page) {
+    if (page) {
+        window.location.href = page;
+    }
+}
+
+// Toggle user dropdown menu
+function toggleUserDropdown() {
+    const dropdown = document.getElementById('userDropdownMenu');
+    dropdown.classList.toggle('show');
+}
+
+// Add click event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Stat cards navigation
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const page = this.getAttribute('data-page');
+            if (page) navigateTo(page);
+        });
+    });
+    
+    // Action cards navigation
+    const actionCards = document.querySelectorAll('.action-card');
+    actionCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const page = this.getAttribute('data-page');
+            if (page) navigateTo(page);
+        });
+    });
+    
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(event) {
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.querySelector('.menu-toggle');
+        
+        if (window.innerWidth <= 768) {
+            if (sidebar && !sidebar.contains(event.target) && menuToggle && !menuToggle.contains(event.target)) {
+                sidebar.classList.remove('active');
             }
         }
-        
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>]/g, function(m) {
-                if (m === '&') return '&amp;';
-                if (m === '<') return '&lt;';
-                if (m === '>') return '&gt;';
-                return m;
-            });
-        }
+    });
+});
 
-        function logoutUser() {
-    window.location.href = 'http://localhost/LostNFoundSystem/mainpage/logout/logout.php';
-}
-        
-        // Load data when page loads
-        document.addEventListener('DOMContentLoaded', loadDashboardData);
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('userDropdownMenu');
+    const avatar = document.getElementById('userAvatar');
+    
+    if (dropdown && avatar) {
+        if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    }
+});

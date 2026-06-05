@@ -1,8 +1,215 @@
 <!DOCTYPE html>
-<html>
-<head><title>Staff Dashboard</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - Lost & Found System</title>
+    <link rel="stylesheet" href="staff_dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
 <body>
-    <h1>Staff Dashboard</h1>
-    <a href="../../mainpage/logout/logout.php">Logout</a>
+    <div class="dashboard-container">
+        <!-- ASIDE: Sidebar Navigation -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🔍</div>
+                <h3>Lost & Found</h3>
+                <p>Staff Panel</p>
+            </div>
+            
+            <nav>
+                <div class="nav-group">
+                    <div class="nav-group-title">Main</div>
+                    <a href="staff_dashboard.html" class="nav-item active">
+                        <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Found Items</div>
+                    <a href="add_found_item.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
+                        <span>Add Found Item</span>
+                    </a>
+                    <a href="staff_found_items.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-box"></i></span>
+                        <span>My Found Items</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Claims</div>
+                    <a href="staff_claims.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                        <span>View Claims</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Lost Reports</div>
+                    <a href="staff_view_lost.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>View Lost Items</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Account</div>
+                    <a href="staff_profile.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-user-circle"></i></span>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="../../../mainpage/logout/logout.php" onclick="logoutUser()" class="nav-item">
+                        <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        
+        <div class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <div class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="page-title-header">Staff Dashboard</div>
+                </div>
+                <div class="user-dropdown">
+                    <div class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">S</div>
+                    <div class="user-dropdown-menu" id="userDropdownMenu">
+                        <a href="staff_profile.php">
+                            <i class="fas fa-user-circle"></i> My Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="../../../mainpage/logout/logout.php" onclick="logoutUser()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </header>
+            
+            <article>
+                <div class="page-title">
+                    <h1>Staff Dashboard</h1>
+                    <p id="welcomeMessage">Loading dashboard data...</p>
+                </div>
+                
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card" data-page="staff_found_items.php">
+                        <div class="stat-info">
+                            <h3>My Found Items</h3>
+                            <div class="stat-number" id="myItems">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-box"></i></div>
+                    </div>
+                    
+                    <div class="stat-card" data-page="staff_found_items.php">
+                        <div class="stat-info">
+                            <h3>Total Found Items</h3>
+                            <div class="stat-number" id="totalItems">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-database"></i></div>
+                    </div>
+                    
+                    <div class="stat-card" data-page="staff_claims.php">
+                        <div class="stat-info">
+                            <h3>Total Claims</h3>
+                            <div class="stat-number" id="totalClaims">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
+                    </div>
+                    
+                    <div class="stat-card" data-page="staff_claims.php?status=pending">
+                        <div class="stat-info">
+                            <h3>Pending Claims</h3>
+                            <div class="stat-number" id="pendingClaims">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions-grid">
+                    <div class="action-card" data-page="add_found_item.php">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>Add Found Item</h3>
+                        <p>Register a new found item</p>
+                    </div>
+                    <div class="action-card" data-page="staff_found_items.php">
+                        <i class="fas fa-edit"></i>
+                        <h3>Manage My Items</h3>
+                        <p>Edit or update your found items</p>
+                    </div>
+                    <div class="action-card" data-page="staff_claims.php">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Review Claims</h3>
+                        <p>Approve or reject claims on your items</p>
+                    </div>
+                    <div class="action-card" data-page="staff_view_lost.php">
+                        <i class="fas fa-search"></i>
+                        <h3>View Lost Reports</h3>
+                        <p>Browse lost items reported by users</p>
+                    </div>
+                </div>
+                
+                <!-- Recent Claims Section -->
+                <div class="recent-section">
+                    <div class="section-header">
+                        <h3>Recent Claims on My Items</h3>
+                        <a href="staff_claims.php" class="view-all">View All →</a>
+                    </div>
+                    <div class="data-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Claimant</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentClaimsTable">
+                                <tr><td colspan="5" class="text-center">Loading claims...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Recent Found Items Section -->
+                <div class="recent-section" style="margin-top: 30px;">
+                    <div class="section-header">
+                        <h3>My Recent Found Items</h3>
+                        <a href="staff_found_items.php" class="view-all">View All →</a>
+                    </div>
+                    <div class="data-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Location</th>
+                                    <th>Date Found</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentItemsTable">
+                                <tr><td colspan="5" class="text-center">Loading items...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </article>
+            
+            <footer>
+                <p id="copyright">© 2024 Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="staff_dashboard.js"></script>
 </body>
 </html>
