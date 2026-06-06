@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost & Found System</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Logo Section -->
+        <div class="logo-section">
+            <div class="logo">🔍</div>
+            <h1 class="system-name">Lost & Found System</h1>
+            <p class="tagline" id="tagline">Loading...</p>
+        </div>
+
+        <!-- Buttons Section -->
+        <div class="buttons-container" id="buttonsContainer">
+            <button class="btn btn-found" id="foundBtn">
+                <i class="fas fa-search"></i> Found Item
+            </button>
+            <button class="btn btn-login" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <button class="btn btn-register" id="registerBtn">
+                <i class="fas fa-user-plus"></i> Register
+            </button>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features" id="featuresContainer">
+            <!-- Features will be loaded dynamically -->
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p id="copyright"></p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 // API endpoint
-const API_URL = 'user_dashboard.php';
+const API_URL = 'dashboard.php';
 
 // Toggle sidebar on mobile with overlay
 function toggleSidebar() {
