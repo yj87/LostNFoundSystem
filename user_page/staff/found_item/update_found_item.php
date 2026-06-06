@@ -2,7 +2,7 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once '../../config/db_connect.php';
+require_once '../../../config/db_connect.php';
 header('Content-Type: application/json');
 
 $item_id = intval($_POST['item_id'] ?? 0);
