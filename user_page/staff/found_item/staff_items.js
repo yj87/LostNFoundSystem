@@ -1,5 +1,3 @@
-// staff_items.js
-
 // Sidebar toggle with overlay
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
