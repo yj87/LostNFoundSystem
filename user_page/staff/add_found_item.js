@@ -46,6 +46,13 @@ try {
                 method: 'POST',
                 body: formData
             });
+
+            if (response.url.includes('login.php')) {
+                alert("Session expired. Please log in again.");
+                window.location.href = 'login.php'; 
+                return;
+            }
+
             const result = await response.json();
 
             if (result.success) {

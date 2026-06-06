@@ -72,11 +72,11 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="profile.php" class="nav-item">
+                    <a href="../profile/profile.html" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
-                    <a href="../../../mainpage/logout/logout.php" onclick="logoutUser()" class="nav-item">
+                    <a href="../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
                         <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                         <span>Logout</span>
                     </a>
@@ -87,21 +87,23 @@
         <div class="main-content">
             <header class="top-header">
                 <div class="header-left">
-                    <div class="menu-toggle" onclick="toggleSidebar()">
+                    <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
-                    </div>
+                    </button>
                     <div class="page-title-header">Admin Dashboard</div>
                 </div>
                 
                 <!-- User Dropdown Menu -->
                 <div class="user-dropdown">
-                    <div class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">A</div>
+                    <div class="user-info-wrapper" onclick="toggleUserDropdown()">
+                        <div class="user-avatar" id="userAvatar">A</div>
+                    </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="profile.php">
+                        <a href="../profile/profile.html">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="../../../mainpage/logout/logout.php" onclick="logoutUser()">
+                        <a href="../../mainpage/logout/logout.php" onclick="return logoutUser();">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
                     </div>
@@ -207,7 +209,7 @@
                                 </tr>
                             </thead>
                             <tbody id="recentItemsTable">
-                                <tr><td colspan="5" class="text-center">Loading items...<\/td><\/tr>
+                                <tr><td colspan="5" class="text-center">Loading items...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -220,6 +222,6 @@
         </div>
     </div>
 
-    <script src="admin_dashboard.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>

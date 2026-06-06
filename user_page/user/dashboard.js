@@ -1,16 +1,55 @@
 // API endpoint
 const API_URL = 'user_dashboard.php';
 
-// Toggle sidebar on mobile
+// Toggle sidebar on mobile with overlay
 function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('active');
+    const sidebar = document.getElementById('sidebar');
+    const body = document.body;
+    
+    // Create overlay if it doesn't exist
+    let overlay = document.querySelector('.sidebar-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        overlay.onclick = function() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            body.style.overflow = '';
+        };
+        document.body.appendChild(overlay);
+    }
+    
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    
+    if (window.innerWidth <= 768) {
+        if (sidebar.classList.contains('active')) {
+            body.style.overflow = 'hidden';
+        } else {
+            body.style.overflow = '';
+        }
+    }
 }
 
-// Logout function - CORRECTED PATH
+// Toggle user dropdown menu
+function toggleUserDropdown() {
+    const dropdown = document.getElementById('userDropdownMenu');
+    if (dropdown) {
+        // Close any other open dropdowns first
+        document.querySelectorAll('.user-dropdown-menu.show').forEach(menu => {
+            if (menu !== dropdown) menu.classList.remove('show');
+        });
+        dropdown.classList.toggle('show');
+    }
+}
+
+// Logout function
 function logoutUser() {
     if (confirm('Are you sure you want to logout?')) {
         window.location.href = '../../../mainpage/logout/logout.php';
+        return true;
     }
+    return false;
 }
 
 // Navigate to page
@@ -40,6 +79,7 @@ function formatDate(dateString) {
 
 // Animate number counting
 function animateNumber(element, start, end, duration) {
+    if (!element) return;
     let startTimestamp = null;
     const step = (timestamp) => {
         if (!startTimestamp) startTimestamp = timestamp;
@@ -90,19 +130,28 @@ async function loadDashboardData() {
         }
         
         // Update user info
-        document.getElementById('userName').textContent = data.user_name;
-        document.getElementById('userAvatar').textContent = data.user_avatar;
-        document.getElementById('welcomeMessage').textContent = `Welcome back, ${data.user_name}! Track your lost items and claims here.`;
+        const userAvatar = document.getElementById('userAvatar');
+        const welcomeMsg = document.getElementById('welcomeMessage');
+        
+        if (userAvatar) userAvatar.textContent = data.user_avatar;
+        if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${data.user_name}! Track your lost items and claims here.`;
         
         // Update stats with animation
-        animateNumber(document.getElementById('lostReports'), 0, data.my_lost_reports, 500);
-        animateNumber(document.getElementById('totalClaims'), 0, data.my_claims, 500);
-        animateNumber(document.getElementById('pendingClaims'), 0, data.pending_claims, 500);
-        animateNumber(document.getElementById('approvedClaims'), 0, data.approved_claims, 500);
-        animateNumber(document.getElementById('availableItems'), 0, data.available_items, 500);
+        const lostReportsEl = document.getElementById('lostReports');
+        const totalClaimsEl = document.getElementById('totalClaims');
+        const pendingClaimsEl = document.getElementById('pendingClaims');
+        const approvedClaimsEl = document.getElementById('approvedClaims');
+        const availableItemsEl = document.getElementById('availableItems');
+        
+        if (lostReportsEl) animateNumber(lostReportsEl, 0, data.my_lost_reports, 500);
+        if (totalClaimsEl) animateNumber(totalClaimsEl, 0, data.my_claims, 500);
+        if (pendingClaimsEl) animateNumber(pendingClaimsEl, 0, data.pending_claims, 500);
+        if (approvedClaimsEl) animateNumber(approvedClaimsEl, 0, data.approved_claims, 500);
+        if (availableItemsEl) animateNumber(availableItemsEl, 0, data.available_items, 500);
         
         // Update copyright year
-        document.getElementById('copyright').innerHTML = `© ${data.current_year} Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.`;
+        const copyrightEl = document.getElementById('copyright');
+        if (copyrightEl) copyrightEl.innerHTML = `© ${data.current_year} Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.`;
         
         // Load recent lost reports table
         loadRecentLostTable(data.recent_lost);
@@ -112,14 +161,17 @@ async function loadDashboardData() {
         
     } catch (error) {
         console.error('Error loading dashboard:', error);
-        document.getElementById('recentLostTable').innerHTML = '<tr><td colspan="5" class="text-center" style="color: red;">Error loading data</td></tr>';
-        document.getElementById('recentClaimsTable').innerHTML = '<tr><td colspan="4" class="text-center" style="color: red;">Error loading data</td></tr>';
+        const lostTable = document.getElementById('recentLostTable');
+        const claimsTable = document.getElementById('recentClaimsTable');
+        if (lostTable) lostTable.innerHTML = '<tr><td colspan="5" class="text-center" style="color: red;">Error loading data</td></tr>';
+        if (claimsTable) claimsTable.innerHTML = '<tr><td colspan="4" class="text-center" style="color: red;">Error loading data</td></tr>';
     }
 }
 
 // Load recent lost reports table
 function loadRecentLostTable(lostReports) {
     const tbody = document.getElementById('recentLostTable');
+    if (!tbody) return;
     
     if (lostReports && lostReports.length > 0) {
         let html = '';
@@ -152,6 +204,7 @@ function loadRecentLostTable(lostReports) {
 // Load recent claims table
 function loadRecentClaimsTable(claims) {
     const tbody = document.getElementById('recentClaimsTable');
+    if (!tbody) return;
     
     if (claims && claims.length > 0) {
         let html = '';
@@ -180,13 +233,44 @@ function loadRecentClaimsTable(claims) {
     }
 }
 
-// Toggle user dropdown menu
-function toggleUserDropdown() {
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
     const dropdown = document.getElementById('userDropdownMenu');
-    dropdown.classList.toggle('show');
-}
+    const avatar = document.getElementById('userAvatar');
+    
+    if (dropdown && avatar && dropdown.classList.contains('show')) {
+        if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    }
+    
+    // Close sidebar when clicking outside on mobile
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const overlay = document.querySelector('.sidebar-overlay');
+    
+    if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
+        if (menuToggle && !menuToggle.contains(event.target) && !sidebar.contains(event.target)) {
+            sidebar.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+});
 
-// Add click event listeners
+// Handle window resize
+window.addEventListener('resize', function() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    
+    if (window.innerWidth > 768 && sidebar) {
+        sidebar.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+});
+
+// Initialize dashboard
 document.addEventListener('DOMContentLoaded', function() {
     // Load all data
     loadDashboardData();
@@ -208,28 +292,4 @@ document.addEventListener('DOMContentLoaded', function() {
             if (page) navigateTo(page);
         });
     });
-    
-    // Close sidebar when clicking outside on mobile
-    document.addEventListener('click', function(event) {
-        const sidebar = document.getElementById('sidebar');
-        const menuToggle = document.querySelector('.menu-toggle');
-        
-        if (window.innerWidth <= 768) {
-            if (sidebar && !sidebar.contains(event.target) && menuToggle && !menuToggle.contains(event.target)) {
-                sidebar.classList.remove('active');
-            }
-        }
-    });
-});
-
-// Close dropdown when clicking outside
-document.addEventListener('click', function(event) {
-    const dropdown = document.getElementById('userDropdownMenu');
-    const avatar = document.getElementById('userAvatar');
-    
-    if (dropdown && avatar) {
-        if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
-            dropdown.classList.remove('show');
-        }
-    }
 });

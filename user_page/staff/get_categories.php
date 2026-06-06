@@ -1,6 +1,5 @@
 <?php
-
-// get_categories.php
+session_start();
 require_once '../../config/db_connect.php';
 
 header('Content-Type: application/json');
