@@ -81,6 +81,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                         <td><strong>${item.item_name}</strong></td>
                         <td>${item.category_name ?? '-'}</td>
                         <td>${item.location_found}</td>
+                        <td>${item.description ?? '-'}</td>
                         <td>${item.date_found}</td>
                         <td><span class="status-badge ${statusClass}">${item.found_status}</span></td>
                         <td>
@@ -89,11 +90,11 @@ document.addEventListener('DOMContentLoaded', async function() {
                 tableBody.insertAdjacentHTML('beforeend', row);
             });
         } else {
-            tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No items found. Start by adding one!</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No items found. Start by adding one!</td></tr>';
         }
     } catch (error) {
         console.error('Error fetching items:', error);
         document.getElementById('staffItemsTable').innerHTML =
-            '<tr><td colspan="6" style="text-align:center;color:red;">Failed to load items.</td></tr>';
+            '<tr><td colspan="7" style="text-align:center;color:red;">Failed to load items.</td></tr>';
     }
 });

@@ -5,23 +5,23 @@ const API_URL = 'dashboard.php';
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const body = document.body;
-    
+
     // Create overlay if it doesn't exist
     let overlay = document.querySelector('.sidebar-overlay');
     if (!overlay) {
         overlay = document.createElement('div');
         overlay.className = 'sidebar-overlay';
-        overlay.onclick = function() {
+        overlay.onclick = function () {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
             body.style.overflow = '';
         };
         document.body.appendChild(overlay);
     }
-    
+
     sidebar.classList.toggle('active');
     overlay.classList.toggle('active');
-    
+
     if (window.innerWidth <= 768) {
         if (sidebar.classList.contains('active')) {
             body.style.overflow = 'hidden';
@@ -62,7 +62,7 @@ function navigateTo(page) {
 // Escape HTML to prevent XSS
 function escapeHtml(str) {
     if (!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
+    return str.replace(/[&<>]/g, function (m) {
         if (m === '&') return '&amp;';
         if (m === '<') return '&lt;';
         if (m === '>') return '&gt;';
@@ -97,40 +97,40 @@ async function loadDashboardData() {
     try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        
+
         if (!data.success) {
             console.error('Failed to load data');
             return;
         }
-        
+
         // Update user info
         const userAvatar = document.getElementById('userAvatar');
         const welcomeMsg = document.getElementById('welcomeMessage');
-        
+
         if (userAvatar) userAvatar.textContent = data.user_avatar;
         if (welcomeMsg) welcomeMsg.textContent = `Welcome back, ${data.user_name}! Manage found items and review claims.`;
-        
+
         // Update stats with animation
         const myItemsEl = document.getElementById('myItems');
         const totalItemsEl = document.getElementById('totalItems');
         const totalClaimsEl = document.getElementById('totalClaims');
         const pendingClaimsEl = document.getElementById('pendingClaims');
-        
+
         if (myItemsEl) animateNumber(myItemsEl, 0, data.my_items, 500);
         if (totalItemsEl) animateNumber(totalItemsEl, 0, data.total_items, 500);
         if (totalClaimsEl) animateNumber(totalClaimsEl, 0, data.my_claims, 500);
         if (pendingClaimsEl) animateNumber(pendingClaimsEl, 0, data.pending_claims, 500);
-        
+
         // Update copyright year
         const copyrightEl = document.getElementById('copyright');
         if (copyrightEl) copyrightEl.innerHTML = `© ${data.current_year} Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.`;
-        
+
         // Load recent claims table
         loadRecentClaimsTable(data.recent_claims);
-        
+
         // Load recent items table
         loadRecentItemsTable(data.recent_items);
-        
+
     } catch (error) {
         console.error('Error loading dashboard:', error);
         const claimsTable = document.getElementById('recentClaimsTable');
@@ -144,13 +144,13 @@ async function loadDashboardData() {
 function loadRecentClaimsTable(claims) {
     const tbody = document.getElementById('recentClaimsTable');
     if (!tbody) return;
-    
+
     if (claims && claims.length > 0) {
         let html = '';
         claims.forEach(claim => {
             const statusClass = `status-${claim.claim_status}`;
             const statusText = claim.claim_status.charAt(0).toUpperCase() + claim.claim_status.slice(1);
-            
+
             html += `
                 <tr>
                     <td>${escapeHtml(claim.item_name)}</td>
@@ -177,13 +177,13 @@ function loadRecentClaimsTable(claims) {
 function loadRecentItemsTable(items) {
     const tbody = document.getElementById('recentItemsTable');
     if (!tbody) return;
-    
+
     if (items && items.length > 0) {
         let html = '';
         items.forEach(item => {
             const statusClass = `status-${item.found_status}`;
             const statusText = item.found_status.charAt(0).toUpperCase() + item.found_status.slice(1);
-            
+
             html += `
                 <tr>
                     <td>${escapeHtml(item.item_name)}</td>
@@ -195,7 +195,7 @@ function loadRecentItemsTable(items) {
                         </span>
                     </td>
                     <td>
-                        <a href="edit_found_item.php?id=${item.item_id}" class="btn btn-primary">Edit</a>
+                        <a href="found_item/edit_found_item.html?id=${item.item_id}" class="btn btn-primary">Edit</a>
                     </td>
                 </tr>
             `;
@@ -207,21 +207,21 @@ function loadRecentItemsTable(items) {
 }
 
 // Close dropdown when clicking outside
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     const dropdown = document.getElementById('userDropdownMenu');
     const userInfoWrapper = document.querySelector('.user-info-wrapper');
-    
+
     if (dropdown && userInfoWrapper && dropdown.classList.contains('show')) {
         if (!userInfoWrapper.contains(event.target) && !dropdown.contains(event.target)) {
             dropdown.classList.remove('show');
         }
     }
-    
+
     // Close sidebar when clicking outside on mobile
     const sidebar = document.getElementById('sidebar');
     const menuToggle = document.querySelector('.menu-toggle');
     const overlay = document.querySelector('.sidebar-overlay');
-    
+
     if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
         if (menuToggle && !menuToggle.contains(event.target) && !sidebar.contains(event.target)) {
             sidebar.classList.remove('active');
@@ -232,10 +232,10 @@ document.addEventListener('click', function(event) {
 });
 
 // Handle window resize
-window.addEventListener('resize', function() {
+window.addEventListener('resize', function () {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.querySelector('.sidebar-overlay');
-    
+
     if (window.innerWidth > 768 && sidebar) {
         sidebar.classList.remove('active');
         if (overlay) overlay.classList.remove('active');
@@ -244,23 +244,23 @@ window.addEventListener('resize', function() {
 });
 
 // Initialize dashboard
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Load all data
     loadDashboardData();
-    
+
     // Stat cards navigation
     const statCards = document.querySelectorAll('.stat-card');
     statCards.forEach(card => {
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function () {
             const page = this.getAttribute('data-page');
             if (page) navigateTo(page);
         });
     });
-    
+
     // Action cards navigation
     const actionCards = document.querySelectorAll('.action-card');
     actionCards.forEach(card => {
-        card.addEventListener('click', function() {
+        card.addEventListener('click', function () {
             const page = this.getAttribute('data-page');
             if (page) navigateTo(page);
         });
