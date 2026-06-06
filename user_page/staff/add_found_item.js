@@ -1,42 +1,61 @@
 // add_found_item.js
 
 document.addEventListener('DOMContentLoaded', async function() {
-    
+
     // 1. Prevent selecting future dates
     const dateInput = document.getElementById('dateFound');
     const today = new Date().toISOString().split('T')[0];
     dateInput.setAttribute('max', today);
 
     // 2. Fetch categories dynamically from PHP API
-try {
-    const response = await fetch('get_categories.php');
-    const result = await response.json();
-    
-    // Check if the dropdown exists before trying to fill it
     const categorySelect = document.getElementById('categorySelect');
-    if (categorySelect) {
-        categorySelect.innerHTML = '<option value="">-- Choose Category --</option>'; 
-        
-        if (result.success) {
-            result.data.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category.category_id; // Matches your PHP query
-                option.textContent = category.category_name; // Matches your PHP query
-                categorySelect.appendChild(option);
-            });
+
+    try {
+        const response = await fetch('get_categories.php');
+
+        // If redirected to login, handle gracefully WITHOUT killing the rest of the page
+        if (response.url.includes('login.php')) {
+            console.warn("Session expired while loading categories.");
+            if (categorySelect) {
+                categorySelect.innerHTML = '<option value="">-- Session Expired, Please Re-login --</option>';
+            }
+            // Do NOT return here — let the rest of the page still initialise
+        } else {
+            const result = await response.json();
+
+            if (categorySelect) {
+                if (result.success && result.data && result.data.length > 0) {
+                    // Successfully loaded — populate dropdown
+                    categorySelect.innerHTML = '<option value="">-- Choose Category --</option>';
+                    result.data.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.category_id;
+                        option.textContent = category.category_name;
+                        categorySelect.appendChild(option);
+                    });
+                } else {
+                    // PHP returned success:false OR empty array
+                    categorySelect.innerHTML = '<option value="">-- No Categories Found --</option>';
+                    console.error('Category fetch failed:', result.message || 'Empty result');
+                }
+            }
+        }
+    } catch (error) {
+        // Network error or JSON parse failure
+        console.error('Dropdown Error:', error);
+        if (categorySelect) {
+            categorySelect.innerHTML = '<option value="">-- Failed to Load Categories --</option>';
         }
     }
-} catch (error) {
-    console.error('Dropdown Error:', error);
-}
+
     // 3. Handle Form Submission
     document.getElementById('addFoundItemForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-        
+
         const alertBox = document.getElementById('alertBox');
         const submitBtn = document.getElementById('submitBtn');
         const formData = new FormData(this);
-        
+
         // Prevent double clicking
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Persisting...';
@@ -49,7 +68,7 @@ try {
 
             if (response.url.includes('login.php')) {
                 alert("Session expired. Please log in again.");
-                window.location.href = '../../login.php'; 
+                window.location.href = '../../login.php';
                 return;
             }
 

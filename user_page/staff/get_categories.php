@@ -1,8 +1,20 @@
 <?php
-session_start();
+error_reporting(0);
+ob_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once '../../config/db_connect.php';
 
+ob_clean();
 header('Content-Type: application/json');
+
+if (!isset($_SESSION['user_id'])) {
+    echo json_encode(['success' => false, 'message' => 'Session expired']);
+    exit;
+}
 
 $query = "SELECT category_id, category_name FROM categories ORDER BY category_name ASC";
 $result = mysqli_query($conn, $query);
