@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Found Item - Staff Panel</title>
+    <link rel="stylesheet" href="staff_dashboard.css">
+    <link rel="stylesheet" href="add_found_item.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">📋</div>
+                <h3>Staff Panel</h3>
+                <p>Property Manager</p>
+            </div>
+            <nav>
+                <div class="nav-group">
+                    <a href="staff_found_items.html" class="nav-item"><span class="icon"><i class="fas fa-list"></i></span><span>My Discoveries</span></a>
+                    <a href="add_found_item.html" class="nav-item"><span class="icon"><i class="fas fa-plus-circle"></i></span><span>Add Found Item</span></a>
+                </div>
+            </nav>
+        </aside>
+        <div class="main-content">
+            <header class="top-header">
+                <h2 id="pageTitle">Edit Registry Record</h2>
+            </header>
+
+            <article class="content-area">
+                <div id="alertBox"></div>
+                <div class="form-card">
+                    <form id="editItemForm">
+                        <input type="hidden" id="itemId" name="item_id">
+
+                        <div class="form-group">
+                            <label>Item Name</label>
+                            <input type="text" id="itemName" name="item_name" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Category</label>
+                                <select name="category_id" id="categorySelect" required>
+                                    <option value="" >-- Choose Categories --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Location Found</label>
+                                <input type="text" id="locationFound" name="location_found" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select id="foundStatus" name="found_status">
+                                    <option value="unclaimed">Unclaimed</option>
+                                    <option value="claimed">Claimed</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Date Found</label>
+                                <input type="date" id="dateFound" name="date_found" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label>Description</label>
+                            <textarea id="description" name="description" rows="4" required></textarea>
+                        </div>
+
+                        <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 10px;">
+                            <a href="staff_found_items.html" class="btn">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Update Record</button>
+                        </div>
+                    </form>
+                </div>
+            </article>
+        </div>
+    </div>
+    <script src="edit_found_item.js"></script>
+</body>
+</html>

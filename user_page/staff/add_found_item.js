@@ -13,20 +13,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     try {
         const response = await fetch('get_categories.php');
 
-        // If redirected to login, handle gracefully WITHOUT killing the rest of the page
         if (response.url.includes('login.php')) {
             console.warn("Session expired while loading categories.");
             if (categorySelect) {
                 categorySelect.innerHTML = '<option value="">-- Session Expired, Please Re-login --</option>';
             }
-            // Do NOT return here — let the rest of the page still initialise
         } else {
             const result = await response.json();
 
             if (categorySelect) {
                 if (result.success && result.data && result.data.length > 0) {
                     // Successfully loaded — populate dropdown
-                    categorySelect.innerHTML = '<option value="">-- Choose Category --</option>';
                     result.data.forEach(category => {
                         const option = document.createElement('option');
                         option.value = category.category_id;
@@ -82,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 `;
                 this.reset();
                 setTimeout(() => {
-                    window.location.href = 'staff_found_items.php';
+                    window.location.href = 'staff_found_items.html';
                 }, 2000);
             } else {
                 throw new Error(result.message || 'Operation failed.');
