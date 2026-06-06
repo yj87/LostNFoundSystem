@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="staff_dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <div class="dashboard-container">
         <!-- ASIDE: Sidebar Navigation -->
@@ -16,7 +18,7 @@
                 <h3>Lost & Found</h3>
                 <p>Staff Panel</p>
             </div>
-            
+
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
@@ -32,7 +34,7 @@
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Add Found Item</span>
                     </a>
-                    <a href="found_item/staff_found_items.php" class="nav-item">
+                    <a href="found_item/staff_found_items.html" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>My Found Items</span>
                     </a>
@@ -40,7 +42,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="claims/staff_claims.php" class="nav-item">
+                    <a href="claims/staff_claims.html" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View Claims</span>
                     </a>
@@ -48,7 +50,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="lost_report/staff_view_lost.php" class="nav-item">
+                    <a href="lost_reports/staff_view_lost.html" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View Lost Items</span>
                     </a>
@@ -67,7 +69,7 @@
                 </div>
             </nav>
         </aside>
-        
+
         <div class="main-content">
             <header class="top-header">
                 <div class="header-left">
@@ -76,7 +78,7 @@
                     </button>
                     <div class="page-title-header">Staff Dashboard</div>
                 </div>
-                
+
                 <!-- User Dropdown Menu -->
                 <div class="user-dropdown">
                     <div class="user-info-wrapper" onclick="toggleUserDropdown()">
@@ -93,13 +95,13 @@
                     </div>
                 </div>
             </header>
-            
+
             <article>
                 <div class="page-title">
                     <h1>Staff Dashboard</h1>
                     <p id="welcomeMessage">Loading dashboard data...</p>
                 </div>
-                
+
                 <!-- Statistics Cards -->
                 <div class="stats-grid">
                     <div class="stat-card" data-page="found_item/staff_found_items.php">
@@ -109,7 +111,7 @@
                         </div>
                         <div class="stat-icon"><i class="fas fa-box"></i></div>
                     </div>
-                    
+
                     <div class="stat-card" data-page="found_item/staff_found_items.php">
                         <div class="stat-info">
                             <h3>Total Found Items</h3>
@@ -117,7 +119,7 @@
                         </div>
                         <div class="stat-icon"><i class="fas fa-database"></i></div>
                     </div>
-                    
+
                     <div class="stat-card" data-page="claims/staff_claims.php">
                         <div class="stat-info">
                             <h3>Total Claims</h3>
@@ -125,7 +127,7 @@
                         </div>
                         <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
                     </div>
-                    
+
                     <div class="stat-card" data-page="claims/staff_claims.php?status=pending">
                         <div class="stat-info">
                             <h3>Pending Claims</h3>
@@ -134,7 +136,7 @@
                         <div class="stat-icon"><i class="fas fa-clock"></i></div>
                     </div>
                 </div>
-                
+
                 <!-- Quick Actions -->
                 <div class="quick-actions-grid">
                     <div class="action-card" data-page="found_item/add_found_item.html">
@@ -158,12 +160,12 @@
                         <p>Browse lost items reported by users</p>
                     </div>
                 </div>
-                
+
                 <!-- Recent Claims Section -->
                 <div class="recent-section">
                     <div class="section-header">
                         <h3>Recent Claims on My Items</h3>
-                        <a href="claims/staff_claims.php" class="view-all">View All →</a>
+                        <a href="claims/staff_claims.html" class="view-all">View All →</a>
                     </div>
                     <div class="data-table">
                         <table>
@@ -177,17 +179,19 @@
                                 </tr>
                             </thead>
                             <tbody id="recentClaimsTable">
-                                <tr><td colspan="5" class="text-center">Loading claims...</td></tr>
+                                <tr>
+                                    <td colspan="5" class="text-center">Loading claims...</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-                
+
                 <!-- Recent Found Items Section -->
                 <div class="recent-section" style="margin-top: 30px;">
                     <div class="section-header">
                         <h3>My Recent Found Items</h3>
-                        <a href="found_item/staff_found_items.php" class="view-all">View All →</a>
+                        <a href="found_item/staff_found_items.html" class="view-all">View All →</a>
                     </div>
                     <div class="data-table">
                         <table>
@@ -201,13 +205,15 @@
                                 </tr>
                             </thead>
                             <tbody id="recentItemsTable">
-                                <tr><td colspan="5" class="text-center">Loading items...</td></tr>
+                                <tr>
+                                    <td colspan="5" class="text-center">Loading items...</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </article>
-            
+
             <footer>
                 <p id="copyright">© 2024 Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
             </footer>
@@ -216,4 +222,5 @@
 
     <script src="dashboard.js"></script>
 </body>
+
 </html>
