@@ -4,198 +4,224 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Lost & Found System</title>
-    <link rel="stylesheet" href="../../css/dashboard/dashboard.css">
-    <link rel="stylesheet" href="../../css/sidebar/sidebar.css">
     <link rel="stylesheet" href="admin_dashboard.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
+        <!-- ASIDE: Sidebar Navigation -->
+        <aside id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">🔍</div>
                 <h3>Lost & Found</h3>
-                <p>UTM System</p>
+                <p>Admin Panel</p>
             </div>
             
-            <nav class="sidebar-menu">
-                <div class="menu-group">
-                    <div class="menu-group-title">Main</div>
-                    <div class="menu-item active" onclick="location.href='dashboard.php'">
-                        <span class="icon">📊</span>
+            <nav>
+                <div class="nav-group">
+                    <div class="nav-group-title">Main</div>
+                    <a href="admin_dashboard.html" class="nav-item active">
+                        <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
-                    </div>
+                    </a>
                 </div>
 
-                <div class="menu-group">
-                    <div class="menu-group-title">User Management</div>
-                    <div class="menu-item" onclick="location.href='manage_users.php'">
-                        <span class="icon">👥</span>
-                        <span>Manage Users</span>
-                    </div>
-                    <div class="menu-item" onclick="location.href='add_user.php'">
-                        <span class="icon">➕</span>
+                <div class="nav-group">
+                    <div class="nav-group-title">User Management</div>
+                    <a href="user_management/manage_users.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-users"></i></span>
+                        <span>View Users</span>
+                    </a>
+                    <a href="user_management/add_user.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-user-plus"></i></span>
                         <span>Add User</span>
-                    </div>
+                    </a>
                 </div>
 
-                <div class="menu-group">
-                    <div class="menu-group-title">Item Management</div>
-                    <div class="menu-item" onclick="location.href='admin_found_items.php'">
-                        <span class="icon">📦</span>
-                        <span>All Found Items</span>
-                    </div>
-                    <div class="menu-item" onclick="location.href='admin_lost_reports.php'">
-                        <span class="icon">🔍</span>
-                        <span>Lost Reports</span>
-                    </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Found Items</div>
+                    <a href="admin_found_items.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-box"></i></span>
+                        <span>View All Items</span>
+                    </a>
                 </div>
 
-                <div class="menu-group">
-                    <div class="menu-group-title">Claims</div>
-                    <div class="menu-item" onclick="location.href='admin_claims.php'">
-                        <span class="icon">📋</span>
-                        <span>All Claims</span>
-                    </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Lost Reports</div>
+                    <a href="admin_lost_reports.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>View All Reports</span>
+                    </a>
                 </div>
 
-                <div class="menu-group">
-                    <div class="menu-group-title">Account</div>
-                    <div class="menu-item" onclick="location.href='profile.php'">
-                        <span class="icon">👤</span>
+                <div class="nav-group">
+                    <div class="nav-group-title">Claims</div>
+                    <a href="admin_claims.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                        <span>View All Claims</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Reports & Statistics</div>
+                    <a href="reports.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-chart-line"></i></span>
+                        <span>Statistics</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Account</div>
+                    <a href="../profile/profile.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
-                    </div>
-                    <div class="menu-item" onclick="logoutUser()">
-    <span class="icon">🚪</span>
-    <span>Logout</span>
-</div>
+                    </a>
+                    <a href="../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
+                        <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                        <span>Logout</span>
+                    </a>
                 </div>
             </nav>
         </aside>
         
         <div class="main-content">
-            <!-- Header - Fixed Layout -->
             <header class="top-header">
                 <div class="header-left">
-                    <div class="menu-toggle" onclick="toggleSidebar()">
+                    <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
-                    </div>
+                    </button>
                     <div class="page-title-header">Admin Dashboard</div>
                 </div>
-                <div class="header-right">
-                    <!-- Notification Bell -->
-                    <div class="notification-bell">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
+                
+                <!-- User Dropdown Menu -->
+                <div class="user-dropdown">
+                    <div class="user-info-wrapper" onclick="toggleUserDropdown()">
+                        <div class="user-avatar" id="userAvatar">A</div>
                     </div>
-                    
-                    <!-- User Menu -->
-                    <div class="user-menu">
-                        <div class="user-menu-btn">
-                            <div class="user-avatar" id="user-avatar">A</div>
-                            <div class="user-info-text">
-                                <span class="user-name-header" id="user-name">Admin User</span>
-                                <span class="user-role">Administrator</span>
-                            </div>
-                            <i class="fas fa-chevron-down dropdown-icon"></i>
-                        </div>
-                        <div class="dropdown-menu">
-                            <a href="profile.php">
-                                <i class="fas fa-user"></i>
-                                My Profile
-                            </a>
-                            <a href="settings.php">
-                                <i class="fas fa-cog"></i>
-                                Settings
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="../../mainpage/logout/logout.php">
-                                <i class="fas fa-sign-out-alt"></i>
-                                Logout
-                            </a>
-                        </div>
+                    <div class="user-dropdown-menu" id="userDropdownMenu">
+                        <a href="../profile/profile.html">
+                            <i class="fas fa-user-circle"></i> My Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="../../mainpage/logout/logout.php" onclick="return logoutUser();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
                     </div>
                 </div>
             </header>
             
-            <div class="content-area fade-in">
+            <article>
                 <div class="page-title">
                     <h1>Admin Dashboard</h1>
-                    <p id="welcome-message">Loading...</p>
+                    <p id="welcomeMessage">Loading dashboard data...</p>
                 </div>
                 
-                <!-- Stats Cards -->
+                <!-- Statistics Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card">
+                    <div class="stat-card" data-page="user_management/manage_users.php">
                         <div class="stat-info">
                             <h3>Total Users</h3>
-                            <div class="stat-number" id="total-users">-</div>
+                            <div class="stat-number" id="totalUsers">-</div>
                         </div>
-                        <div class="stat-icon">👥</div>
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
                     </div>
-                    <div class="stat-card">
+                    
+                    <div class="stat-card" data-page="admin_found_items.php">
                         <div class="stat-info">
                             <h3>Found Items</h3>
-                            <div class="stat-number" id="total-items">-</div>
+                            <div class="stat-number" id="totalItems">-</div>
                         </div>
-                        <div class="stat-icon">📦</div>
+                        <div class="stat-icon"><i class="fas fa-box"></i></div>
                     </div>
-                    <div class="stat-card">
+                    
+                    <div class="stat-card" data-page="admin_lost_reports.php">
+                        <div class="stat-info">
+                            <h3>Lost Reports</h3>
+                            <div class="stat-number" id="totalLostReports">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-search"></i></div>
+                    </div>
+                    
+                    <div class="stat-card" data-page="admin_claims.php">
                         <div class="stat-info">
                             <h3>Total Claims</h3>
-                            <div class="stat-number" id="total-claims">-</div>
+                            <div class="stat-number" id="totalClaims">-</div>
                         </div>
-                        <div class="stat-icon">📋</div>
+                        <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
                     </div>
-                    <div class="stat-card">
+                    
+                    <div class="stat-card" data-page="admin_claims.php?status=pending">
                         <div class="stat-info">
                             <h3>Pending Claims</h3>
-                            <div class="stat-number" id="pending-claims">-</div>
+                            <div class="stat-number" id="pendingClaims">-</div>
                         </div>
-                        <div class="stat-icon">⏳</div>
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    </div>
+                    
+                    <div class="stat-card" data-page="admin_claims.php?status=approved">
+                        <div class="stat-info">
+                            <h3>Approved Claims</h3>
+                            <div class="stat-number" id="approvedClaims">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
                     </div>
                 </div>
                 
-                <!-- Charts -->
-                <div class="charts-grid">
-                    <div class="chart-card">
-                        <h3>Claims by Status</h3>
-                        <canvas id="claimsChart"></canvas>
+                <!-- Quick Actions -->
+                <div class="quick-actions-grid">
+                    <div class="action-card" data-page="user_management/add_user.php">
+                        <i class="fas fa-user-plus"></i>
+                        <h3>Add New User</h3>
+                        <p>Create a new staff or admin account</p>
                     </div>
-                    <div class="chart-card">
-                        <h3>Items by Category</h3>
-                        <canvas id="categoryChart"></canvas>
+                    <div class="action-card" data-page="admin_found_items.php">
+                        <i class="fas fa-box"></i>
+                        <h3>Manage Found Items</h3>
+                        <p>View, edit, or delete found items</p>
+                    </div>
+                    <div class="action-card" data-page="admin_lost_reports.php">
+                        <i class="fas fa-search"></i>
+                        <h3>Manage Lost Reports</h3>
+                        <p>View and manage lost item reports</p>
+                    </div>
+                    <div class="action-card" data-page="admin_claims.php">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>Review Claims</h3>
+                        <p>Approve or reject pending claims</p>
                     </div>
                 </div>
                 
-                <!-- Recent Claims -->
+                <!-- Recent Items Section -->
                 <div class="recent-section">
                     <div class="section-header">
-                        <h3>Recent Claims</h3>
-                        <a href="admin_claims.php" class="view-all">View All →</a>
+                        <h3>Recent Found Items</h3>
+                        <a href="admin_found_items.php" class="view-all">View All →</a>
                     </div>
                     <div class="data-table">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Item</th>
-                                    <th>Claimant</th>
+                                    <th>Item Name</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
                                     <th>Status</th>
-                                    <th>Date</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="claims-table-body">
-                                <tr><td colspan="6" class="loading">Loading claims...</td><ensuring
+                            <tbody id="recentItemsTable">
+                                <tr><td colspan="5" class="text-center">Loading items...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
+            </article>
+            
+            <footer>
+                <p id="copyright">© 2024 Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
+            </footer>
         </div>
     </div>
 
+    <script src="dashboard.js"></script>
 </body>
 </html>

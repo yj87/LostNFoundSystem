@@ -19,11 +19,10 @@ body {
 /* ASIDE - Sidebar */
 aside {
     width: 280px;
-    background: linear-gradient(135deg, #fa8a9cf1  5%, rgb(248, 198, 207) 100%);
+    background: linear-gradient(135deg, rgba(52, 156, 212, 0.79) 5%, rgb(160, 222, 243) 100%);
     color: white;
     position: fixed;
     height: 100vh;
-
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
@@ -85,24 +84,20 @@ nav {
 }
 
 .nav-item:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgb(164, 224, 246);
     color: white;
     padding-left: 30px;
 }
 
 .nav-item.active {
-    background: #F5D3D6;
-    color: #2b2d42;
-    border-left: 4px solid #F8E2E4;
+    background: #c0e6f1;
+    color: black;
+    border-left: 4px solid #C2DCE4;
 }
 
 .nav-item .icon {
     font-size: 18px;
     width: 25px;
-}
-
-.nav-item .icon i {
-    color: #e87ea7;  /* Light pink for admin */
 }
 
 /* MAIN CONTENT */
@@ -116,7 +111,7 @@ nav {
 
 /* HEADER */
 .top-header {
-    background: #f8e9ebfe;
+    background: #E4F2F6;
     height: 60px;
     display: flex;
     justify-content: space-between;
@@ -171,7 +166,7 @@ nav {
 .user-avatar {
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, #f5babe 0%, #f5babe 100%);
+    background: linear-gradient(135deg, #A5CBD7 0%, #B3D4DF 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -233,7 +228,7 @@ nav {
 /* ARTICLE - Content Area */
 article {
     padding: 30px;
-    background-color: #FEFAF9;
+    background-color: #F1F8FA;
     min-height: calc(100vh - 60px);
 }
 
@@ -260,7 +255,7 @@ article {
 }
 
 .stat-card {
-    background: #f9c8d0;
+    background: #87CDEE;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -274,7 +269,7 @@ article {
 .stat-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-    background: #eda0a6;
+    background: #ADD8E6;
 }
 
 .stat-info h3 {
@@ -304,7 +299,7 @@ article {
 }
 
 .action-card {
-    background: #F8E2E4;
+    background: #D1EAF0;
     border-radius: 12px;
     padding: 25px;
     text-align: center;
@@ -316,7 +311,7 @@ article {
 .action-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    background: #F6DADF;
+    background: #B3D4DF;
 }
 
 .action-card i {
@@ -339,7 +334,7 @@ article {
 
 /* Recent Tables */
 .recent-section {
-    background: #FDF5F6;
+    background: #E4F2F6;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -371,17 +366,17 @@ table {
 th, td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #F5D3D6;
+    border-bottom: 1px solid #A5CBD7;
 }
 
 th {
-    background: #F5D3D6;
+    background: #87CDEE;
     font-weight: 600;
     color: #2b2d42;
 }
 
 tr:hover {
-    background: #FEFAF9;
+    background: #F1F8FA;
 }
 
 .status-badge {
@@ -427,21 +422,21 @@ tr:hover {
 }
 
 .btn-primary {
-    background: #F5D3D6;
+    background: #A5CBD7;
     color: #2b2d42;
 }
 
 .btn-primary:hover {
-    background: #F6DADF;
+    background: #B3D4DF;
     color: #2b2d42;
 }
 
 /* FOOTER */
 footer {
-    background: #FDF5F6;
+    background: #E4F2F6;
     padding: 20px 30px;
     text-align: center;
-    border-top: 1px solid #F5D3D6;
+    border-top: 1px solid #A5CBD7;
     margin-top: 30px;
     color: #6c757d;
     font-size: 14px;

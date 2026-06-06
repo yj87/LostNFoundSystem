@@ -19,11 +19,10 @@ body {
 /* ASIDE - Sidebar */
 aside {
     width: 280px;
-    background: linear-gradient(135deg, #fa8a9cf1  5%, rgb(248, 198, 207) 100%);
+    background: linear-gradient(135deg, #90CF8E 5%, #d9f8ab 100%);
     color: white;
     position: fixed;
     height: 100vh;
-
     overflow-y: auto;
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
@@ -91,18 +90,14 @@ nav {
 }
 
 .nav-item.active {
-    background: #F5D3D6;
+    background: #CBDDC3;
     color: #2b2d42;
-    border-left: 4px solid #F8E2E4;
+    border-left: 4px solid #DFEBE0;
 }
 
 .nav-item .icon {
     font-size: 18px;
     width: 25px;
-}
-
-.nav-item .icon i {
-    color: #e87ea7;  /* Light pink for admin */
 }
 
 /* MAIN CONTENT */
@@ -116,7 +111,7 @@ nav {
 
 /* HEADER */
 .top-header {
-    background: #f8e9ebfe;
+    background: #F2F7F2;
     height: 60px;
     display: flex;
     justify-content: space-between;
@@ -154,24 +149,10 @@ nav {
     z-index: 1002;
 }
 
-.user-info-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 40px;
-    transition: background 0.3s;
-}
-
-.user-info-wrapper:hover {
-    background: rgba(0,0,0,0.05);
-}
-
 .user-avatar {
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, #f5babe 0%, #f5babe 100%);
+    background: linear-gradient(135deg, #CBDDC3 0%, #D5E5D5 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -233,7 +214,7 @@ nav {
 /* ARTICLE - Content Area */
 article {
     padding: 30px;
-    background-color: #FEFAF9;
+    background-color: #F7FBF7;
     min-height: calc(100vh - 60px);
 }
 
@@ -260,7 +241,7 @@ article {
 }
 
 .stat-card {
-    background: #f9c8d0;
+    background: #d8ffb1dc;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -274,7 +255,7 @@ article {
 .stat-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-    background: #eda0a6;
+    background: #D5E5D5;
 }
 
 .stat-info h3 {
@@ -304,7 +285,7 @@ article {
 }
 
 .action-card {
-    background: #F8E2E4;
+    background: #DFEBE0;
     border-radius: 12px;
     padding: 25px;
     text-align: center;
@@ -316,7 +297,7 @@ article {
 .action-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    background: #F6DADF;
+    background: #D5E5D5;
 }
 
 .action-card i {
@@ -339,7 +320,7 @@ article {
 
 /* Recent Tables */
 .recent-section {
-    background: #FDF5F6;
+    background: #F2F7F2;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -371,17 +352,17 @@ table {
 th, td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #F5D3D6;
+    border-bottom: 1px solid #CBDDC3;
 }
 
 th {
-    background: #F5D3D6;
+    background: #d8ffb1dc;
     font-weight: 600;
     color: #2b2d42;
 }
 
 tr:hover {
-    background: #FEFAF9;
+    background: #F7FBF7;
 }
 
 .status-badge {
@@ -389,6 +370,21 @@ tr:hover {
     border-radius: 20px;
     font-size: 12px;
     display: inline-block;
+}
+
+.status-searching {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-found {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-closed {
+    background: #cce5ff;
+    color: #004085;
 }
 
 .status-pending {
@@ -406,16 +402,6 @@ tr:hover {
     color: #721c24;
 }
 
-.status-unclaimed {
-    background: #cce5ff;
-    color: #004085;
-}
-
-.status-claimed {
-    background: #d4edda;
-    color: #155724;
-}
-
 .btn {
     padding: 5px 12px;
     border: none;
@@ -427,21 +413,21 @@ tr:hover {
 }
 
 .btn-primary {
-    background: #F5D3D6;
+    background: #CBDDC3;
     color: #2b2d42;
 }
 
 .btn-primary:hover {
-    background: #F6DADF;
+    background: #D5E5D5;
     color: #2b2d42;
 }
 
 /* FOOTER */
 footer {
-    background: #FDF5F6;
+    background: #F2F7F2;
     padding: 20px 30px;
     text-align: center;
-    border-top: 1px solid #F5D3D6;
+    border-top: 1px solid #CBDDC3;
     margin-top: 30px;
     color: #6c757d;
     font-size: 14px;

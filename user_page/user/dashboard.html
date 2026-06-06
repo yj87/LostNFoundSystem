@@ -1,8 +1,223 @@
 <!DOCTYPE html>
-<html>
-<head><title>User Dashboard</title></head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Lost & Found System</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
 <body>
-    <h1>User Dashboard</h1>
-    <a href="../../mainpage/logout/logout.php">Logout</a>
+    <div class="dashboard-container">
+        <!-- ASIDE: Sidebar Navigation -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🔍</div>
+                <h3>Lost & Found</h3>
+                <p>User Panel</p>
+            </div>
+            
+            <nav>
+                <div class="nav-group">
+                    <div class="nav-group-title">Main</div>
+                    <a href="dashboard.html" class="nav-item active">
+                        <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Lost Items</div>
+                    <a href="report_lost_item.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
+                        <span>Report Lost Item</span>
+                    </a>
+                    <a href="my_lost_reports.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-history"></i></span>
+                        <span>My Lost Reports</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Found Items</div>
+                    <a href="browse_found_items.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>Browse Found Items</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Claims</div>
+                    <a href="my_claims.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                        <span>My Claims</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Account</div>
+                    <a href="../profile/profile.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-user-circle"></i></span>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
+                        <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+        
+        <div class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="page-title-header">User Dashboard</div>
+                </div>
+                <!-- User Dropdown Menu -->
+                <div class="user-dropdown">
+                    <div class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">U</div>
+                    <div class="user-dropdown-menu" id="userDropdownMenu">
+                        <a href="../profile/profile.html">
+                            <i class="fas fa-user-circle"></i> My Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="../../mainpage/logout/logout.php" onclick="return logoutUser();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </header>
+            
+            <article>
+                <div class="page-title">
+                    <h1>User Dashboard</h1>
+                    <p id="welcomeMessage">Loading dashboard data...</p>
+                </div>
+                
+                <!-- Statistics Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card" data-page="my_lost_reports.php">
+                        <div class="stat-info">
+                            <h3>Lost Reports</h3>
+                            <div class="stat-number" id="lostReports">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-search"></i></div>
+                    </div>
+                    
+                    <div class="stat-card" data-page="my_claims.php">
+                        <div class="stat-info">
+                            <h3>Total Claims</h3>
+                            <div class="stat-number" id="totalClaims">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
+                    </div>
+                    
+                    <div class="stat-card" data-page="my_claims.php?status=pending">
+                        <div class="stat-info">
+                            <h3>Pending Claims</h3>
+                            <div class="stat-number" id="pendingClaims">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    </div>
+                    
+                    <div class="stat-card" data-page="my_claims.php?status=approved">
+                        <div class="stat-info">
+                            <h3>Approved Claims</h3>
+                            <div class="stat-number" id="approvedClaims">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    </div>
+                    
+                    <div class="stat-card" data-page="browse_found_items.php">
+                        <div class="stat-info">
+                            <h3>Available Items</h3>
+                            <div class="stat-number" id="availableItems">-</div>
+                        </div>
+                        <div class="stat-icon"><i class="fas fa-box"></i></div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions-grid">
+                    <div class="action-card" data-page="report_lost_item.php">
+                        <i class="fas fa-plus-circle"></i>
+                        <h3>Report Lost Item</h3>
+                        <p>Report an item you've lost</p>
+                    </div>
+                    <div class="action-card" data-page="browse_found_items.php">
+                        <i class="fas fa-search"></i>
+                        <h3>Browse Found Items</h3>
+                        <p>Search for your lost items</p>
+                    </div>
+                    <div class="action-card" data-page="my_claims.php">
+                        <i class="fas fa-eye"></i>
+                        <h3>Track My Claims</h3>
+                        <p>Check claim status</p>
+                    </div>
+                    <div class="action-card" data-page="my_lost_reports.php">
+                        <i class="fas fa-history"></i>
+                        <h3>View Lost History</h3>
+                        <p>See all your lost reports</p>
+                    </div>
+                </div>
+                
+                <!-- Recent Lost Reports Section -->
+                <div class="recent-section">
+                    <div class="section-header">
+                        <h3>Recent Lost Reports</h3>
+                        <a href="my_lost_reports.php" class="view-all">View All →</a>
+                    </div>
+                    <div class="data-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Location Lost</th>
+                                    <th>Date Lost</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentLostTable">
+                                <tr><td colspan="5" class="text-center">Loading lost reports...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Recent Claims Section -->
+                <div class="recent-section" style="margin-top: 30px;">
+                    <div class="section-header">
+                        <h3>Recent Claims</h3>
+                        <a href="my_claims.php" class="view-all">View All →</a>
+                    </div>
+                    <div class="data-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Status</th>
+                                    <th>Submitted Date</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentClaimsTable">
+                                <tr><td colspan="4" class="text-center">Loading claims...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </article>
+            
+            <footer>
+                <p id="copyright">© 2024 Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="dashboard.js"></script>
 </body>
 </html>

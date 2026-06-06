@@ -1,8 +1,9 @@
-php<?php
+<?php
 session_start();
 session_unset();
 session_destroy();
 
-header("Location: http://localhost/LostNFoundSystem/mainpage/login/loginpage.html");
+// Redirect back to login page (relative path from logout folder)
+header("Location: ../login/loginpage.html");
 exit();
 ?>
