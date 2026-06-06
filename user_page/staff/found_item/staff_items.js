@@ -62,7 +62,7 @@ window.addEventListener('resize', function() {
 
 // Edit item — navigate to edit page
 function editItem(id) {
-    window.location.href = `edit_found_item.php?id=${id}`;
+    window.location.href = `edit_found_item.html?id=${id}`;
 }
 // Load and render items table
 document.addEventListener('DOMContentLoaded', async function() {
