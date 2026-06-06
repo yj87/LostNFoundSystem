@@ -49,7 +49,7 @@ try {
 
             if (response.url.includes('login.php')) {
                 alert("Session expired. Please log in again.");
-                window.location.href = 'login.php'; 
+                window.location.href = '../../login.php'; 
                 return;
             }
 
