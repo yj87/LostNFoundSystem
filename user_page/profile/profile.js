@@ -1,4 +1,4 @@
-// profile.js
+// profile.js - Complete Version
 
 let currentUserData = null;
 
@@ -11,22 +11,30 @@ function loadProfile() {
     const loadingSpinner = document.getElementById('loadingSpinner');
     const profileForm = document.getElementById('profileForm');
     
-    fetch('profile.php')
+    // Show loading spinner
+    if (loadingSpinner) loadingSpinner.classList.remove('d-none');
+    
+    fetch('get_profile_data.php')
         .then(response => response.json())
         .then(data => {
-            loadingSpinner.classList.add('d-none');
+            if (loadingSpinner) loadingSpinner.classList.add('d-none');
             
             if (data.success) {
                 currentUserData = data.data;
                 displayProfile(data);
-                profileForm.classList.remove('d-none');
+                if (profileForm) profileForm.classList.remove('d-none');
             } else {
-                showError('Failed to load profile: ' + data.message);
+                showNotification('danger', 'Failed to load profile: ' + data.message);
+                // Show form anyway with error state
+                if (profileForm) profileForm.classList.remove('d-none');
             }
         })
         .catch(error => {
-            loadingSpinner.classList.add('d-none');
-            showError('Failed to load profile: ' + error.message);
+            console.error('Error:', error);
+            if (loadingSpinner) loadingSpinner.classList.add('d-none');
+            showNotification('danger', 'Failed to load profile: ' + error.message);
+            // Show form anyway with error state
+            if (profileForm) profileForm.classList.remove('d-none');
         });
 }
 
@@ -36,18 +44,28 @@ function displayProfile(data) {
     const stats = data.stats || {};
     
     // Update sidebar
-    document.getElementById('userFullName').textContent = user.name;
-    document.getElementById('username').textContent = user.username;
-    document.getElementById('userRole').innerHTML = getRoleBadge(role);
-    document.getElementById('memberSince').textContent = formatDate(user.created_at);
+    const userFullName = document.getElementById('userFullName');
+    const usernameSpan = document.getElementById('username');
+    const userRoleSpan = document.getElementById('userRole');
+    const memberSinceSpan = document.getElementById('memberSince');
+    
+    if (userFullName) userFullName.textContent = user.name;
+    if (usernameSpan) usernameSpan.textContent = user.username;
+    if (userRoleSpan) userRoleSpan.innerHTML = getRoleBadge(role);
+    if (memberSinceSpan) memberSinceSpan.textContent = formatDate(user.created_at);
     
     // Update form fields
-    document.getElementById('userId').value = user.user_id;
-    document.getElementById('name').value = user.name;
-    document.getElementById('email').value = user.email;
-    document.getElementById('phone').value = user.phone || '';
-    document.getElementById('username_display').value = user.username;
-    document.getElementById('displayRole').value = capitalizeFirst(role);
+    const userIdInput = document.getElementById('userId');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const usernameDisplay = document.getElementById('username_display');
+    
+    if (userIdInput) userIdInput.value = user.user_id;
+    if (nameInput) nameInput.value = user.name;
+    if (emailInput) emailInput.value = user.email;
+    if (phoneInput) phoneInput.value = user.phone || '';
+    if (usernameDisplay) usernameDisplay.value = user.username;
     
     // Display role-specific stats
     displayStats(role, stats);
@@ -64,6 +82,8 @@ function getRoleBadge(role) {
 
 function displayStats(role, stats) {
     const statsContainer = document.getElementById('statsContainer');
+    if (!statsContainer) return;
+    
     let html = '<h6><i class="fas fa-chart-simple"></i> Quick Stats</h6><ul class="list-unstyled">';
     
     if (role === 'admin' || role === 'staff') {
@@ -85,38 +105,44 @@ function displayStats(role, stats) {
 function setupEventListeners() {
     // Show/hide password section
     const changePasswordCheck = document.getElementById('changePasswordCheck');
-    changePasswordCheck.addEventListener('change', function() {
-        const passwordSection = document.getElementById('passwordSection');
-        if (this.checked) {
-            passwordSection.classList.remove('d-none');
-        } else {
-            passwordSection.classList.add('d-none');
-            clearPasswordFields();
-            clearPasswordErrors();
-        }
-    });
+    if (changePasswordCheck) {
+        changePasswordCheck.addEventListener('change', function() {
+            const passwordSection = document.getElementById('passwordSection');
+            if (this.checked) {
+                if (passwordSection) passwordSection.classList.remove('d-none');
+            } else {
+                if (passwordSection) passwordSection.classList.add('d-none');
+                clearPasswordFields();
+                clearPasswordErrors();
+            }
+        });
+    }
     
     // Form submission
     const profileForm = document.getElementById('profileForm');
-    profileForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        updateProfile();
-    });
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            updateProfile();
+        });
+    }
     
     // Cancel/Reset button
     const cancelBtn = document.getElementById('cancelBtn');
-    cancelBtn.addEventListener('click', function() {
-        resetForm();
-    });
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+            resetForm();
+        });
+    }
 }
 
 function updateProfile() {
     clearErrors();
     
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const changePassword = document.getElementById('changePasswordCheck').checked;
+    const name = document.getElementById('name')?.value.trim() || '';
+    const email = document.getElementById('email')?.value.trim() || '';
+    const phone = document.getElementById('phone')?.value.trim() || '';
+    const changePassword = document.getElementById('changePasswordCheck')?.checked || false;
     const currentPassword = document.getElementById('currentPassword')?.value || '';
     const newPassword = document.getElementById('newPassword')?.value || '';
     const confirmPassword = document.getElementById('confirmPassword')?.value || '';
@@ -164,61 +190,79 @@ function updateProfile() {
         }
     }
     
-    if (isValid) {
-        const submitBtn = document.getElementById('submitBtn');
+    if (!isValid) {
+        return;
+    }
+    
+    const submitBtn = document.getElementById('submitBtn');
+    if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-        
-        const formData = new FormData();
-        formData.append('user_id', document.getElementById('userId').value);
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('phone', phone);
-        formData.append('change_password', changePassword ? '1' : '0');
-        
-        if (changePassword) {
-            formData.append('current_password', currentPassword);
-            if (newPassword) {
-                formData.append('new_password', newPassword);
-            }
+    }
+    
+    const formData = new FormData();
+    formData.append('user_id', document.getElementById('userId')?.value || '');
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('phone', phone);
+    formData.append('change_password', changePassword ? '1' : '0');
+    
+    if (changePassword) {
+        formData.append('current_password', currentPassword);
+        if (newPassword) {
+            formData.append('new_password', newPassword);
+        }
+    }
+    
+    fetch('update_profile.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
         }
         
-        fetch('update_profile_process.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
+        if (data.success) {
+            showNotification('success', data.message);
+            // Reload profile data
+            setTimeout(() => loadProfile(), 1500);
+            // Reset password section
+            const changePasswordCheck = document.getElementById('changePasswordCheck');
+            const passwordSection = document.getElementById('passwordSection');
+            if (changePasswordCheck) changePasswordCheck.checked = false;
+            if (passwordSection) passwordSection.classList.add('d-none');
+            clearPasswordFields();
+        } else {
+            showNotification('danger', data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        if (submitBtn) {
             submitBtn.disabled = false;
             submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
-            
-            if (data.success) {
-                showNotification('success', data.message);
-                // Reload profile data
-                setTimeout(() => loadProfile(), 1500);
-                // Reset password section
-                document.getElementById('changePasswordCheck').checked = false;
-                document.getElementById('passwordSection').classList.add('d-none');
-                clearPasswordFields();
-            } else {
-                showNotification('danger', data.message);
-            }
-        })
-        .catch(error => {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
-            showNotification('danger', 'An error occurred');
-        });
-    }
+        }
+        showNotification('danger', 'An error occurred: ' + error.message);
+    });
 }
 
 function resetForm() {
     if (currentUserData) {
-        document.getElementById('name').value = currentUserData.name;
-        document.getElementById('email').value = currentUserData.email;
-        document.getElementById('phone').value = currentUserData.phone || '';
-        document.getElementById('changePasswordCheck').checked = false;
-        document.getElementById('passwordSection').classList.add('d-none');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
+        const changePasswordCheck = document.getElementById('changePasswordCheck');
+        const passwordSection = document.getElementById('passwordSection');
+        
+        if (nameInput) nameInput.value = currentUserData.name;
+        if (emailInput) emailInput.value = currentUserData.email;
+        if (phoneInput) phoneInput.value = currentUserData.phone || '';
+        if (changePasswordCheck) changePasswordCheck.checked = false;
+        if (passwordSection) passwordSection.classList.add('d-none');
+        
         clearPasswordFields();
         clearErrors();
         clearPasswordErrors();
@@ -226,9 +270,13 @@ function resetForm() {
 }
 
 function clearPasswordFields() {
-    document.getElementById('currentPassword').value = '';
-    document.getElementById('newPassword').value = '';
-    document.getElementById('confirmPassword').value = '';
+    const currentPassword = document.getElementById('currentPassword');
+    const newPassword = document.getElementById('newPassword');
+    const confirmPassword = document.getElementById('confirmPassword');
+    
+    if (currentPassword) currentPassword.value = '';
+    if (newPassword) newPassword.value = '';
+    if (confirmPassword) confirmPassword.value = '';
 }
 
 function clearErrors() {
@@ -251,26 +299,56 @@ function showError(elementId, message) {
 }
 
 function showNotification(type, message) {
+    // Remove any existing notifications
+    const existingNotifications = document.querySelectorAll('.alert-notification');
+    existingNotifications.forEach(notification => notification.remove());
+    
     const notification = document.createElement('div');
-    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed top-0 end-0 m-3`;
+    notification.className = `alert alert-${type} alert-dismissible fade show alert-notification position-fixed top-0 end-0 m-3`;
     notification.style.zIndex = '9999';
     notification.style.minWidth = '300px';
+    notification.style.maxWidth = '400px';
     notification.style.zIndex = '9999';
+    notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+    
+    const icon = type === 'success' ? 'fa-check-circle' : (type === 'danger' ? 'fa-exclamation-circle' : 'fa-info-circle');
+    
     notification.innerHTML = `
-        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
-        ${message}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <div class="d-flex align-items-center">
+            <i class="fas ${icon} me-2 fs-4"></i>
+            <div class="flex-grow-1">${message}</div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     `;
+    
     document.body.appendChild(notification);
     
-    setTimeout(() => notification.remove(), 3000);
+    // Auto dismiss after 4 seconds
+    setTimeout(() => {
+        if (notification && notification.remove) {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 4000);
+    
+    // Add click handler for close button
+    const closeBtn = notification.querySelector('.btn-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            notification.classList.remove('show');
+            setTimeout(() => notification.remove(), 300);
+        });
+    }
 }
 
 function formatDate(dateString) {
+    if (!dateString) return 'N/A';
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) return 'Invalid date';
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
 function capitalizeFirst(str) {
+    if (!str) return '';
     return str.charAt(0).toUpperCase() + str.slice(1);
 }

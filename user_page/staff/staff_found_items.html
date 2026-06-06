@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Found Items - Lost & Found</title>
+    <link rel="stylesheet" href="staff_dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+
+        <!-- SIDEBAR -->
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🔍</div>
+                <h3>Lost & Found</h3>
+                <p>Staff Panel</p>
+            </div>
+            <nav>
+                <div class="nav-group">
+                    <div class="nav-group-title">Main</div>
+                    <a href="dashboard.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Found Items</div>
+                    <a href="add_found_item.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
+                        <span>Add Found Item</span>
+                    </a>
+                    <a href="staff_found_items.php" class="nav-item active">
+                        <span class="icon"><i class="fas fa-box"></i></span>
+                        <span>My Found Items</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Claims</div>
+                    <a href="staff_claims.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                        <span>View Claims</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Lost Reports</div>
+                    <a href="staff_view_lost.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>View Lost Items</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Account</div>
+                    <a href="../profile/profile.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-user-circle"></i></span>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
+                        <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="page-title-header">My Found Items</div>
+                </div>
+            </header>
+
+            <article>
+                <div class="page-title">
+                    <h1>Manage My Registered Items</h1>
+                    <p>View, edit or delete found items you have logged.</p>
+                </div>
+
+                <div class="recent-section">
+                    <div class="section-header">
+                        <h3>My Items</h3>
+                        <a href="add_found_item.html" class="btn btn-primary" style="padding: 8px 16px;">
+                            <i class="fas fa-plus"></i> Add New Item
+                        </a>
+                    </div>
+                    <div class="data-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
+                                    <th>Date Found</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffItemsTable">
+                                <tr><td colspan="6" style="text-align:center; padding: 20px;">Loading your items...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <script src="staff_items.js"></script>
+</body>
+</html>

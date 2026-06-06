@@ -1,10 +1,9 @@
 <?php
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: ../../../mainpage/login/login.php");
-    exit();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
-if ($_SESSION['role'] !== 'admin') {
+
+if (!isset($_SESSION['user_id'])) {
     header("Location: ../../../mainpage/login/login.php");
     exit();
 }
