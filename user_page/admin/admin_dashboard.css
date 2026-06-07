@@ -19,7 +19,7 @@ body {
 /* ASIDE - Sidebar */
 aside {
     width: 280px;
-    background: linear-gradient(135deg, #fa8a9cf1  5%, rgb(248, 198, 207) 100%);
+    background: linear-gradient(135deg, #fa8a9cf1 5%, rgb(248, 198, 207) 100%);
     color: white;
     position: fixed;
     height: 100vh;
@@ -34,7 +34,7 @@ aside {
 .sidebar-header {
     padding: 25px 20px;
     text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
     z-index: 1;
 }
@@ -85,7 +85,7 @@ nav {
 }
 
 .nav-item:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     color: white;
     padding-left: 30px;
 }
@@ -118,7 +118,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 0 30px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 999;
@@ -161,7 +161,7 @@ nav {
 }
 
 .user-info-wrapper:hover {
-    background: rgba(0,0,0,0.05);
+    background: rgba(0, 0, 0, 0.05);
 }
 
 .user-avatar {
@@ -181,7 +181,7 @@ nav {
 
 .user-avatar:hover {
     transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .user-dropdown-menu {
@@ -191,7 +191,7 @@ nav {
     top: 50px;
     background-color: white;
     min-width: 200px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     z-index: 1003;
     overflow: hidden;
@@ -259,7 +259,7 @@ article {
     background: #f9c8d0;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
     display: flex;
     justify-content: space-between;
@@ -269,7 +269,7 @@ article {
 
 .stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     background: #eda0a6;
 }
 
@@ -311,12 +311,12 @@ article {
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .action-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     background: #F6DADF;
 }
 
@@ -343,7 +343,7 @@ article {
     background: #FDF5F6;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 30px;
 }
 
@@ -369,7 +369,8 @@ table {
     border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #F5D3D6;
@@ -455,7 +456,7 @@ footer {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 999;
     display: none;
 }
@@ -469,7 +470,7 @@ footer {
     .menu-toggle {
         display: block !important;
     }
-    
+
     aside {
         transform: translateX(-100%);
         transition: transform 0.3s ease-in-out;
@@ -482,33 +483,34 @@ footer {
         overflow-y: auto;
         box-shadow: none;
     }
-    
+
     aside.active {
         transform: translateX(0);
-        box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
     }
-    
+
     .main-content {
         margin-left: 0 !important;
         width: 100%;
     }
-    
-    .stats-grid, .quick-actions-grid {
+
+    .stats-grid,
+    .quick-actions-grid {
         grid-template-columns: 1fr;
     }
-    
+
     article {
         padding: 15px;
     }
-    
+
     .top-header {
         padding: 0 15px;
     }
-    
+
     .page-title-header {
         font-size: 16px;
     }
-    
+
     .user-dropdown-menu {
         position: fixed;
         right: 10px;
