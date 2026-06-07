@@ -31,9 +31,9 @@ function populateCategorySelect() {
     if (!select) return;
     
     let options = '<option value="0">Uncategorized</option>';
-    categories.forEach(cat => {
-        options += `<option value="${cat.category_id}">${escapeHtml(cat.category_name)}</option>`;
-    });
+    for (let i = 0; i < categories.length; i++) {
+        options += '<option value="' + categories[i].category_id + '">' + escapeHtml(categories[i].category_name) + '</option>';
+    }
     select.innerHTML = options;
 }
 
@@ -44,7 +44,7 @@ async function loadReport() {
     loadingDiv.style.display = 'block';
     
     try {
-        const response = await fetch(`view_lost_reports.php?id=${reportId}`);
+        const response = await fetch('view_lost_reports.php?id=' + reportId);
         const data = await response.json();
         
         if (data.success) {
@@ -64,9 +64,19 @@ async function loadReport() {
 function displayReportData(report) {
     document.getElementById('report_id').value = report.report_id;
     document.getElementById('item_name').value = report.item_name;
-    document.getElementById('description').value = report.description.replace(/<br\s*\/?>/gi, '\n');
+    
+    let description = report.description || '';
+    description = description.replace(/<br\s*\/?>/gi, '\n');
+    document.getElementById('description').value = description;
     document.getElementById('location_lost').value = report.location_lost;
-    document.getElementById('date_lost').value = report.date_lost;
+    
+    // FIX: Set date correctly for input type="date"
+    if (report.date_lost) {
+        let dateValue = report.date_lost;
+        console.log('Original date from API:', dateValue);
+        document.getElementById('date_lost').value = dateValue;
+    }
+    
     document.getElementById('lost_status').value = report.lost_status;
     
     if (report.category_id && document.getElementById('category_id')) {
@@ -107,7 +117,7 @@ async function saveReport() {
         
         if (data.success) {
             showAlert('Report edited successfully!', 'success');
-            setTimeout(() => {
+            setTimeout(function() {
                 window.location.href = 'view_lost_reports.html';
             }, 1500);
         } else {
@@ -126,9 +136,9 @@ async function saveReport() {
 function showAlert(message, type) {
     const alertDiv = document.getElementById('alertMessage');
     alertDiv.textContent = message;
-    alertDiv.className = `alert alert-${type} show`;
+    alertDiv.className = 'alert alert-' + type + ' show';
     
-    setTimeout(() => {
+    setTimeout(function() {
         alertDiv.classList.remove('show');
     }, 3000);
 }

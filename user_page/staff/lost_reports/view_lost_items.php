@@ -1,35 +1,23 @@
 <?php
 require_once '../../../config/db_connect.php';
-
-session_start();
-
-if (!isset($_SESSION['user_id'])) {
-    echo json_encode(['success' => false, 'message' => 'Not logged in']);
-    exit();
-}
-
-if ($_SESSION['role'] !== 'admin') {
-    echo json_encode(['success' => false, 'message' => 'Not authorized']);
-    exit();
-}
+require_once '../../../includes/auth_check.php';
+$required_role = 'staff';
+require_once '../../../includes/role_check.php';
 
 header('Content-Type: application/json');
 
-if (isset($_GET['action']) && $_GET['action'] === 'categories') {
-    $query = "SELECT category_id, category_name FROM categories ORDER BY category_name";
-    $result = mysqli_query($conn, $query);
-    $categories = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-        $categories[] = $row;
-    }
-    echo json_encode(['success' => true, 'categories' => $categories]);
+if (isset($_GET['action']) && $_GET['action'] === 'user') {
+    $user_name = $_SESSION['user_name'];
+    $user_avatar = strtoupper(substr($user_name, 0, 1));
+    echo json_encode(['success' => true, 'user_name' => $user_name, 'user_avatar' => $user_avatar]);
     exit();
 }
 
 if (isset($_GET['id'])) {
     $report_id = intval($_GET['id']);
+    
     $query = "SELECT lr.*, u.name as user_name, u.email as user_email, u.phone as user_phone,
-              c.category_name, c.category_id
+              c.category_name
               FROM lost_reports lr
               JOIN users u ON lr.user_id = u.user_id
               LEFT JOIN categories c ON lr.category_id = c.category_id
@@ -48,9 +36,8 @@ if (isset($_GET['id'])) {
         'item_name' => htmlspecialchars($row['item_name']),
         'description' => nl2br(htmlspecialchars($row['description'])),
         'location_lost' => htmlspecialchars($row['location_lost']),
-        'date_lost' => $row['date_lost'],
+        'date_lost' => date('d F Y', strtotime($row['date_lost'])),
         'lost_status' => $row['lost_status'],
-        'category_id' => $row['category_id'] ?? 0,
         'category_name' => $row['category_name'] ?? 'Uncategorized',
         'user_name' => htmlspecialchars($row['user_name']),
         'user_email' => htmlspecialchars($row['user_email']),
@@ -115,7 +102,6 @@ while ($row = mysqli_fetch_assoc($result)) {
     $reports[] = [
         'report_id' => $row['report_id'],
         'item_name' => htmlspecialchars($row['item_name']),
-        'description' => htmlspecialchars(substr($row['description'], 0, 100)),
         'location_lost' => htmlspecialchars($row['location_lost']),
         'date_lost' => date('d M Y', strtotime($row['date_lost'])),
         'lost_status' => $row['lost_status'],

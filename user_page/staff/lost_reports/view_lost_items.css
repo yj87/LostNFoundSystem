@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #fefaf9;
+    background-color: #f4f6f9;
     overflow-x: hidden;
 }
 
@@ -17,7 +17,7 @@ body {
 
 .sidebar {
     width: 280px;
-    background: linear-gradient(135deg, #fa8a9cf1 5%, rgb(248, 198, 207) 100%);
+    background: linear-gradient(135deg, rgba(52, 156, 212, 0.79) 5%, rgb(160, 222, 243) 100%);
     color: white;
     position: fixed;
     height: 100vh;
@@ -69,14 +69,15 @@ body {
 }
 
 .nav-item:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgb(164, 224, 246);
+    color: white;
     padding-left: 30px;
 }
 
 .nav-item.active {
-    background: #F5D3D6;
-    color: #2b2d42;
-    border-left: 4px solid #F8E2E4;
+    background: #c0e6f1;
+    color: black;
+    border-left: 4px solid #C2DCE4;
 }
 
 .nav-item .icon {
@@ -91,7 +92,7 @@ body {
 }
 
 .top-header {
-    background: #f8e9ebfe;
+    background: #E4F2F6;
     height: 60px;
     display: flex;
     justify-content: space-between;
@@ -129,24 +130,10 @@ body {
     z-index: 1002;
 }
 
-.user-info-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 40px;
-    transition: background 0.3s;
-}
-
-.user-info-wrapper:hover {
-    background: rgba(0,0,0,0.05);
-}
-
 .user-avatar {
     width: 40px;
     height: 40px;
-    background: linear-gradient(135deg, #f5babe 0%, #f5babe 100%);
+    background: linear-gradient(135deg, #A5CBD7 0%, #B3D4DF 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -155,7 +142,6 @@ body {
     font-weight: bold;
     font-size: 16px;
     cursor: pointer;
-    transition: transform 0.2s ease;
 }
 
 .user-avatar:hover {
@@ -187,16 +173,10 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    transition: all 0.3s ease;
 }
 
 .user-dropdown-menu a:hover {
     background-color: #f5f5f5;
-}
-
-.user-dropdown-menu a i {
-    width: 20px;
-    font-size: 16px;
 }
 
 .dropdown-divider {
@@ -207,7 +187,7 @@ body {
 
 .content-area {
     padding: 30px;
-    background-color: #FEFAF9;
+    background-color: #F1F8FA;
     min-height: calc(100vh - 60px);
 }
 
@@ -281,9 +261,16 @@ body {
 .filter-group select {
     width: 100%;
     padding: 8px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #A5CBD7;
     border-radius: 6px;
     font-size: 14px;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: #42a5f5;
+    box-shadow: 0 0 0 2px rgba(66, 165, 245, 0.2);
 }
 
 .filter-actions {
@@ -305,35 +292,12 @@ body {
 }
 
 .btn-primary {
-    background: #F5D3D6;
+    background: #A5CBD7;
     color: #2b2d42;
 }
 
 .btn-primary:hover {
-    background: #e8b8bd;
-}
-
-.btn-warning {
-    background: #ffc107;
-    color: #2b2d42;
-}
-
-.btn-warning:hover {
-    background: #e0a800;
-}
-
-.btn-danger {
-    background: #dc3545;
-    color: white;
-}
-
-.btn-danger:hover {
-    background: #c82333;
-}
-
-.btn-sm {
-    padding: 4px 10px;
-    font-size: 12px;
+    background: #B3D4DF;
 }
 
 .reports-table-container {
@@ -341,6 +305,9 @@ body {
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.table-responsive {
     overflow-x: auto;
 }
 
@@ -353,23 +320,23 @@ body {
 .reports-table td {
     padding: 12px;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #A5CBD7;
 }
 
 .reports-table th {
-    background: #faf0f1;
+    background: #a5ddf1;
     font-weight: 600;
     color: #2b2d42;
 }
 
 .reports-table tr:hover {
-    background: #fefaf9;
+    background: #F1F8FA;
 }
 
 .status-badge {
     padding: 4px 12px;
     border-radius: 20px;
-    font-size: 11px;
+    font-size: 12px;
     display: inline-block;
     font-weight: 500;
 }
@@ -385,14 +352,26 @@ body {
 }
 
 .status-closed {
-    background: #f8d7da;
-    color: #721c24;
+    background: #cce5ff;
+    color: #004085;
 }
 
-.action-buttons {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
+.btn-view {
+    background: #A5CBD7;
+    color: #2b2d42;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-view:hover {
+    background: #B3D4DF;
+}
+
+.text-center {
+    text-align: center;
 }
 
 .pagination-container {
@@ -403,13 +382,41 @@ body {
 .pagination-controls {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     align-items: center;
+    flex-wrap: wrap;
+}
+
+.pagination-controls button {
+    padding: 6px 12px;
+    background: #a5ddf1;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination-controls button:hover {
+    background: #A5CBD7;
+}
+
+.pagination-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .page-info {
     font-size: 14px;
     color: #6c757d;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+}
+
+.loading i {
+    font-size: 32px;
+    color: #42a5f5;
 }
 
 .modal {
@@ -440,7 +447,7 @@ body {
 
 .modal-header {
     padding: 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #A5CBD7;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -465,10 +472,9 @@ body {
 
 .modal-footer {
     padding: 20px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #A5CBD7;
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
 }
 
 .detail-row {
@@ -490,10 +496,11 @@ body {
 }
 
 footer {
-    background: #FDF5F6;
+    background: #E4F2F6;
     padding: 20px 30px;
     text-align: center;
-    border-top: 1px solid #F5D3D6;
+    border-top: 1px solid #A5CBD7;
+    margin-top: 30px;
     color: #6c757d;
     font-size: 14px;
 }
@@ -502,44 +509,28 @@ footer {
     .sidebar {
         transform: translateX(-100%);
     }
-    
     .sidebar.active {
         transform: translateX(0);
     }
-    
     .main-content {
         margin-left: 0;
         width: 100%;
     }
-    
     .menu-toggle {
         display: block;
     }
-    
     .content-area {
         padding: 15px;
     }
-    
     .filter-bar {
         flex-direction: column;
     }
-    
     .filter-group {
         width: 100%;
     }
-    
     .reports-table th,
     .reports-table td {
         padding: 8px;
         font-size: 12px;
-    }
-    
-    .action-buttons {
-        flex-direction: column;
-    }
-    
-    .btn-sm {
-        width: 100%;
-        text-align: center;
     }
 }

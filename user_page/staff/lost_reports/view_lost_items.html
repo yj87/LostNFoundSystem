@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - View Lost Reports</title>
-    <link rel="stylesheet" href="view_lost_reports.css">
+    <title>Staff - View Lost Items</title>
+    <link rel="stylesheet" href="view_lost_items.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
             <div class="sidebar-header">
                 <div class="logo">🔍</div>
                 <h3>Lost & Found</h3>
-                <p>Admin Panel</p>
+                <p>Staff Panel</p>
             </div>
             <nav>
                 <div class="nav-group">
@@ -23,52 +23,42 @@
                         <span>Dashboard</span>
                     </a>
                 </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">User Management</div>
-                    <a href="../user_management/manage.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-users"></i></span>
-                        <span>View Users</span>
-                    </a>
-                    <a href="../user_management/add.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-user-plus"></i></span>
-                        <span>Add User</span>
-                    </a>
-                </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../../admin_found_items.php" class="nav-item">
+                    <a href="../found_item/add_found_item.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
+                        <span>Add Found Item</span>
+                    </a>
+                    <a href="../found_item/staff_found_items.html" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
-                        <span>View All Items</span>
+                        <span>My Found Items</span>
                     </a>
                 </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">Lost Reports</div>
-                    <a href="view_lost_reports.html" class="nav-item active">
-                        <span class="icon"><i class="fas fa-search"></i></span>
-                        <span>View Lost Reports</span>
-                    </a>
-                </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="../../admin_claims.php" class="nav-item">
+                    <a href="../claims/staff_claims.html" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
-                        <span>View All Claims</span>
+                        <span>View Claims</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
-                    <div class="nav-group-title">Reports & Statistics</div>
-                    <a href="../../reports.php" class="nav-item">
-                        <span class="icon"><i class="fas fa-chart-line"></i></span>
-                        <span>Statistics</span>
+                    <div class="nav-group-title">Lost Reports</div>
+                    <a href="view_lost_items.html" class="nav-item active">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>View Lost Items</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
                     <a href="../../profile/profile.html" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
-                    <a href="../../../mainpage/logout/logout.php" class="nav-item">
+                    <a href="../../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
                         <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                         <span>Logout</span>
                     </a>
@@ -82,13 +72,10 @@
                     <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <div class="page-title-header">Lost Reports Management</div>
+                    <div class="page-title-header">Lost Items Management</div>
                 </div>
-
                 <div class="user-dropdown">
-                    <div class="user-info-wrapper" onclick="toggleUserDropdown()">
-                        <div class="user-avatar" id="userAvatar">A</div>
-                    </div>
+                    <div class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">S</div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
                         <a href="../../profile/profile.html">
                             <i class="fas fa-user-circle"></i> My Profile
@@ -103,8 +90,8 @@
 
             <article class="content-area">
                 <div class="page-header">
-                    <h1>Lost Reports</h1>
-                    <p>View and manage all lost item reports from users</p>
+                    <h1>Lost Items</h1>
+                    <p>View all lost item reports from users</p>
                 </div>
 
                 <div class="stats-row">
@@ -161,26 +148,29 @@
                 </div>
 
                 <div class="reports-table-container">
-                    <table class="reports-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Item Name</th>
-                                <th>Reported By</th>
-                                <th>Location</th>
-                                <th>Date Lost</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="reportsTableBody">
-                            <tr id="loadingRow">
-                                <td colspan="7" style="text-align: center; padding: 40px;">
-                                    <i class="fas fa-spinner fa-spin"></i> Loading reports...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div id="loadingDiv" class="loading" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading reports...
+                    </div>
+                    <div class="table-responsive">
+                        <table class="reports-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Item Name</th>
+                                    <th>Reported By</th>
+                                    <th>Location</th>
+                                    <th>Date Lost</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reportsTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center">Loading reports...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div id="pagination" class="pagination-container"></div>
                 </div>
             </article>
@@ -204,18 +194,16 @@
         </div>
     </div>
 
-    <script src="view_lost_reports.js"></script>
+    <script src="view_lost_items.js"></script>
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
         }
-
         function toggleUserDropdown() {
             const dropdown = document.getElementById('userDropdownMenu');
             dropdown.classList.toggle('show');
         }
-
         function logoutUser() {
             if (confirm('Are you sure you want to logout?')) {
                 window.location.href = '../../../mainpage/logout/logout.php';
@@ -223,13 +211,11 @@
             }
             return false;
         }
-
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('userDropdownMenu');
-            const userInfoWrapper = document.querySelector('.user-info-wrapper');
-            
-            if (dropdown && userInfoWrapper && dropdown.classList.contains('show')) {
-                if (!userInfoWrapper.contains(event.target) && !dropdown.contains(event.target)) {
+            const avatar = document.getElementById('userAvatar');
+            if (dropdown && avatar && dropdown.classList.contains('show')) {
+                if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
                     dropdown.classList.remove('show');
                 }
             }
