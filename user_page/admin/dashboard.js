@@ -204,13 +204,13 @@ document.addEventListener('DOMContentLoaded', function() {
     loadAdminData();
     
     // Stat cards navigation
-    const statCards = document.querySelectorAll('.stat-card');
+    /*const statCards = document.querySelectorAll('.stat-card');
     statCards.forEach(card => {
         card.addEventListener('click', function() {
             const page = this.getAttribute('data-page');
             if (page) navigateTo(page);
         });
-    });
+    });*/
     
     // Action cards navigation
     const actionCards = document.querySelectorAll('.action-card');

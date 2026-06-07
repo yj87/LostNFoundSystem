@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Found Items - Lost & Found</title>
-    <link rel="stylesheet" href="staff_dashboard.css">
+    <link rel="stylesheet" href="../staff_dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -20,32 +20,32 @@
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="dashboard.html" class="nav-item">
+                    <a href="../dashboard.html" class="nav-item">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="add_found_item.php" class="nav-item">
+                    <a href="add_found_item.html" class="nav-item">
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Add Found Item</span>
                     </a>
-                    <a href="staff_found_items.php" class="nav-item active">
+                    <a href="staff_found_items.html" class="nav-item active">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>My Found Items</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="staff_claims.php" class="nav-item">
+                    <a href="claims/staff_claims.html" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View Claims</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="staff_view_lost.php" class="nav-item">
+                    <a href="lost_reports/staff_view_lost.html" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View Lost Items</span>
                     </a>
@@ -78,7 +78,7 @@
             <article>
                 <div class="page-title">
                     <h1>Manage My Registered Items</h1>
-                    <p>View, edit or delete found items you have logged.</p>
+                    <p>View or edit found items you have logged.</p>
                 </div>
 
                 <div class="recent-section">
@@ -95,13 +95,14 @@
                                     <th>Item Name</th>
                                     <th>Category</th>
                                     <th>Location</th>
+                                    <th>Description</th>
                                     <th>Date Found</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="staffItemsTable">
-                                <tr><td colspan="6" style="text-align:center; padding: 20px;">Loading your items...</td></tr>
+                                <tr><td colspan="7" style="text-align:center; padding: 20px;">Loading your items...</td></tr>
                             </tbody>
                         </table>
                     </div>

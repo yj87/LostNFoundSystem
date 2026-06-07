@@ -19,7 +19,7 @@ body {
 /* ASIDE - Sidebar */
 aside {
     width: 280px;
-    background: linear-gradient(135deg, #90CF8E 5%, #d9f8ab 100%);
+    background: linear-gradient(135deg, #96c78352 5%, rgba(166, 197, 155, 0.526) 100%);
     color: white;
     position: fixed;
     height: 100vh;
@@ -241,7 +241,7 @@ article {
 }
 
 .stat-card {
-    background: #d8ffb1dc;
+    background: #d0f2c3fa;
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -249,7 +249,6 @@ article {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    cursor: pointer;
 }
 
 .stat-card:hover {
@@ -272,8 +271,8 @@ article {
 
 .stat-icon {
     font-size: 48px;
-    opacity: 0.4;
-    color: #2b2d42;
+    opacity: 1;
+    color: white;
 }
 
 /* Quick Actions */
@@ -302,9 +301,9 @@ article {
 
 .action-card i {
     font-size: 48px;
-    color: #2b2d42;
+    color: white;
     margin-bottom: 15px;
-    opacity: 0.7;
+    opacity: 1;
 }
 
 .action-card h3 {
@@ -356,7 +355,7 @@ th, td {
 }
 
 th {
-    background: #d8ffb1dc;
+    background: #d0f2c3fa;
     font-weight: 600;
     color: #2b2d42;
 }

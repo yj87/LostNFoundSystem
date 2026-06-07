@@ -1,15 +1,14 @@
 <?php
-session_start();
-require_once '../config/db_connect.php';
-require_once '../includes/auth_check.php';
+require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
 $required_role = 'staff';
-require_once '../includes/role_check.php';
+require_once '../../includes/role_check.php';
 
 // Return data as JSON for JavaScript
 header('Content-Type: application/json');
 
 $user_id = $_SESSION['user_id'];
-$user_name = $_SESSION['username'];
+$user_name = $_SESSION['user_name'];
 
 // Get statistics
 $result = mysqli_query($conn, "SELECT COUNT(*) as count FROM found_items WHERE user_id = $user_id");
