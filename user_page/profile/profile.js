@@ -1,6 +1,6 @@
-// profile.js - Complete Version
-
+// profile.js
 let currentUserData = null;
+let currentRole = null;
 
 document.addEventListener('DOMContentLoaded', function() {
     loadProfile();
@@ -11,7 +11,6 @@ function loadProfile() {
     const loadingSpinner = document.getElementById('loadingSpinner');
     const profileForm = document.getElementById('profileForm');
     
-    // Show loading spinner
     if (loadingSpinner) loadingSpinner.classList.remove('d-none');
     
     fetch('get_profile_data.php')
@@ -21,19 +20,22 @@ function loadProfile() {
             
             if (data.success) {
                 currentUserData = data.data;
+                currentRole = data.role;
+                
+                // Apply role to body for CSS theme switching
+                document.body.setAttribute('data-role', currentRole);
+                
                 displayProfile(data);
                 if (profileForm) profileForm.classList.remove('d-none');
             } else {
-                showNotification('danger', 'Failed to load profile: ' + data.message);
-                // Show form anyway with error state
+                showAlert('danger', 'Failed to load profile: ' + data.message);
                 if (profileForm) profileForm.classList.remove('d-none');
             }
         })
         .catch(error => {
             console.error('Error:', error);
             if (loadingSpinner) loadingSpinner.classList.add('d-none');
-            showNotification('danger', 'Failed to load profile: ' + error.message);
-            // Show form anyway with error state
+            showAlert('danger', 'Failed to load profile: ' + error.message);
             if (profileForm) profileForm.classList.remove('d-none');
         });
 }
@@ -43,47 +45,30 @@ function displayProfile(data) {
     const role = data.role;
     const stats = data.stats || {};
     
-    // Update sidebar
-    const userFullName = document.getElementById('userFullName');
-    const usernameSpan = document.getElementById('username');
-    const userRoleSpan = document.getElementById('userRole');
-    const memberSinceSpan = document.getElementById('memberSince');
+    document.getElementById('userFullName').textContent = user.name;
+    document.getElementById('username').textContent = user.username;
+    document.getElementById('memberSince').textContent = formatDate(user.created_at);
+    document.getElementById('userId').value = user.user_id;
+    document.getElementById('name').value = user.name;
+    document.getElementById('email').value = user.email;
+    document.getElementById('phone').value = user.phone || '';
+    document.getElementById('usernameDisplay').value = user.username;
     
-    if (userFullName) userFullName.textContent = user.name;
-    if (usernameSpan) usernameSpan.textContent = user.username;
-    if (userRoleSpan) userRoleSpan.innerHTML = getRoleBadge(role);
-    if (memberSinceSpan) memberSinceSpan.textContent = formatDate(user.created_at);
+    let roleBadge = '';
+    if (role === 'admin') {
+        roleBadge = '<span class="badge bg-danger">Administrator</span>';
+    } else if (role === 'staff') {
+        roleBadge = '<span class="badge bg-warning text-dark">Office Staff</span>';
+    } else {
+        roleBadge = '<span class="badge bg-success">Student</span>';
+    }
+    document.getElementById('userRoleBadge').innerHTML = roleBadge;
     
-    // Update form fields
-    const userIdInput = document.getElementById('userId');
-    const nameInput = document.getElementById('name');
-    const emailInput = document.getElementById('email');
-    const phoneInput = document.getElementById('phone');
-    const usernameDisplay = document.getElementById('username_display');
-    
-    if (userIdInput) userIdInput.value = user.user_id;
-    if (nameInput) nameInput.value = user.name;
-    if (emailInput) emailInput.value = user.email;
-    if (phoneInput) phoneInput.value = user.phone || '';
-    if (usernameDisplay) usernameDisplay.value = user.username;
-    
-    // Display role-specific stats
     displayStats(role, stats);
-}
-
-function getRoleBadge(role) {
-    const badges = {
-        'admin': '<span class="badge bg-danger">Admin</span>',
-        'staff': '<span class="badge bg-warning text-dark">Office Staff</span>',
-        'user': '<span class="badge bg-success">Student</span>'
-    };
-    return badges[role] || '<span class="badge bg-secondary">User</span>';
 }
 
 function displayStats(role, stats) {
     const statsContainer = document.getElementById('statsContainer');
-    if (!statsContainer) return;
-    
     let html = '<h6><i class="fas fa-chart-simple"></i> Quick Stats</h6><ul class="list-unstyled">';
     
     if (role === 'admin' || role === 'staff') {
@@ -103,105 +88,88 @@ function displayStats(role, stats) {
 }
 
 function setupEventListeners() {
-    // Show/hide password section
-    const changePasswordCheck = document.getElementById('changePasswordCheck');
-    if (changePasswordCheck) {
-        changePasswordCheck.addEventListener('change', function() {
-            const passwordSection = document.getElementById('passwordSection');
-            if (this.checked) {
-                if (passwordSection) passwordSection.classList.remove('d-none');
-            } else {
-                if (passwordSection) passwordSection.classList.add('d-none');
-                clearPasswordFields();
-                clearPasswordErrors();
-            }
-        });
-    }
+    document.getElementById('changePasswordCheck').addEventListener('change', function() {
+        const passwordSection = document.getElementById('passwordSection');
+        passwordSection.classList.toggle('d-none', !this.checked);
+        
+        if (!this.checked) {
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            clearPasswordErrors();
+        }
+    });
     
-    // Form submission
-    const profileForm = document.getElementById('profileForm');
-    if (profileForm) {
-        profileForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            updateProfile();
-        });
-    }
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        updateProfile();
+    });
     
-    // Cancel/Reset button
-    const cancelBtn = document.getElementById('cancelBtn');
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', function() {
-            resetForm();
-        });
-    }
+    document.getElementById('cancelBtn').addEventListener('click', function() {
+        resetForm();
+    });
 }
 
 function updateProfile() {
     clearErrors();
     
-    const name = document.getElementById('name')?.value.trim() || '';
-    const email = document.getElementById('email')?.value.trim() || '';
-    const phone = document.getElementById('phone')?.value.trim() || '';
-    const changePassword = document.getElementById('changePasswordCheck')?.checked || false;
-    const currentPassword = document.getElementById('currentPassword')?.value || '';
-    const newPassword = document.getElementById('newPassword')?.value || '';
-    const confirmPassword = document.getElementById('confirmPassword')?.value || '';
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const changePassword = document.getElementById('changePasswordCheck').checked;
+    const currentPassword = document.getElementById('currentPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
     
     let isValid = true;
     
-    // Validation
     if (name === '') {
-        showError('nameError', 'Full name is required');
+        document.getElementById('nameError').textContent = 'Full name is required';
         isValid = false;
     }
     
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (email === '') {
-        showError('emailError', 'Email is required');
+        document.getElementById('emailError').textContent = 'Email is required';
         isValid = false;
     } else if (!emailRegex.test(email)) {
-        showError('emailError', 'Invalid email format');
+        document.getElementById('emailError').textContent = 'Invalid email format';
         isValid = false;
     }
     
-    // Phone validation (optional but if provided, must be valid)
     if (phone !== '') {
         const phoneRegex = /^[0-9]{10,11}$/;
         if (!phoneRegex.test(phone)) {
-            showError('phoneError', 'Phone number must be 10-11 digits');
+            document.getElementById('phoneError').textContent = 'Phone number must be 10-11 digits';
             isValid = false;
         }
     }
     
     if (changePassword) {
         if (currentPassword === '') {
-            showError('currentPasswordError', 'Current password is required to change password');
+            document.getElementById('currentPasswordError').textContent = 'Current password is required';
             isValid = false;
         }
         if (newPassword !== '') {
             if (newPassword.length < 8) {
-                showError('newPasswordError', 'Password must be at least 8 characters');
+                document.getElementById('newPasswordError').textContent = 'Password must be at least 8 characters';
                 isValid = false;
             }
             if (newPassword !== confirmPassword) {
-                showError('confirmPasswordError', 'Passwords do not match');
+                document.getElementById('confirmPasswordError').textContent = 'Passwords do not match';
                 isValid = false;
             }
         }
     }
     
-    if (!isValid) {
-        return;
-    }
+    if (!isValid) return;
     
     const submitBtn = document.getElementById('submitBtn');
-    if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-    }
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
     
     const formData = new FormData();
-    formData.append('user_id', document.getElementById('userId')?.value || '');
+    formData.append('user_id', document.getElementById('userId').value);
     formData.append('name', name);
     formData.append('email', email);
     formData.append('phone', phone);
@@ -209,9 +177,8 @@ function updateProfile() {
     
     if (changePassword) {
         formData.append('current_password', currentPassword);
-        if (newPassword) {
-            formData.append('new_password', newPassword);
-        }
+        if (newPassword) formData.append('new_password', newPassword);
+        formData.append('confirm_password', confirmPassword);
     }
     
     fetch('update_profile.php', {
@@ -220,49 +187,34 @@ function updateProfile() {
     })
     .then(response => response.json())
     .then(data => {
-        if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
-        }
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
         
         if (data.success) {
-            showNotification('success', data.message);
-            // Reload profile data
+            showAlert('success', data.message);
             setTimeout(() => loadProfile(), 1500);
-            // Reset password section
-            const changePasswordCheck = document.getElementById('changePasswordCheck');
-            const passwordSection = document.getElementById('passwordSection');
-            if (changePasswordCheck) changePasswordCheck.checked = false;
-            if (passwordSection) passwordSection.classList.add('d-none');
+            
+            document.getElementById('changePasswordCheck').checked = false;
+            document.getElementById('passwordSection').classList.add('d-none');
             clearPasswordFields();
         } else {
-            showNotification('danger', data.message);
+            showAlert('danger', data.message);
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
-        }
-        showNotification('danger', 'An error occurred: ' + error.message);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        showAlert('danger', 'An error occurred: ' + error.message);
     });
 }
 
 function resetForm() {
     if (currentUserData) {
-        const nameInput = document.getElementById('name');
-        const emailInput = document.getElementById('email');
-        const phoneInput = document.getElementById('phone');
-        const changePasswordCheck = document.getElementById('changePasswordCheck');
-        const passwordSection = document.getElementById('passwordSection');
-        
-        if (nameInput) nameInput.value = currentUserData.name;
-        if (emailInput) emailInput.value = currentUserData.email;
-        if (phoneInput) phoneInput.value = currentUserData.phone || '';
-        if (changePasswordCheck) changePasswordCheck.checked = false;
-        if (passwordSection) passwordSection.classList.add('d-none');
-        
+        document.getElementById('name').value = currentUserData.name;
+        document.getElementById('email').value = currentUserData.email;
+        document.getElementById('phone').value = currentUserData.phone || '';
+        document.getElementById('changePasswordCheck').checked = false;
+        document.getElementById('passwordSection').classList.add('d-none');
         clearPasswordFields();
         clearErrors();
         clearPasswordErrors();
@@ -270,17 +222,14 @@ function resetForm() {
 }
 
 function clearPasswordFields() {
-    const currentPassword = document.getElementById('currentPassword');
-    const newPassword = document.getElementById('newPassword');
-    const confirmPassword = document.getElementById('confirmPassword');
-    
-    if (currentPassword) currentPassword.value = '';
-    if (newPassword) newPassword.value = '';
-    if (confirmPassword) confirmPassword.value = '';
+    document.getElementById('currentPassword').value = '';
+    document.getElementById('newPassword').value = '';
+    document.getElementById('confirmPassword').value = '';
 }
 
 function clearErrors() {
-    document.querySelectorAll('.error-message').forEach(el => {
+    const errorElements = document.querySelectorAll('.error-message');
+    errorElements.forEach(el => {
         el.textContent = '';
     });
 }
@@ -293,52 +242,24 @@ function clearPasswordErrors() {
     });
 }
 
-function showError(elementId, message) {
-    const element = document.getElementById(elementId);
-    if (element) element.textContent = message;
-}
-
-function showNotification(type, message) {
-    // Remove any existing notifications
-    const existingNotifications = document.querySelectorAll('.alert-notification');
-    existingNotifications.forEach(notification => notification.remove());
-    
-    const notification = document.createElement('div');
-    notification.className = `alert alert-${type} alert-dismissible fade show alert-notification position-fixed top-0 end-0 m-3`;
-    notification.style.zIndex = '9999';
-    notification.style.minWidth = '300px';
-    notification.style.maxWidth = '400px';
-    notification.style.zIndex = '9999';
-    notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-    
-    const icon = type === 'success' ? 'fa-check-circle' : (type === 'danger' ? 'fa-exclamation-circle' : 'fa-info-circle');
-    
-    notification.innerHTML = `
-        <div class="d-flex align-items-center">
-            <i class="fas ${icon} me-2 fs-4"></i>
-            <div class="flex-grow-1">${message}</div>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+function showAlert(type, message) {
+    const alertContainer = document.getElementById('alertContainer');
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+    alertDiv.innerHTML = `
+        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> 
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     `;
     
-    document.body.appendChild(notification);
+    alertContainer.innerHTML = '';
+    alertContainer.appendChild(alertDiv);
     
-    // Auto dismiss after 4 seconds
     setTimeout(() => {
-        if (notification && notification.remove) {
-            notification.classList.remove('show');
-            setTimeout(() => notification.remove(), 300);
+        if (alertDiv && alertDiv.remove) {
+            alertDiv.remove();
         }
     }, 4000);
-    
-    // Add click handler for close button
-    const closeBtn = notification.querySelector('.btn-close');
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            notification.classList.remove('show');
-            setTimeout(() => notification.remove(), 300);
-        });
-    }
 }
 
 function formatDate(dateString) {
@@ -348,7 +269,18 @@ function formatDate(dateString) {
     return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-function capitalizeFirst(str) {
-    if (!str) return '';
-    return str.charAt(0).toUpperCase() + str.slice(1);
+function goBack() {
+  if (window.history.length > 1) {
+            window.history.back();
+    } else {
+     // If no history, redirect to dashboard based on role
+        const role = document.body.getAttribute('data-role');
+        if (role === 'admin') {
+            window.location.href = '../admin_dashboard.html';
+        } else if (role === 'staff') {
+            window.location.href = 'staff_dashboard.html';
+        } else {
+            window.location.href = '../user_dashboard.html';
+        }
+    }
 }
