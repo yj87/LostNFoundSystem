@@ -4,22 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Found Items - Lost & Found</title>
-    <link rel="stylesheet" href="../staff_dashboard.css">
+    <title>Browse Found Items - Lost & Found</title>
+    <link rel="stylesheet" href="../dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="staff_found_items.css">
+    <link rel="stylesheet" href="browse_found_items.css">
 </head>
 
 <body>
     <div class="dashboard-container">
 
-        <!-- SIDEBAR -->
+        <!-- ASIDE: Sidebar Navigation -->
         <aside id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">🔍</div>
                 <h3>Lost & Found</h3>
-                <p>Staff Panel</p>
+                <p>User Panel</p>
             </div>
+            
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
@@ -28,34 +29,38 @@
                         <span>Dashboard</span>
                     </a>
                 </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Lost Items</div>
+                    <a href="../lost_reports/report_lost_items.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
+                        <span>Report Lost Item</span>
+                    </a>
+                    <a href="../lost_reports/my_lost_reports.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-history"></i></span>
+                        <span>My Lost Reports</span>
+                    </a>
+                </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="add_found_item.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
-                        <span>Add Found Item</span>
-                    </a>
-                    <a href="staff_found_items.html" class="nav-item active">
-                        <span class="icon"><i class="fas fa-box"></i></span>
-                        <span>My Found Items</span>
+                    <a href="browse_found_items.html" class="nav-item active">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>Browse Found Items</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="claims/staff_claims.html" class="nav-item">
+                    <a href="../claims/my_claims.html" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
-                        <span>View Claims</span>
+                        <span>My Claims</span>
                     </a>
                 </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">Lost Reports</div>
-                    <a href="lost_reports/staff_view_lost.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-search"></i></span>
-                        <span>View Lost Items</span>
-                    </a>
-                </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../profile/profile.html" class="nav-item">
+                    <a href="../../profile/profile.html" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -74,14 +79,28 @@
                     <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <div class="page-title-header">My Found Items</div>
+                    <div class="page-title-header">Browse Found Items</div>
+                </div>
+                <div class="user-dropdown">
+                    <div class="user-info-wrapper" onclick="toggleUserDropdown()">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                    </div>
+                    <div class="user-dropdown-menu" id="userDropdownMenu">
+                        <a href="../../profile/profile.html">
+                            <i class="fas fa-user-circle"></i> My Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="../../../mainpage/logout/logout.php" onclick="return logoutUser();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
                 </div>
             </header>
 
             <article>
                 <div class="page-title">
-                    <h1>Manage My Registered Items</h1>
-                    <p>View or edit found items you have logged.</p>
+                    <h1>Browse Found Items</h1>
+                    <p>Search and browse items that have been found and reported. If you recognize an item as yours, click "Claim".</p>
                 </div>
 
                 <!-- Toolbar -->
@@ -103,10 +122,7 @@
 
                 <div class="recent-section">
                     <div class="section-header">
-                        <h3>My Items</h3>
-                        <a href="add_found_item.html" class="btn btn-primary" style="padding: 8px 16px;">
-                            <i class="fas fa-plus"></i> Add New Item
-                        </a>
+                        <h3>Available Items</h3>
                     </div>
                     <div class="data-table">
                         <table>
@@ -118,18 +134,22 @@
                                     <th>Description</th>
                                     <th>Date Found</th>
                                     <th>Status</th>
-                                    <th>Actions</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody id="staffItemsTable">
+                            <tbody id="userItemsTable">
                                 <tr>
-                                    <td colspan="7" style="text-align:center; padding: 20px;">Loading your items...</td>
+                                    <td colspan="7" style="text-align:center; padding: 20px;">Loading items...</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </article>
+            
+            <footer>
+                <p id="copyright">© 2024 Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
+            </footer>
         </div>
     </div>
 
@@ -139,7 +159,7 @@
         <span id="toastMessage"></span>
     </div>
 
-    <script src="staff_items.js"></script>
+    <script src="browse_found_items.js"></script>
 </body>
 
 </html>
