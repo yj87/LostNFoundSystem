@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff - Review Claims</title>
+    <link rel="stylesheet" href="../staff_dashboard.css">
+    <link rel="stylesheet" href="review_claims.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🔍</div>
+                <h3>Lost & Found</h3>
+                <p>Staff Panel</p>
+            </div>
+            <nav>
+                <div class="nav-group">
+                    <div class="nav-group-title">Main</div>
+                    <a href="../dashboard.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Found Items</div>
+                    <a href="../found_item/add_found_item.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
+                        <span>Add Found Item</span>
+                    </a>
+                    <a href="../found_item/staff_found_items.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-box"></i></span>
+                        <span>My Found Items</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Claims</div>
+                    <a href="view_claims.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                        <span>View Claims</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Lost Reports</div>
+                    <a href="../lost_reports/view_lost_items.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>View Lost Items</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Account</div>
+                    <a href="../../profile/profile.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-user-circle"></i></span>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="../../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
+                        <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="page-title-header">Review Claim</div>
+                </div>
+                <div class="user-dropdown">
+                    <div class="user-info-wrapper" onclick="toggleUserDropdown()">
+                        <div class="user-avatar" id="userAvatar">S</div>
+                    </div>
+                    <div class="user-dropdown-menu" id="userDropdownMenu">
+                        <a href="../../profile/profile.html">
+                            <i class="fas fa-user-circle"></i> My Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="../../../mainpage/logout/logout.php" onclick="return logoutUser();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <article class="content-area">
+                <div class="page-header">
+                    <h1>Review Claim</h1>
+                    <p>Compare the claimant's evidence with the found item details</p>
+                </div>
+
+                <div id="loadingDiv" class="loading" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Loading claim details...
+                </div>
+
+                <div id="errorDiv" class="alert alert-error" style="display: none;"></div>
+
+                <div class="review-container" id="reviewContainer" style="display: none;">
+                    
+                    <!-- CARD 1: Found Item Details -->
+                    <div class="card reference-card">
+                        <div class="card-header">
+                            <i class="fas fa-box"></i>
+                            <h3>Found Item Details</h3>
+                            <span class="badge-reference">Reference</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="found-item-summary">
+                                <div class="icon-tag" id="itemIconTag">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                                <div class="found-item-info">
+                                    <div class="found-item-name" id="foundItemName">Loading...</div>
+                                    <div class="found-item-meta" id="foundItemMeta"></div>
+                                </div>
+                            </div>
+                            <div class="found-item-details" id="foundItemDetails"></div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2: Claimant Information -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-user"></i>
+                            <h3>Claimant Information</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="detail-grid" id="claimantDetails"></div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 3: Side-by-Side Comparison -->
+                    <div class="comparison-container">
+                        <div class="comparison-col">
+                            <div class="card comparison-card">
+                                <div class="card-header">
+                                    <i class="fas fa-receipt"></i>
+                                    <h3>Proof of Ownership</h3>
+                                    <span class="badge-claimant">Claimant's Evidence</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="proof-content" id="ownershipProof"></div>
+                                </div>
+                                <div class="comparison-actions">
+                                    <label class="comparison-label">Does this match the found item?</label>
+                                    <div class="verdict-buttons">
+                                        <button type="button" class="verdict-yes" id="proofMatchYes" onclick="setProofMatch(true)">✓ Yes, matches</button>
+                                        <button type="button" class="verdict-no" id="proofMatchNo" onclick="setProofMatch(false)">✗ No, doesn't match</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comparison-col">
+                            <div class="card comparison-card">
+                                <div class="card-header">
+                                    <i class="fas fa-search"></i>
+                                    <h3>Identifying Details</h3>
+                                    <span class="badge-claimant">Claimant's Description</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="proof-content" id="identifyingDetails"></div>
+                                </div>
+                                <div class="comparison-actions">
+                                    <label class="comparison-label">Does this match the found item?</label>
+                                    <div class="verdict-buttons">
+                                        <button type="button" class="verdict-yes" id="identifyingMatchYes" onclick="setIdentifyingMatch(true)">✓ Yes, matches</button>
+                                        <button type="button" class="verdict-no" id="identifyingMatchNo" onclick="setIdentifyingMatch(false)">✗ No, doesn't match</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 4: Make Decision -->
+                    <div class="card decision-card">
+                        <div class="card-header">
+                            <i class="fas fa-gavel"></i>
+                            <h3>Make Decision</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="match-summary" id="matchSummary">
+                                <strong>📋 Comparison Summary:</strong><br>
+                                <span class="match-pending">○ Please verify if proof of ownership matches</span><br>
+                                <span class="match-pending">○ Please verify if identifying details match</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="review_note">Review Note <span class="required">(required for rejection)</span></label>
+                                <textarea id="review_note" rows="3" placeholder="Provide reason for rejection or additional notes..."></textarea>
+                            </div>
+                            <div class="decision-buttons">
+                                <button type="button" class="btn-approve" id="approveBtn" onclick="submitDecision('approved')">
+                                    <i class="fas fa-check-circle"></i> Approve Claim
+                                </button>
+                                <button type="button" class="btn-reject" id="rejectBtn" onclick="submitDecision('rejected')">
+                                    <i class="fas fa-times-circle"></i> Reject Claim
+                                </button>
+                                <button type="button" class="btn-cancel" onclick="goBack()">
+                                    <i class="fas fa-arrow-left"></i> Back
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <footer>
+                <p>&copy; 2026 Lost & Found System - Universiti Teknologi Malaysia</p>
+            </footer>
+        </div>
+    </div>
+
+    <script src="review_claims.js"></script>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById('userDropdownMenu');
+            dropdown.classList.toggle('show');
+        }
+
+        function goBack() {
+            window.location.href = 'view_claims.html';
+        }
+
+        function logoutUser() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '../../../mainpage/logout/logout.php';
+                return true;
+            }
+            return false;
+        }
+
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('userDropdownMenu');
+            const avatar = document.getElementById('userAvatar');
+            if (dropdown && avatar && dropdown.classList.contains('show')) {
+                if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.remove('show');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

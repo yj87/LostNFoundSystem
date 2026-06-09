@@ -162,7 +162,7 @@ function loadRecentClaimsTable(claims) {
                     </td>
                     <td>${formatDate(claim.submitted_at)}</td>
                     <td>
-                        <a href="staff_review_claim.php?id=${claim.claim_id}" class="btn btn-primary">Review</a>
+                        <a href="claims/review_claims.html?id=${claim.claim_id}" class="btn btn-primary">Review</a>
                     </td>
                 </tr>
             `;
