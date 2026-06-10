@@ -1,0 +1,536 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    background: #FFFFFF;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ===== NAVIGATION BAR - Same as homepage ===== */
+.navbar {
+    width: 100%;
+    background: #FEF3E4;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.logo-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-logo {
+    background: linear-gradient(145deg, #F5A65B, #E8892E);
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.brand-logo i:first-child {
+    font-size: 26px;
+    color: white;
+}
+
+.brand-logo i:last-child {
+    position: absolute;
+    font-size: 16px;
+    bottom: -2px;
+    right: -4px;
+    color: #FFD966;
+}
+
+.nav-brand {
+    font-size: 28px;
+    font-weight: 800;
+    color: #2D1B0F;
+}
+
+.nav-brand span {
+    color: #F5A65B;
+}
+
+.nav-links {
+    display: flex;
+    gap: 80px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #2D1B0F;
+    transition: 0.2s;
+    font-size: 16px;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    color: #F5A65B;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-login-nav {
+    background: linear-gradient(135deg, #F5A65B, #E87A1E);
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.btn-register-nav {
+    background: transparent;
+    border: 2px solid #F5A65B;
+    color: #F5A65B;
+    padding: 8px 22px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.btn-register-nav:hover {
+    background: #F5A65B;
+    color: white;
+}
+
+.btn-login-nav:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 166, 91, 0.4);
+}
+
+.mobile-menu {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #F5A65B;
+}
+
+/* ===== MAIN CONTAINER - Same white container as homepage ===== */
+.main-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+    background: #FFFFFF;
+}
+
+/* ===== ABOUT HERO ===== */
+.about-hero {
+    text-align: center;
+    padding: 60px 0 40px;
+}
+
+.about-hero h1 {
+    font-size: 56px;
+    font-weight: 800;
+    color: #2D1B0F;
+    margin-bottom: 16px;
+}
+
+.about-hero p {
+    font-size: 18px;
+    color: #6B5240;
+}
+
+/* ===== MISSION & VISION - Two Cards (Same as homepage feature card) ===== */
+.mission-vision-grid {
+    display: flex;
+    gap: 30px;
+    padding: 20px 0 40px;
+    flex-wrap: wrap;
+}
+
+.mission-card, .vision-card {
+    flex: 1;
+    background: linear-gradient(135deg, #FFF9F2, #FFF5EA);
+    border-radius: 32px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(245, 166, 91, 0.2);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.03);
+    cursor: pointer;
+}
+
+.mission-card:hover, .vision-card:hover {
+    transform: translateY(-5px);
+    border-color: #F5A65B;
+    box-shadow: 0 15px 30px rgba(245, 166, 91, 0.1);
+}
+
+.mission-card i, .vision-card i {
+    font-size: 52px;
+    color: #F5A65B;
+    margin-bottom: 20px;
+}
+
+.mission-card h3, .vision-card h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2D1B0F;
+    margin-bottom: 16px;
+}
+
+.mission-card p, .vision-card p {
+    color: #6B5240;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+/* ===== ABOUT SYSTEM (Same as homepage feature card) ===== */
+.about-system {
+    background: linear-gradient(135deg, #FFF9F2, #FFF5EA);
+    border-radius: 32px;
+    padding: 48px;
+    margin: 20px 0 40px;
+    border: 1px solid rgba(245, 166, 91, 0.2);
+    transition: all 0.3s ease;
+}
+
+.about-system:hover {
+    transform: translateY(-3px);
+    border-color: #F5A65B;
+    box-shadow: 0 15px 30px rgba(245, 166, 91, 0.1);
+}
+
+.about-system .about-icon {
+    font-size: 52px;
+    color: #F5A65B;
+    margin-bottom: 20px;
+    display: block;
+    text-align: center;
+}
+
+.about-system h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2D1B0F;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.about-system p {
+    color: #6B5240;
+    line-height: 1.8;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+.about-system p:last-child {
+    margin-bottom: 0;
+}
+
+/* ===== TEAM SECTION ===== */
+.team-section {
+    padding: 40px 0 20px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-badge {
+    color: #F5A65B;
+    font-weight: 700;
+    letter-spacing: 1px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.section-title {
+    font-size: 42px;
+    font-weight: 800;
+    color: #2D1B0F;
+    margin: 12px 0 8px;
+}
+
+.section-title span {
+    color: #F5A65B;
+}
+
+.section-desc {
+    color: #7A624C;
+    font-size: 16px;
+}
+
+.team-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+}
+
+.team-card {
+    background: linear-gradient(135deg, #FFF9F2, #FFF5EA);
+    border-radius: 24px;
+    padding: 35px 25px;
+    text-align: center;
+    width: 260px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(245, 166, 91, 0.2);
+}
+
+.team-card:hover {
+    transform: translateY(-8px);
+    border-color: #F5A65B;
+    box-shadow: 0 20px 35px rgba(245, 166, 91, 0.12);
+}
+
+.team-icon i {
+    font-size: 80px;
+    color: #F5A65B;
+    margin-bottom: 18px;
+}
+
+.team-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2D1B0F;
+    margin-bottom: 8px;
+}
+
+.team-role {
+    display: inline-block;
+    background: white;
+    color: #E87A1E;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
+.team-card p {
+    color: #6B5240;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 18px;
+}
+
+.team-social {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.team-social i {
+    font-size: 16px;
+    color: #8B6B50;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.team-social i:hover {
+    color: #F5A65B;
+    transform: translateY(-2px);
+}
+
+/* ===== VALUES SECTION ===== */
+.values-section {
+    padding: 20px 0 40px;
+}
+
+.values-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    padding: 20px 0;
+}
+
+.value-card {
+    background: linear-gradient(135deg, #FFF9F2, #FFF5EA);
+    padding: 35px 25px;
+    border-radius: 24px;
+    text-align: center;
+    width: 240px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(245, 166, 91, 0.2);
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+    border-color: #F5A65B;
+    box-shadow: 0 15px 30px rgba(245, 166, 91, 0.1);
+}
+
+.value-card i {
+    font-size: 48px;
+    color: #F5A65B;
+    margin-bottom: 16px;
+}
+
+.value-card h4 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2D1B0F;
+    margin-bottom: 12px;
+}
+
+.value-card p {
+    font-size: 13px;
+    color: #6B5240;
+    line-height: 1.5;
+}
+
+/* ===== CONTACT CTA (Same as homepage) ===== */
+.contact-cta {
+    background: linear-gradient(135deg, #FFF9F2, #FFF5EA);
+    border-radius: 32px;
+    border: 1px solid rgba(245, 166, 91, 0.3);
+    padding: 50px;
+    text-align: center;
+    margin: 40px auto 60px;
+    transition: all 0.3s ease;
+    max-width: 900px;
+}
+
+.contact-cta:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 35px rgba(245, 166, 91, 0.2);
+}
+
+.cta-content i {
+    font-size: 56px;
+    color: #E87A1E;
+    margin-bottom: 20px;
+}
+
+.cta-content h3 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #2D1B0F;
+    margin-bottom: 12px;
+}
+
+.cta-content p {
+    color: #6B5240;
+    margin-bottom: 24px;
+}
+
+.cta-btn {
+    background: linear-gradient(135deg, #F5A65B, #E87A1E);
+    color: white;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.2s;
+    text-decoration: none;
+}
+
+.cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.cta-btn i{
+    color: white;
+}
+
+/* ===== FOOTER ===== */
+.full-width-footer {
+    width: 100%;
+    background: #FEF3E4;
+    padding: 24px 0;
+    margin-top: 20px;
+}
+
+.footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 40px;
+    text-align: center;
+}
+
+.full-width-footer p {
+    font-size: 14px;
+    color: #2D1B0F;
+    letter-spacing: 0.3px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+    .nav-container { padding: 20px 24px; }
+    .main-container { padding: 0 24px; }
+    .footer-container { padding: 0 24px; }
+    .about-hero h1 { font-size: 44px; }
+    .section-title { font-size: 36px; }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    .mobile-menu {
+        display: block;
+    }
+    .about-hero { padding: 40px 0 20px; }
+    .about-hero h1 { font-size: 36px; }
+    .mission-card, .vision-card { padding: 30px 20px; }
+    .mission-card h3, .vision-card h3 { font-size: 24px; }
+    .about-system { padding: 30px 20px; }
+    .section-title { font-size: 32px; }
+    .team-card { width: 100%; max-width: 280px; }
+    .value-card { width: 100%; max-width: 260px; }
+    .contact-cta { padding: 40px 24px; margin: 30px 0 40px; }
+    .cta-content h3 { font-size: 28px; }
+}
+
+@media (min-width: 769px) {
+    .nav-links {
+        display: flex !important;
+    }
+    .mobile-menu {
+        display: none !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-hero h1 { font-size: 28px; }
+    .nav-actions { display: none; }
+    .section-title { font-size: 28px; }
+    .cta-content h3 { font-size: 24px; }
+}
