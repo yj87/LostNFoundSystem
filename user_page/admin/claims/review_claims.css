@@ -23,7 +23,7 @@
 
 .card-header i {
     font-size: 18px;
-    color: #42a5f5;
+    color: #fa8a9c;
 }
 
 .card-header h3 {
@@ -86,13 +86,13 @@
 
 /* Reference Card */
 .reference-card {
-    border-left: 4px solid #42a5f5;
-    background: #f5f9ff;
+    border-left: 4px solid #fa8a9c;
+    background: #fff5f6;
     margin-top: 20px;
 }
 
 .badge-reference {
-    background: #42a5f5;
+    background: #fa8a9c;
     color: white;
     font-size: 10px;
     padding: 2px 10px;
@@ -294,14 +294,14 @@
 .icon-tag {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+    background: linear-gradient(135deg, #fa8a9c 0%, #f5babe 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-size: 20px;
-    box-shadow: 0 2px 8px rgba(66,165,245,0.3);
+    box-shadow: 0 2px 8px rgba(250,138,156,0.3);
 }
 
 .found-item-info {
@@ -407,8 +407,8 @@
 
 .form-group textarea:focus {
     outline: none;
-    border-color: #42a5f5;
-    box-shadow: 0 0 0 2px rgba(66,165,245,0.2);
+    border-color: #fa8a9c;
+    box-shadow: 0 0 0 2px rgba(250,138,156,0.2);
 }
 
 .decision-buttons {
@@ -481,7 +481,7 @@
 
 .loading i {
     font-size: 48px;
-    color: #42a5f5;
+    color: #fa8a9c;
 }
 
 .alert {
@@ -525,7 +525,7 @@
     background: #dc3545;
 }
 
-/* MODAL POPUP STYLES - WORKING */
+/* MODAL POPUP STYLES */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -571,7 +571,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fff8e1;
+    background: #fff5f6;
     border-radius: 12px 12px 0 0;
 }
 

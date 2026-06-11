@@ -5,7 +5,7 @@ let currentFilters = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
-    loadStaffInfo();
+    loadAdminInfo();
     loadClaims();
     setupEventListeners();
 });
@@ -43,7 +43,7 @@ function resetFilters() {
     applyFilters();
 }
 
-async function loadStaffInfo() {
+async function loadAdminInfo() {
     try {
         const response = await fetch('view_claims.php?action=user');
         const data = await response.json();
@@ -52,7 +52,7 @@ async function loadStaffInfo() {
             if (userAvatar) userAvatar.textContent = data.user_avatar;
         }
     } catch (error) {
-        console.error('Error loading staff info:', error);
+        console.error('Error loading admin info:', error);
     }
 }
 
@@ -80,11 +80,11 @@ async function loadClaims() {
             renderPagination(data);
             claimsContainer.style.display = 'block';
         } else {
-            tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Failed to load claims</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Failed to load claims</td>';
         }
     } catch (error) {
         console.error('Error:', error);
-        tableBody.innerHTML = '<tr><td colspan="7" class="text-center" style="color: red;">Network error occurred</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="8" class="text-center" style="color: red;">Network error occurred</td></tr>';
     } finally {
         loadingDiv.style.display = 'none';
     }
@@ -106,7 +106,7 @@ function renderClaimsTable(claims) {
     const tableBody = document.getElementById('claimsTableBody');
     
     if (!claims || claims.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No claims found</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="8" class="text-center">No claims found</td></tr>';
         return;
     }
     
@@ -136,12 +136,16 @@ function renderClaimsTable(claims) {
                 <td>${claim.claim_id}</td>
                 <td><strong>${escapeHtml(claim.item_name)}</strong> ${lostReportBadge}</td>
                 <td>${escapeHtml(claim.claimant_name)}</td>
+                <td>${escapeHtml(claim.staff_name)}</td>
                 <td>${escapeHtml(claim.location_found)}</td>
                 <td>${claim.submitted_at}</td>
                 <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                <td>
+                <td class="action-buttons">
                     <button class="btn-view" onclick="viewClaimDetails(${claim.claim_id})">
                         <i class="fas fa-eye"></i> View
+                    </button>
+                    <button class="btn-delete" onclick="deleteClaim(${claim.claim_id}, '${escapeHtml(claim.item_name)}')">
+                        <i class="fas fa-trash"></i> Delete
                     </button>
                 </td>
             </tr>
@@ -254,6 +258,10 @@ function showClaimModal(claim) {
             <div class="detail-value">${escapeHtml(claim.claimant_name)} (${escapeHtml(claim.claimant_email)})</div>
         </div>
         <div class="detail-row">
+            <div class="detail-label">Staff Owner</div>
+            <div class="detail-value">${escapeHtml(claim.staff_name)}</div>
+        </div>
+        <div class="detail-row">
             <div class="detail-label">Status</div>
             <div class="detail-value"><span class="status-badge ${statusClass}">${statusText}</span></div>
         </div>
@@ -289,6 +297,31 @@ function showClaimModal(claim) {
 function closeModal() {
     const modal = document.getElementById('claimModal');
     modal.classList.remove('active');
+}
+
+async function deleteClaim(claimId, itemName) {
+    if (confirm(`Are you sure you want to delete the claim for "${itemName}"? This action cannot be undone.`)) {
+        try {
+            const formData = new FormData();
+            formData.append('claim_id', claimId);
+            
+            const response = await fetch('delete_claims.php', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+                alert('Claim deleted successfully');
+                loadClaims();
+            } else {
+                alert('Failed to delete: ' + (data.message || 'Unknown error'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Network error occurred');
+        }
+    }
 }
 
 function escapeHtml(str) {

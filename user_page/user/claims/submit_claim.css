@@ -383,6 +383,166 @@
     background: #dc3545;
 }
 
+/* ========== SELECT BAR ========== */
+.form-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-family: inherit;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2390CF8E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-size: 14px;
+}
+
+.form-group select:hover {
+    border-color: #90CF8E;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #90CF8E;
+    box-shadow: 0 0 0 3px rgba(144,207,142,0.15);
+}
+
+.form-group select option {
+    padding: 12px;
+    font-size: 13px;
+}
+
+.form-group select optgroup {
+    font-weight: 600;
+    color: #90CF8E;
+    background: #f8f9fa;
+    padding: 8px;
+}
+
+.form-group select option:disabled {
+    color: #adb5bd;
+    font-style: italic;
+    background: #f8f9fa;
+}
+
+/* ========== LOST REPORT PREVIEW ========== */
+.lost-report-preview {
+    margin-top: 16px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    overflow: hidden;
+    display: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.lost-report-preview.show {
+    display: block;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.lost-report-preview .preview-header {
+    background: linear-gradient(135deg, #90CF8E 0%, #d9f8ab 100%);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.lost-report-preview .preview-header i {
+    font-size: 16px;
+    color: #2b5a2a;
+}
+
+.lost-report-preview .preview-header span {
+    font-weight: 600;
+    font-size: 13px;
+    color: #2b5a2a;
+    letter-spacing: 0.3px;
+}
+
+.lost-report-preview .preview-body {
+    padding: 16px;
+}
+
+.lost-report-preview .preview-row {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #e9ecef;
+}
+
+.lost-report-preview .preview-row:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.lost-report-preview .preview-icon {
+    width: 28px;
+    color: #90CF8E;
+    font-size: 14px;
+    text-align: center;
+}
+
+.lost-report-preview .preview-label {
+    width: 100px;
+    font-weight: 500;
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.lost-report-preview .preview-value {
+    flex: 1;
+    color: #2b2d42;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* Status badge in preview */
+.lost-report-preview .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: #fff3cd;
+    color: #856404;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+/* Empty state preview */
+.lost-report-preview.empty .preview-body {
+    text-align: center;
+    color: #6c757d;
+    font-size: 13px;
+    padding: 20px;
+}
+
+.lost-report-preview.empty .preview-body i {
+    font-size: 24px;
+    margin-bottom: 8px;
+    display: block;
+    color: #dee2e6;
+}
+
 @keyframes slideUp {
     from {
         transform: translateY(20px);

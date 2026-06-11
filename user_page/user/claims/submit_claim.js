@@ -1,4 +1,5 @@
 let itemData = null;
+let lostReportsList = [];
 const urlParams = new URLSearchParams(window.location.search);
 const itemId = urlParams.get('item_id');
 
@@ -12,22 +13,97 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     loadItemDetails();
+    loadLostReports();
     
     // Attach event listeners
     const cancelBtn = document.getElementById('cancelBtn');
     const confirmBtn = document.getElementById('confirmContinueBtn');
     const backToStep1Btn = document.getElementById('backToStep1Btn');
-    const reviewBtn = document.getElementById('reviewClaimBtn');
+    const nextToDetailsBtn = document.getElementById('nextToDetailsBtn');
     const backToStep2Btn = document.getElementById('backToStep2Btn');
+    const reviewBtn = document.getElementById('reviewClaimBtn');
+    const backToStep3Btn = document.getElementById('backToStep3Btn');
     const submitBtn = document.getElementById('submitBtn');
     
     if (cancelBtn) cancelBtn.onclick = goBack;
     if (confirmBtn) confirmBtn.onclick = goToStep2;
     if (backToStep1Btn) backToStep1Btn.onclick = goToStep1;
-    if (reviewBtn) reviewBtn.onclick = goToStep3;
+    if (nextToDetailsBtn) nextToDetailsBtn.onclick = goToStep3;
     if (backToStep2Btn) backToStep2Btn.onclick = goToStep2;
+    if (reviewBtn) reviewBtn.onclick = goToStep4;
+    if (backToStep3Btn) backToStep3Btn.onclick = goToStep3;
     if (submitBtn) submitBtn.onclick = submitClaim;
 });
+
+async function loadLostReports() {
+    try {
+        const response = await fetch('submit_claim.php?action=get_lost_reports');
+        const data = await response.json();
+        
+        if (data.success && data.reports.length > 0) {
+            lostReportsList = data.reports;
+            populateLostReportsDropdown(data.reports);
+            setupLostReportPreview();
+        }
+    } catch (error) {
+        console.error('Error loading lost reports:', error);
+    }
+}
+
+function populateLostReportsDropdown(reports) {
+    const select = document.getElementById('lost_report_id');
+    if (!select) return;
+    
+    let options = '<option value="">No, I haven\'t reported it as lost</option>';
+    options += '<option value="new" disabled>────────── My Lost Reports ──────────</option>';
+    
+    for (let i = 0; i < reports.length; i++) {
+        const report = reports[i];
+        options += `<option value="${report.report_id}">📌 ${escapeHtml(report.item_name)} - Lost on ${report.date_lost} at ${escapeHtml(report.location_lost)}</option>`;
+    }
+    
+    select.innerHTML = options;
+}
+
+function setupLostReportPreview() {
+    const select = document.getElementById('lost_report_id');
+    const previewDiv = document.getElementById('lostReportPreview');
+    const previewContent = document.getElementById('lostReportPreviewContent');
+    
+    if (!select) return;
+    
+    select.addEventListener('change', function() {
+        const selectedValue = this.value;
+        const selectedReport = lostReportsList.find(r => r.report_id == selectedValue);
+        
+        if (selectedReport) {
+            
+            previewContent.innerHTML = `
+                <div class="preview-row">
+                    <div class="preview-icon"><i class="fas fa-tag"></i></div>
+                    <div class="preview-label">Item Name</div>
+                    <div class="preview-value"><strong>${escapeHtml(selectedReport.item_name)}</strong></div>
+                </div>
+                <div class="preview-row">
+                    <div class="preview-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="preview-label">Location Lost</div>
+                    <div class="preview-value">${escapeHtml(selectedReport.location_lost)}</div>
+                </div>
+                <div class="preview-row">
+                    <div class="preview-icon"><i class="fas fa-calendar"></i></div>
+                    <div class="preview-label">Date Lost</div>
+                    <div class="preview-value">${escapeHtml(selectedReport.date_lost)}</div>
+                </div>
+            `;
+            previewDiv.classList.remove('empty');
+            previewDiv.classList.add('show');
+            document.getElementById('lost_report_id_hidden').value = selectedValue;
+        } else {
+            previewDiv.classList.remove('show');
+            document.getElementById('lost_report_id_hidden').value = '';
+        }
+    });
+}
 
 // ========== LOAD ITEM DETAILS ==========
 async function loadItemDetails() {
@@ -47,7 +123,6 @@ async function loadItemDetails() {
             document.getElementById('item_id').value = data.item.item_id;
             formContainer.style.display = 'block';
             
-            // Activate step 1 indicator
             document.getElementById('step1Indicator').classList.add('active');
         } else {
             showError(data.message || 'Failed to load item details');
@@ -106,10 +181,12 @@ function goToStep1() {
     document.getElementById('step1').classList.add('active');
     document.getElementById('step2').classList.remove('active');
     document.getElementById('step3').classList.remove('active');
+    document.getElementById('step4').classList.remove('active');
     
     document.getElementById('step1Indicator').classList.add('active');
     document.getElementById('step2Indicator').classList.remove('active');
     document.getElementById('step3Indicator').classList.remove('active');
+    document.getElementById('step4Indicator').classList.remove('active');
 }
 
 function goToStep2() {
@@ -121,15 +198,31 @@ function goToStep2() {
     document.getElementById('step1').classList.remove('active');
     document.getElementById('step2').classList.add('active');
     document.getElementById('step3').classList.remove('active');
+    document.getElementById('step4').classList.remove('active');
     
     document.getElementById('step1Indicator').classList.remove('active');
     document.getElementById('step2Indicator').classList.add('active');
     document.getElementById('step3Indicator').classList.remove('active');
+    document.getElementById('step4Indicator').classList.remove('active');
 }
 
 function goToStep3() {
+    document.getElementById('step1').classList.remove('active');
+    document.getElementById('step2').classList.remove('active');
+    document.getElementById('step3').classList.add('active');
+    document.getElementById('step4').classList.remove('active');
+    
+    document.getElementById('step1Indicator').classList.remove('active');
+    document.getElementById('step2Indicator').classList.remove('active');
+    document.getElementById('step3Indicator').classList.add('active');
+    document.getElementById('step4Indicator').classList.remove('active');
+}
+
+function goToStep4() {
     const ownership_proof = document.getElementById('ownership_proof').value.trim();
     const identifying_details = document.getElementById('identifying_details').value.trim();
+    const lostReportId = document.getElementById('lost_report_id').value;
+    const selectedLostReport = lostReportsList.find(r => r.report_id == lostReportId);
     
     if (!ownership_proof) {
         showToast('Please provide proof of ownership', 'error');
@@ -154,16 +247,29 @@ function goToStep3() {
         `;
     }
     
+    // Update lost report review section
+    if (selectedLostReport) {
+        document.getElementById('reviewLostReport').innerHTML = `
+            <div class="review-row"><strong>Item Name:</strong> ${escapeHtml(selectedLostReport.item_name)}</div>
+            <div class="review-row"><strong>Location Lost:</strong> ${escapeHtml(selectedLostReport.location_lost)}</div>
+            <div class="review-row"><strong>Date Lost:</strong> ${escapeHtml(selectedLostReport.date_lost)}</div>
+        `;
+    } else {
+        document.getElementById('reviewLostReport').innerHTML = `<div class="review-row">No lost report linked. You haven't reported this item as lost before.</div>`;
+    }
+    
     document.getElementById('reviewOwnershipProof').innerHTML = `<div class="review-text">${escapeHtml(ownership_proof)}</div>`;
     document.getElementById('reviewIdentifyingDetails').innerHTML = `<div class="review-text">${escapeHtml(identifying_details)}</div>`;
     
     document.getElementById('step1').classList.remove('active');
     document.getElementById('step2').classList.remove('active');
-    document.getElementById('step3').classList.add('active');
+    document.getElementById('step3').classList.remove('active');
+    document.getElementById('step4').classList.add('active');
     
     document.getElementById('step1Indicator').classList.remove('active');
     document.getElementById('step2Indicator').classList.remove('active');
-    document.getElementById('step3Indicator').classList.add('active');
+    document.getElementById('step3Indicator').classList.remove('active');
+    document.getElementById('step4Indicator').classList.add('active');
 }
 
 function goBack() {
@@ -174,6 +280,7 @@ function goBack() {
 async function submitClaim() {
     const ownership_proof = document.getElementById('ownership_proof').value.trim();
     const identifying_details = document.getElementById('identifying_details').value.trim();
+    const lost_report_id = document.getElementById('lost_report_id_hidden').value;
     
     const submitBtn = document.getElementById('submitBtn');
     submitBtn.disabled = true;
@@ -184,6 +291,7 @@ async function submitClaim() {
     formData.append('item_id', document.getElementById('item_id').value);
     formData.append('ownership_proof', ownership_proof);
     formData.append('identifying_details', identifying_details);
+    formData.append('lost_report_id', lost_report_id);
     
     try {
         const response = await fetch('submit_claim.php', {

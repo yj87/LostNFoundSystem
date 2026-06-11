@@ -1,13 +1,13 @@
 <?php
 require_once '../../../config/db_connect.php';
 require_once '../../../includes/auth_check.php';
-$required_role = 'staff';
+$required_role = 'admin';
 require_once '../../../includes/role_check.php';
 
 header('Content-Type: application/json');
 
-$staff_id = $_SESSION['user_id'];
-$staff_name = $_SESSION['user_name'];
+$admin_id = $_SESSION['user_id'];
+$admin_name = $_SESSION['user_name'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $claim_id = intval($_POST['claim_id']);
@@ -22,11 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $check_query = "SELECT c.*, f.user_id as owner_id, f.item_id, c.lost_report_id
                     FROM claims c
                     JOIN found_items f ON c.item_id = f.item_id
-                    WHERE c.claim_id = $claim_id AND f.user_id = $staff_id";
+                    WHERE c.claim_id = $claim_id";
     $check_result = mysqli_query($conn, $check_query);
     
     if (mysqli_num_rows($check_result) == 0) {
-        echo json_encode(['success' => false, 'message' => 'Claim not found or you do not have permission']);
+        echo json_encode(['success' => false, 'message' => 'Claim not found']);
         exit();
     }
     
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_status = $decision;
     $query = "UPDATE claims SET 
               claim_status = '$new_status',
-              reviewed_by = $staff_id,
+              reviewed_by = $admin_id,
               reviewed_at = NOW(),
               review_note = '$review_note'
               WHERE claim_id = $claim_id";

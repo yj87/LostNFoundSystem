@@ -64,8 +64,8 @@
 .filter-group input:focus,
 .filter-group select:focus {
     outline: none;
-    border-color: #42a5f5;
-    box-shadow: 0 0 0 2px rgba(66,165,245,0.2);
+    border-color: #fa8a9c;
+    box-shadow: 0 0 0 2px rgba(250,138,156,0.2);
 }
 
 .filter-actions {
@@ -86,12 +86,12 @@
 }
 
 .btn-primary {
-    background: #42a5f5;
-    color: white;
+    background: #F5D3D6;
+    color: #2b2d42;
 }
 
 .btn-primary:hover {
-    background: #1e88e5;
+    background: #e8b8bd;
 }
 
 .btn-outline {
@@ -102,7 +102,7 @@
 
 .btn-outline:hover {
     background: #f8f9fa;
-    border-color: #42a5f5;
+    border-color: #fa8a9c;
 }
 
 /* Claims Table */
@@ -127,13 +127,13 @@
 }
 
 .claims-table th {
-    background: #e3f2fd;
+    background: #faf0f1;
     font-weight: 600;
     color: #2b2d42;
 }
 
 .claims-table tr:hover {
-    background: #f5f7fa;
+    background: #fefaf9;
 }
 
 .status-badge {
@@ -175,9 +175,16 @@
     margin-right: 3px;
 }
 
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
 .btn-view {
-    background: #42a5f5;
-    color: white;
+    background: #F5D3D6;
+    color: #2b2d42;
     padding: 5px 12px;
     border: none;
     border-radius: 6px;
@@ -186,7 +193,21 @@
 }
 
 .btn-view:hover {
-    background: #1e88e5;
+    background: #e8b8bd;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+    padding: 5px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.btn-delete:hover {
+    background: #c82333;
 }
 
 .text-center {
@@ -209,15 +230,14 @@
 
 .pagination-controls button {
     padding: 6px 12px;
-    background: #e3f2fd;
+    background: #faf0f1;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .pagination-controls button:hover {
-    background: #42a5f5;
-    color: white;
+    background: #F5D3D6;
 }
 
 .pagination-controls button:disabled {
@@ -238,7 +258,7 @@
 
 .loading i {
     font-size: 48px;
-    color: #42a5f5;
+    color: #fa8a9c;
 }
 
 /* Modal */
@@ -302,8 +322,8 @@
 }
 
 .btn-review {
-    background: #42a5f5;
-    color: white;
+    background: #F5D3D6;
+    color: #2b2d42;
     padding: 8px 20px;
     border: none;
     border-radius: 6px;
@@ -313,7 +333,7 @@
 }
 
 .btn-review:hover {
-    background: #1e88e5;
+    background: #e8b8bd;
 }
 
 .detail-row {
@@ -339,21 +359,20 @@
     .filter-bar {
         flex-direction: column;
     }
-    
     .filter-group {
         width: 100%;
     }
-    
     .claims-table th,
     .claims-table td {
         padding: 8px;
         font-size: 12px;
     }
-    
+    .action-buttons {
+        flex-direction: column;
+    }
     .detail-row {
         flex-direction: column;
     }
-    
     .detail-label {
         width: 100%;
         margin-bottom: 5px;

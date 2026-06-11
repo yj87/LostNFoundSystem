@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     
-    loadStaffInfo();
+    loadAdminInfo();
     loadClaimDetails();
     setupEventListeners();
 });
@@ -52,7 +52,7 @@ function setupEventListeners() {
     }
 }
 
-async function loadStaffInfo() {
+async function loadAdminInfo() {
     try {
         const response = await fetch('view_claims.php?action=user');
         const data = await response.json();
@@ -61,7 +61,7 @@ async function loadStaffInfo() {
             if (userAvatar) userAvatar.textContent = data.user_avatar;
         }
     } catch (error) {
-        console.error('Error loading staff info:', error);
+        console.error('Error loading admin info:', error);
     }
 }
 
@@ -142,6 +142,13 @@ function displayClaimDetails(claim) {
         <div class="detail-item">
             <div class="detail-label">Phone Number</div>
             <div class="detail-value">${escapeHtml(claim.claimant_phone || '-')}</div>
+        </div>
+    `;
+    
+    document.getElementById('staffDetails').innerHTML = `
+        <div class="detail-item">
+            <div class="detail-label">Staff Name</div>
+            <div class="detail-value">${escapeHtml(claim.staff_name)}</div>
         </div>
     `;
     

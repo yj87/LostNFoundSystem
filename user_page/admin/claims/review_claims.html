@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff - Review Claims</title>
-    <link rel="stylesheet" href="../staff_dashboard.css">
+    <title>Admin - Review Claims</title>
+    <link rel="stylesheet" href="../admin_dashboard.css">
     <link rel="stylesheet" href="review_claims.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -14,7 +14,7 @@
             <div class="sidebar-header">
                 <div class="logo">🔍</div>
                 <h3>Lost & Found</h3>
-                <p>Staff Panel</p>
+                <p>Admin Panel</p>
             </div>
             <nav>
                 <div class="nav-group">
@@ -25,28 +25,42 @@
                     </a>
                 </div>
                 <div class="nav-group">
-                    <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/add_found_item.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
-                        <span>Add Found Item</span>
+                    <div class="nav-group-title">User Management</div>
+                    <a href="../user_management/manage.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-users"></i></span>
+                        <span>View Users</span>
                     </a>
-                    <a href="../found_item/staff_found_items.html" class="nav-item">
+                    <a href="../user_management/add.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-user-plus"></i></span>
+                        <span>Add User</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Found Items</div>
+                    <a href="../found_item/admin_found_items.html" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
-                        <span>My Found Items</span>
+                        <span>View All Items</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Lost Reports</div>
+                    <a href="../lost_reports/view_lost_reports.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>View Lost Reports</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
                     <a href="view_claims.html" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
-                        <span>View Claims</span>
+                        <span>View All Claims</span>
                     </a>
                 </div>
                 <div class="nav-group">
-                    <div class="nav-group-title">Lost Reports</div>
-                    <a href="../lost_reports/view_lost_items.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-search"></i></span>
-                        <span>View Lost Items</span>
+                    <div class="nav-group-title">Reports & Statistics</div>
+                    <a href="../reports.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-chart-line"></i></span>
+                        <span>Statistics</span>
                     </a>
                 </div>
                 <div class="nav-group">
@@ -73,7 +87,7 @@
                 </div>
                 <div class="user-dropdown">
                     <div class="user-info-wrapper" onclick="toggleUserDropdown()">
-                        <div class="user-avatar" id="userAvatar">S</div>
+                        <div class="user-avatar" id="userAvatar">A</div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
                         <a href="../../profile/profile.html">
@@ -90,7 +104,7 @@
             <article class="content-area">
                 <div class="page-header">
                     <h1>Review Claim</h1>
-                    <p>Compare the claimant's evidence with the found item details</p>
+                    <p>Review and make a decision on this claim</p>
                 </div>
 
                 <div id="loadingDiv" class="loading" style="display: none;">
@@ -133,7 +147,18 @@
                         </div>
                     </div>
 
-                    <!-- CARD 3: Linked Lost Report -->
+                    <!-- CARD 3: Staff Who Uploaded the Item -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-user-tie"></i>
+                            <h3>Staff Who Uploaded this Item</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="detail-grid" id="staffDetails"></div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 4: Linked Lost Report -->
                     <div id="lostReportCard" class="card lost-report-card" style="display: none;">
                         <div class="card-header">
                             <i class="fas fa-link"></i>
@@ -149,7 +174,7 @@
                         </div>
                     </div>
 
-                    <!-- CARD 4: Side-by-Side Comparison -->
+                    <!-- CARD 5: Side-by-Side Comparison -->
                     <div class="comparison-container">
                         <div class="comparison-col">
                             <div class="card comparison-card">
@@ -191,7 +216,7 @@
                         </div>
                     </div>
 
-                    <!-- CARD 5: Make Decision -->
+                    <!-- CARD 6: Make Decision -->
                     <div class="card decision-card">
                         <div class="card-header">
                             <i class="fas fa-gavel"></i>
@@ -229,16 +254,14 @@
         </div>
     </div>
 
-    <!-- MODAL: Lost Report Details Popup -->
+    <!-- Lost Report Modal Popup -->
     <div id="lostReportModal" class="modal-overlay">
         <div class="modal-container">
             <div class="modal-header">
                 <h4><i class="fas fa-history"></i> Lost Report Details</h4>
                 <button class="modal-close" onclick="closeLostReportModal()">&times;</button>
             </div>
-            <div class="modal-body" id="lostReportModalBody">
-                <div style="text-align:center; padding:20px;">Loading...</div>
-            </div>
+            <div class="modal-body" id="lostReportModalBody"></div>
             <div class="modal-footer">
                 <button class="btn btn-sm" onclick="closeLostReportModal()">Close</button>
             </div>
