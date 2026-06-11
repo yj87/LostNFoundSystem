@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once '../../../config/db_connect.php';
 require_once '../../../includes/auth_check.php';
-$required_role = 'admin';
+$required_role = 'user';
 require_once '../../../includes/role_check.php';
 
 ob_clean();

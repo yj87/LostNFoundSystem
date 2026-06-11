@@ -79,10 +79,12 @@ function escapeHtml(str) {
 async function loadItems() {
     const search = document.getElementById('searchInput').value.trim();
     const status = document.getElementById('statusFilter').value;
+    const category = document.getElementById('categoryFilter').value;
 
     let url = 'get_staff_items.php?';
     if (search) url += `search=${encodeURIComponent(search)}&`;
-    if (status) url += `status=${encodeURIComponent(status)}`;
+    if (status) url += `status=${encodeURIComponent(status)}&`;
+    if (category) url += `category=${encodeURIComponent(category)}`;
 
     const tbody = document.getElementById('staffItemsTable');
     tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;"><i class="fas fa-spinner fa-spin"></i> Loading…</td></tr>';
@@ -137,5 +139,26 @@ async function loadItems() {
     }
 }
 
+async function loadCategories() {
+    try {
+        const res = await fetch('get_categories.php', { credentials: 'same-origin' });
+        const result = await res.json();
+        if (result.success) {
+            const select = document.getElementById('categoryFilter');
+            result.data.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.category_id;
+                opt.textContent = cat.category_name;
+                select.appendChild(opt);
+            });
+        }
+    } catch (err) {
+        console.error('Error loading categories:', err);
+    }
+}
+
 // Load and render items table
-document.addEventListener('DOMContentLoaded', loadItems);
+document.addEventListener('DOMContentLoaded', () => {
+    loadCategories();
+    loadItems();
+});

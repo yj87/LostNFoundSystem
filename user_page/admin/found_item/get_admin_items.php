@@ -11,6 +11,8 @@ header('Content-Type: application/json');
 $search = isset($_GET['search']) ? mysqli_real_escape_string($conn, trim($_GET['search'])) : '';
 // Optional status filter
 $status = isset($_GET['status']) ? mysqli_real_escape_string($conn, trim($_GET['status'])) : '';
+// Optional category filter
+$category = isset($_GET['category']) ? mysqli_real_escape_string($conn, trim($_GET['category'])) : '';
 
 $where_clauses = [];
 if (!empty($search)) {
@@ -18,6 +20,9 @@ if (!empty($search)) {
 }
 if (!empty($status)) {
     $where_clauses[] = "f.found_status = '$status'";
+}
+if (!empty($category)) {
+    $where_clauses[] = "f.category_id = '$category'";
 }
 
 $where_sql = count($where_clauses) > 0 ? 'WHERE ' . implode(' AND ', $where_clauses) : '';

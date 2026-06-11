@@ -1,12 +1,12 @@
 // ── Sidebar & UI helpers ──────────────────────────────────
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const body    = document.body;
-    let overlay   = document.querySelector('.sidebar-overlay');
+    const body = document.body;
+    let overlay = document.querySelector('.sidebar-overlay');
     if (!overlay) {
-        overlay           = document.createElement('div');
+        overlay = document.createElement('div');
         overlay.className = 'sidebar-overlay';
-        overlay.onclick   = () => {
+        overlay.onclick = () => {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
             body.style.overflow = '';
@@ -41,11 +41,11 @@ function escapeHtml(str) {
 
 // Close dropdown / sidebar on outside click
 document.addEventListener('click', function (e) {
-    const dropdown    = document.getElementById('userDropdownMenu');
-    const wrapper     = document.querySelector('.user-info-wrapper');
-    const sidebar     = document.getElementById('sidebar');
-    const menuToggle  = document.querySelector('.menu-toggle');
-    const overlay     = document.querySelector('.sidebar-overlay');
+    const dropdown = document.getElementById('userDropdownMenu');
+    const wrapper = document.querySelector('.user-info-wrapper');
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.querySelector('.menu-toggle');
+    const overlay = document.querySelector('.sidebar-overlay');
 
     if (dropdown && wrapper && dropdown.classList.contains('show')) {
         if (!wrapper.contains(e.target) && !dropdown.contains(e.target))
@@ -72,11 +72,11 @@ window.addEventListener('resize', () => {
 
 // ── Toast ─────────────────────────────────────────────────
 function showToast(message, type = 'success') {
-    const toast   = document.getElementById('toast');
-    const icon    = document.getElementById('toastIcon');
-    const msgEl   = document.getElementById('toastMessage');
+    const toast = document.getElementById('toast');
+    const icon = document.getElementById('toastIcon');
+    const msgEl = document.getElementById('toastMessage');
     toast.className = `toast toast-${type} show`;
-    icon.className  = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
     msgEl.textContent = message;
     setTimeout(() => toast.classList.remove('show'), 3500);
 }
@@ -98,14 +98,14 @@ function closeDeleteModal() {
 async function confirmDelete() {
     if (!pendingDeleteId) return;
     const btn = document.getElementById('confirmDeleteBtn');
-    btn.disabled   = true;
-    btn.innerHTML  = '<i class="fas fa-spinner fa-spin"></i> Deleting…';
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting…';
 
     try {
-        const res    = await fetch('admin_delete_found_item.php', {
-            method  : 'POST',
-            headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body    : `item_id=${pendingDeleteId}`
+        const res = await fetch('admin_delete_found_item.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `item_id=${pendingDeleteId}`
         });
         const result = await res.json();
         if (result.success) {
@@ -118,7 +118,7 @@ async function confirmDelete() {
     } catch (err) {
         showToast('Network error. Please try again.', 'error');
     } finally {
-        btn.disabled  = false;
+        btn.disabled = false;
         btn.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
     }
 }
@@ -134,16 +134,18 @@ function handleSearch() {
 async function loadItems() {
     const search = document.getElementById('searchInput').value.trim();
     const status = document.getElementById('statusFilter').value;
+    const category = document.getElementById('categoryFilter').value;
 
     let url = 'get_admin_items.php?';
     if (search) url += `search=${encodeURIComponent(search)}&`;
-    if (status) url += `status=${encodeURIComponent(status)}`;
+    if (status) url += `status=${encodeURIComponent(status)}&`;
+    if (category) url += `category=${encodeURIComponent(category)}`;
 
     const tbody = document.getElementById('adminItemsTable');
     tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:24px;"><i class="fas fa-spinner fa-spin"></i> Loading…</td></tr>';
 
     try {
-        const res    = await fetch(url, { credentials: 'same-origin' });
+        const res = await fetch(url, { credentials: 'same-origin' });
         const result = await res.json();
 
         const summary = document.getElementById('resultsSummary');
@@ -151,9 +153,9 @@ async function loadItems() {
         if (result.success && result.data.length > 0) {
             summary.textContent = `Showing ${result.data.length} item${result.data.length !== 1 ? 's' : ''}`;
             tbody.innerHTML = result.data.map((item, i) => {
-                const statusClass = item.found_status === 'claimed'   ? 'status-claimed'   :
-                                    item.found_status === 'pending'   ? 'status-pending'   :
-                                                                        'status-unclaimed';
+                const statusClass = item.found_status === 'claimed' ? 'status-claimed' :
+                    item.found_status === 'pending' ? 'status-pending' :
+                        'status-unclaimed';
                 const statusLabel = item.found_status
                     ? item.found_status.charAt(0).toUpperCase() + item.found_status.slice(1)
                     : 'Unknown';
@@ -197,5 +199,26 @@ async function loadItems() {
     }
 }
 
+async function loadCategories() {
+    try {
+        const res = await fetch('admin_get_categories.php', { credentials: 'same-origin' });
+        const result = await res.json();
+        if (result.success) {
+            const select = document.getElementById('categoryFilter');
+            result.data.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.category_id;
+                opt.textContent = cat.category_name;
+                select.appendChild(opt);
+            });
+        }
+    } catch (err) {
+        console.error('Error loading categories:', err);
+    }
+}
+
 // ── Init ──────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', loadItems);
+document.addEventListener('DOMContentLoaded', () => {
+    loadCategories();
+    loadItems();
+});

@@ -48,7 +48,7 @@
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="lost_reports/staff_view_lost.html" class="nav-item">
+                    <a href="../lost_reports/view_lost_items.html" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View Lost Items</span>
                     </a>
@@ -91,6 +91,9 @@
                         <input type="text" id="searchInput" placeholder="Search by name, location, description..."
                             oninput="handleSearch()">
                     </div>
+                    <select id="categoryFilter" onchange="handleSearch()">
+                        <option value="">All Categories</option>
+                    </select>
                     <select id="statusFilter" onchange="handleSearch()">
                         <option value="">All Statuses</option>
                         <option value="unclaimed">Unclaimed</option>

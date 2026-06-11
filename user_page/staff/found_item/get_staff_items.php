@@ -12,6 +12,8 @@ $user_id = $_SESSION['user_id'];
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 // status filter
 $status = isset($_GET['status']) ? trim($_GET['status']) : '';
+// category filter
+$category = isset($_GET['category']) ? trim($_GET['category']) : '';
 
 $where_clauses = ["f.user_id = ?"];
 $types = "i";
@@ -31,6 +33,12 @@ if (!empty($status)) {
     $where_clauses[] = "f.found_status = ?";
     $types .= "s";
     $params[] = $status;
+}
+
+if (!empty($category)) {
+    $where_clauses[] = "f.category_id = ?";
+    $types .= "s";
+    $params[] = $category;
 }
 
 $where_sql = implode(' AND ', $where_clauses);
