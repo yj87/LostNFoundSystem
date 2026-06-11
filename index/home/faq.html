@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>FAQ | Lost & Found System UTM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="faq.css">
+</head>
+<body>
+
+    <!-- Navigation Bar - Same as homepage -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <div class="brand-logo">
+                    <i class="fas fa-magnifying-glass"></i>
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h2 class="nav-brand">Lost<span>Find</span></h2>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="../first.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="faq.html" class="active">FAQ</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-login-nav" id="loginBtnNav">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button class="btn-register-nav" id="registerBtnNav">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+            <div class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTAINER - Same white container as homepage -->
+    <div class="main-container">
+        
+        <!-- FAQ Hero Section -->
+        <div class="faq-hero">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about our Lost & Found System</p>
+        </div>
+
+        <!-- FAQ Accordion Section -->
+        <div class="faq-section">
+            <div class="faq-container">
+                
+                <!-- General Questions -->
+                <div class="faq-category-group">
+                    <h2 class="category-title"><i class="fas fa-info-circle"></i> General Questions</h2>
+                    
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq1" class="faq-toggle">
+                        <label for="faq1" class="faq-question">
+                            <span>What is the Lost & Found System?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>The Lost & Found System is a centralized platform for Universiti Teknologi Malaysia (UTM) students and staff to report lost items and browse found belongings. Our mission is to help the UTM community reunite with their valuable possessions quickly and securely.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq2" class="faq-toggle">
+                        <label for="faq2" class="faq-question">
+                            <span>Is the service free to use?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>Yes! The Lost & Found System is completely free for all UTM students and staff. There are no hidden fees or charges for reporting lost items, browsing found items, or claiming your belongings.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq3" class="faq-toggle">
+                        <label for="faq3" class="faq-question">
+                            <span>Who can use this system?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>The system is exclusively available to current UTM students, faculty members, and staff. You need a valid UTM email address to register and access all features of the platform.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reporting Items -->
+                <div class="faq-category-group">
+                    <h2 class="category-title"><i class="fas fa-flag-checkered"></i> Reporting Found Items</h2>
+                    
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq4" class="faq-toggle">
+                        <label for="faq4" class="faq-question">
+                            <span>How do I report a found item?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>To report a found item, log into your account, click on "Report Found Item", fill in the item details including category, description, location found, and upload a photo if available. Submit the form and the item will be listed for the owner to find.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq5" class="faq-toggle">
+                        <label for="faq5" class="faq-question">
+                            <span>What information should I include when reporting?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>Please include as much detail as possible: item category (electronics, books, accessories, etc.), brand/color, specific description, exact location where found, date found, and a clear photo of the item. This helps the rightful owner identify their belongings.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq6" class="faq-toggle">
+                        <label for="faq6" class="faq-question">
+                            <span>Can I edit or delete my found item report?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>Yes, you can edit or delete your report at any time. Go to "My Reports" in your dashboard, find the item, and click on "Edit" or "Delete". If the item has been claimed, you may no longer be able to edit it.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Claiming Items -->
+                <div class="faq-category-group">
+                    <h2 class="category-title"><i class="fas fa-handshake"></i> Claiming Items</h2>
+                    
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq7" class="faq-toggle">
+                        <label for="faq7" class="faq-question">
+                            <span>How do I claim a found item?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>Browse the "Found Items" section to see all reported items. When you find an item that belongs to you, click "Claim Item" and fill in the claim request form with proof of ownership. The reporter will be notified and can approve your claim.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq8" class="faq-toggle">
+                        <label for="faq8" class="faq-question">
+                            <span>What proof do I need to claim an item?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>Provide any proof that shows the item belongs to you - photos, serial numbers, receipts, unique markings, or describing specific details only the owner would know. This helps prevent false claims.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq9" class="faq-toggle">
+                        <label for="faq9" class="faq-question">
+                            <span>How long does the claim process take?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>Once you submit a claim request, the reporter has up to 7 days to respond. Most claims are resolved within 2-3 days. You will receive email notifications about your claim status.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account & Security -->
+                <div class="faq-category-group">
+                    <h2 class="category-title"><i class="fas fa-shield-alt"></i> Account & Security</h2>
+                    
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq10" class="faq-toggle">
+                        <label for="faq10" class="faq-question">
+                            <span>How do I create an account?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>Click the "Register" button on the homepage. Fill in your details including your UTM email address, full name, and create a password. Verify your email address and you're ready to use the system.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq11" class="faq-toggle">
+                        <label for="faq11" class="faq-question">
+                            <span>I forgot my password. How do I reset it?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>On the login page, click "Forgot Password". Enter your registered email address, and we'll send you a link to reset your password. Follow the instructions in the email to create a new password.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <input type="checkbox" id="faq12" class="faq-toggle">
+                        <label for="faq12" class="faq-question">
+                            <span>Is my personal information secure?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </label>
+                        <div class="faq-answer">
+                            <p>Yes! We take your privacy seriously. All personal information is encrypted and stored securely. We only share your contact information with the relevant parties when necessary for the claim process.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Still Have Questions -->
+        <div class="still-have-questions">
+            <div class="questions-card">
+                <i class="fas fa-envelope"></i>
+                <h3>Still Have Questions?</h3>
+                <p>Can't find the answer you're looking for? Please contact our support team.</p>
+                <a href="mailto:support@lostfind.utm.my" class="contact-btn">
+                    <i class="fas fa-headset"></i> Contact Support
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="full-width-footer">
+        <div class="footer-container">
+            <p>© 2026 Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Shared JavaScript -->
+    <script src="hamburger.js"></script>
+</body>
+</html>
