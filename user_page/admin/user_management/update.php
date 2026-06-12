@@ -1,10 +1,12 @@
 <?php
 header('Content-Type: application/json');
 $required_role = 'admin'; 
+
 require_once("../../../config/db_connect.php");
 require_once("../../../includes/auth_check.php");
 require_once("../../../includes/role_check.php");
 
+// Get POST data (from FormData)
 $id = $_POST['id'] ?? 0;
 $name = trim($_POST['name'] ?? '');
 $email = trim($_POST['email'] ?? '');
@@ -12,6 +14,7 @@ $phone = trim($_POST['phone'] ?? '');
 $password = $_POST['password'] ?? '';
 $role = $_POST['role'] ?? 'user';
 
+// Validate required fields
 if (empty($name) || empty($email)) {
     echo json_encode(['success' => false, 'message' => 'Name and email are required']);
     exit;
@@ -30,6 +33,12 @@ mysqli_stmt_close($stmt);
 
 // Update with or without password
 if (!empty($password)) {
+    // Validate password length
+    if (strlen($password) < 6) {
+        echo json_encode(['success' => false, 'message' => 'Password must be at least 6 characters']);
+        exit;
+    }
+    
     $stmt = mysqli_prepare($conn, "UPDATE users SET name = ?, email = ?, phone = ?, password = MD5(?), role = ? WHERE user_id = ?");
     mysqli_stmt_bind_param($stmt, "sssssi", $name, $email, $phone, $password, $role, $id);
 } else {

@@ -4,42 +4,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forgot Password - Lost & Found System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="forgot.css">
 </head>
 <body>
-    <div class="forgot-container">
-        <div class="forgot-header">
-            <a href="../login/loginpage.html" class="back-link">← Back to Login</a>
-            <h2>Reset Password</h2>
-            <p>Enter your username and email to verify your account.</p>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <div class="brand-logo">
+                    <i class="fas fa-magnifying-glass"></i>
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h2 class="nav-brand">Lost<span>Find</span></h2>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="../../index/first.html">Home</a>
+                <a href="../../index/home/about.html">About</a>
+                <a href="../../index/home/faq.html">FAQ</a>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-login-nav" id="loginBtnNav">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button class="btn-register-nav" id="registerBtnNav">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+            <div class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
+    </nav>
 
-        <div id="errorMessage" class="error-message" style="display: none;"></div>
-        <div id="successMessage" class="success-message" style="display: none;"></div>
+    <!-- MAIN CONTAINER - Forgot Password Section -->
+    <div class="main-container">
+        <div class="forgot-wrapper">
+            <div class="forgot-container">
+                <div class="forgot-header">
+                    <a href="../login/loginpage.html" class="back-link">
+                        <i class="fas fa-arrow-left"></i> Back to Login
+                    </a>
+                    <h2>Reset Password</h2>
+                    <p>Enter your username and email to verify your account.</p>
+                </div>
 
-        <form id="verifyForm">
-            <div class="input-group">
-                <label>Username *</label>
-                <div class="input-wrapper">
-                    <span class="icon">👤</span>
-                    <input type="text" id="username" placeholder="Enter your username" required>
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                <div id="successMessage" class="success-message" style="display: none;"></div>
+
+                <form id="verifyForm">
+                    <div class="input-group">
+                        <label><i class="fas fa-user" style="margin-right: 6px;"></i> Username *</label>
+                        <div class="input-wrapper">
+                            <span class="icon"><i class="fas fa-user-circle"></i></span>
+                            <input type="text" id="username" placeholder="Enter your username" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label><i class="fas fa-envelope" style="margin-right: 6px;"></i> Email Address *</label>
+                        <div class="input-wrapper">
+                            <span class="icon"><i class="fas fa-envelope"></i></span>
+                            <input type="email" id="email" placeholder="Enter your registered email" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="verify-btn" id="verifyBtn">
+                        <span><i class="fas fa-paper-plane"></i> Verify & Continue</span>
+                        <span class="spinner" style="display: none;"></span>
+                    </button>
+                </form>
+
+                <div class="help-text">
+                    <p>Remember your password? <a href="../login/loginpage.html">Login here <i class="fas fa-arrow-right"></i></a></p>
+                </div>
+
+                <div class="back-home">
+                    <a href="../../index/first.html" id="backHomeBtn"><i class="fas fa-home"></i> Back to Home</a>
                 </div>
             </div>
-
-            <div class="input-group">
-                <label>Email Address *</label>
-                <div class="input-wrapper">
-                    <span class="icon">📧</span>
-                    <input type="email" id="email" placeholder="Enter your registered email" required>
-                </div>
-            </div>
-
-            <button type="submit" class="verify-btn" id="verifyBtn">Verify & Continue</button>
-        </form>
-
-        <div class="help-text">
-            <p>Remember your password? <a href="../login/loginpage.html">Login here</a></p>
         </div>
+    </div>
+
+    <!-- Full Width Footer -->
+    <footer class="full-width-footer">
+        <div class="footer-container">
+            <p id="copyright"></p>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner-loading"></div>
+        <p style="margin-top: 15px;">Verifying your account...</p>
     </div>
 
     <script src="forgot.js"></script>

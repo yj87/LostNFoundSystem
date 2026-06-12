@@ -4,60 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Lost & Found System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../../css/mainpage/login/loginpage_css.css">
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h2>Welcome Back!</h2>
-            <p>Please login to your account</p>
-        </div>
-
-        <div id="errorMessage" class="error-message" style="display: none;"></div>
-        <div id="successMessage" class="success-message" style="display: none;"></div>
-
-        <form id="loginForm">
-            <div class="input-group">
-                <label for="username">Username</label>
-                <div class="input-wrapper">
-                    <span class="icon">📧</span>
-                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+     <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <div class="brand-logo">
+                    <i class="fas fa-magnifying-glass"></i>
+                    <i class="fas fa-handshake"></i>
                 </div>
+                <h2 class="nav-brand">Lost<span>Find</span></h2>
             </div>
-
-            <div class="input-group">
-                <label for="password">Password</label>
-                <div class="input-wrapper">
-                    <span class="icon">🔒</span>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
-                </div>
+            <div class="nav-links" id="navLinks">
+                <a href="../../index/first.html">Home</a>
+                <a href="../../index/home/about.html">About</a>
+                <a href="../../index/home/faq.html">FAQ</a>
             </div>
-
-            <!-- FORGOT PASSWORD LINK - ADD THIS -->
-            <div class="forgot-password">
-                <a href="../forgot_password/forgot.html">Forgot Password?</a>
+            <div class="nav-actions">
+                <button class="btn-login-nav" id="loginBtnNav">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button class="btn-register-nav" id="registerBtnNav">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
             </div>
-
-            <button type="submit" class="login-btn" id="loginBtn">
-                <span>Login</span>
-                <span class="spinner" style="display: none;"></span>
-            </button>
-        </form>
-
-        <div class="register-link">
-            Don't have an account? <a href="../register/register.html">Register here</a>
+            <div class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </div>
         </div>
+    </nav>
 
-        <div class="demo-credentials">
-            <p>Demo Credentials:</p>
-            <div class="cred-buttons">
-                <button type="button" class="cred-btn" onclick="fillCredentials('admin_utm', 'admin123')">Admin</button>
-                <button type="button" class="cred-btn" onclick="fillCredentials('siti_staff', 'staff123')">Staff</button>
-                <button type="button" class="cred-btn" onclick="fillCredentials('ahmad_faris', 'student123')">User</button>
+    <!-- MAIN CONTAINER - Login Section -->
+    <div class="main-container">
+        <div class="login-wrapper">
+            <div class="login-container">
+                <div class="login-header">
+                    <h2>Welcome Back!</h2>
+                    <p>Please login to your account</p>
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+                <div id="successMessage" class="success-message" style="display: none;"></div>
+
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="username"><i class="fas fa-user" style="margin-right: 6px;"></i> Username</label>
+                        <div class="input-wrapper">
+                            <span class="icon"><i class="fas fa-envelope"></i></span>
+                            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password"><i class="fas fa-lock" style="margin-right: 6px;"></i> Password</label>
+                        <div class="input-wrapper">
+                            <span class="icon"><i class="fas fa-key"></i></span>
+                            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <i class="far fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="forgot-password">
+                        <a href="../forgot_password/forgot.html"><i class="fas fa-question-circle"></i> Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <span>Login</span>
+                        <span class="spinner" style="display: none;"></span>
+                    </button>
+                </form>
+
+                <div class="register-link">
+                    Don't have an account? <a href="../register/register.html">Register here <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="demo-credentials">
+                    <p><i class="fas fa-info-circle"></i> Demo Credentials:</p>
+                    <div class="cred-buttons">
+                        <button type="button" class="cred-btn" onclick="fillCredentials('admin_utm', 'admin123')"><i class="fas fa-user-shield"></i> Admin</button>
+                        <button type="button" class="cred-btn" onclick="fillCredentials('siti_staff', 'staff123')"><i class="fas fa-briefcase"></i> Staff</button>
+                        <button type="button" class="cred-btn" onclick="fillCredentials('ahmad_faris', 'student123')"><i class="fas fa-user-graduate"></i> User</button>
+                    </div>
+                </div>
+
+                <div class="back-home">
+                    <a href="../../index/first.html" id="backHomeBtn"><i class="fas fa-arrow-left"></i> Back to Home</a>
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Full Width Footer - Matches navbar -->
+    <footer class="full-width-footer">
+        <div class="footer-container">
+            <p id="copyright"></p>
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="spinner-loading"></div>
+        <p style="margin-top: 15px;">Redirecting...</p>
+    </div>
+
     <script src="login.js"></script>
 </body>
 </html>
