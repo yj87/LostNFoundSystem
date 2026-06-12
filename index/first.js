@@ -16,7 +16,7 @@ const featureCard = document.getElementById('featureCard');
 // Page URLs (update these paths based on your file structure)
 const LOGIN_URL = '../mainpage/login/loginpage.html';
 const REGISTER_URL = '../mainpage/register/register.html';
-const VIEW_FOUND_ITEMS_URL = '../user_page/user/browse_found_items.php';
+const VIEW_FOUND_ITEMS_URL = 'public_found_items.html';
 
 // Mobile menu elements
 const mobileMenuBtn = document.getElementById('mobileMenu');

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Browse Found Items | Lost & Found System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Reuse index page CSS -->
+    <link rel="stylesheet" href="first.css">
+</head>
+
+<body>
+
+    <!-- Same Navigation Bar as index page -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-nav">
+                <div class="brand-logo">
+                    <i class="fas fa-magnifying-glass"></i>
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <h2 class="nav-brand">Lost<span>Find</span></h2>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="first.html">Home</a>
+                <a href="home/about.html">About</a>
+                <a href="home/faq.html">FAQ</a>
+                <a href="public_found_items.html" class="active">Found Items</a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="btn-login-nav" id="loginBtnNav">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button class="btn-register-nav" id="registerBtnNav">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </div>
+
+            <div class="mobile-menu" id="mobileMenu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+
+        <!-- Public Browse Header -->
+        <div class="section-header" style="padding-top: 60px;">
+            <span class="section-badge">PUBLIC VIEW</span>
+            <h2 class="section-title">Browse <span>Found Items</span></h2>
+            <p class="section-desc">
+                View found items reported in the system. Login is required if you want to claim an item.
+            </p>
+        </div>
+
+        <!-- Reuse feature card style from index page -->
+        <div class="feature-card-single" style="display: block; max-width: 1100px; cursor: default;">
+
+            <!-- Toolbar -->
+            <div style="display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 22px;">
+                <div style="flex: 1; min-width: 240px; position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #E87A1E;"></i>
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="Search by name, location, description..." 
+                        oninput="handleSearch()"
+                        style="width: 100%; padding: 13px 14px 13px 42px; border: 1px solid rgba(245, 166, 91, 0.35); border-radius: 14px; font-size: 14px; outline: none;"
+                    >
+                </div>
+
+                <select 
+                    id="categoryFilter" 
+                    onchange="handleSearch()"
+                    style="min-width: 220px; padding: 13px 14px; border: 1px solid rgba(245, 166, 91, 0.35); border-radius: 14px; font-size: 14px; background: white; outline: none;"
+                >
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+
+            <div id="resultsSummary" style="font-size: 14px; color: #7A624C; margin-bottom: 18px;"></div>
+
+            <!-- Item Cards -->
+            <div id="itemsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px;">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #7A624C;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 36px; color: #F5A65B; margin-bottom: 12px;"></i>
+                    <p>Loading found items...</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Same footer as index page -->
+    <footer class="full-width-footer">
+        <div class="footer-container">
+            <p>© 2026 Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="public_found_items.js"></script>
+</body>
+</html>
