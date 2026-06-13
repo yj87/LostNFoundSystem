@@ -38,18 +38,6 @@ function getModuleConfig(from) {
                     </div>
 
                     <div class="nav-group">
-                        <div class="nav-group-title">User Management</div>
-                        <a href="../admin/user_management/manage.html" class="nav-item">
-                            <span class="icon"><i class="fas fa-users"></i></span>
-                            <span>View Users</span>
-                        </a>
-                        <a href="../admin/user_management/add.html" class="nav-item">
-                            <span class="icon"><i class="fas fa-user-plus"></i></span>
-                            <span>Add User</span>
-                        </a>
-                    </div>
-
-                    <div class="nav-group">
                         <div class="nav-group-title">Found Items</div>
                         <a href="../admin/found_item/admin_found_items.html" class="nav-item active">
                             <span class="icon"><i class="fas fa-box"></i></span>
@@ -79,7 +67,7 @@ function getModuleConfig(from) {
                 avatar: 'S',
                 profileUrl: '../profile/profile.html',
                 logoutUrl: '../../mainpage/logout/logout.php',
-                backUrl: '../staff/found_items/staff_found_items.html',
+                backUrl: '../staff/found_item/staff_found_items.html',
                 navHtml: `
                     <div class="nav-group">
                         <div class="nav-group-title">Main</div>
@@ -91,21 +79,9 @@ function getModuleConfig(from) {
 
                     <div class="nav-group">
                         <div class="nav-group-title">Found Items</div>
-                        <a href="../staff/found_items/add_found_item.html" class="nav-item">
-                            <span class="icon"><i class="fas fa-plus-circle"></i></span>
-                            <span>Add Found Item</span>
-                        </a>
-                        <a href="../staff/found_items/staff_found_items.html" class="nav-item active">
+                        <a href="../staff/found_item/staff_found_items.html" class="nav-item active">
                             <span class="icon"><i class="fas fa-box"></i></span>
                             <span>My Found Items</span>
-                        </a>
-                    </div>
-
-                    <div class="nav-group">
-                        <div class="nav-group-title">Lost Reports</div>
-                        <a href="../staff/lost_reports/view_lost_items.html" class="nav-item">
-                            <span class="icon"><i class="fas fa-search"></i></span>
-                            <span>View Lost Items</span>
                         </a>
                     </div>
 
@@ -131,7 +107,7 @@ function getModuleConfig(from) {
                 avatar: 'U',
                 profileUrl: '../profile/profile.html',
                 logoutUrl: '../../mainpage/logout/logout.php',
-                backUrl: '../user/found_items/browse_found_items.html',
+                backUrl: '../user/found_item/browse_found_items.html',
                 navHtml: `
                     <div class="nav-group">
                         <div class="nav-group-title">Main</div>
@@ -155,7 +131,7 @@ function getModuleConfig(from) {
 
                     <div class="nav-group">
                         <div class="nav-group-title">Found Items</div>
-                        <a href="../user/found_items/browse_found_items.html" class="nav-item active">
+                        <a href="../user/found_item/browse_found_items.html" class="nav-item active">
                             <span class="icon"><i class="fas fa-search"></i></span>
                             <span>Browse Found Items</span>
                         </a>
@@ -186,27 +162,15 @@ function getModuleConfig(from) {
         case 'public':
         default:
             return {
-                dashboardCss: null,
-                panelTitle: 'Lost & Found',
+                dashboardCss: '../../index/first.css',
+                panelTitle: 'LostFind',
                 panelSubtitle: 'Public View',
                 avatar: '',
                 profileUrl: '',
                 logoutUrl: '',
-                backUrl: '../../mainpage/public_found_items.html',
-                navHtml: `
-                    <div class="nav-group">
-                        <div class="nav-group-title">Navigation</div>
-                        <a href="../../mainpage/first.html" class="nav-item">
-                            <span class="icon"><i class="fas fa-home"></i></span>
-                            <span>Home</span>
-                        </a>
-                        <a href="../../mainpage/public_found_items.html" class="nav-item active">
-                            <span class="icon"><i class="fas fa-search"></i></span>
-                            <span>Public Found Items</span>
-                        </a>
-                    </div>
-                `
-            };
+                backUrl: '../../index/public_found_items.html',
+                navHtml: ''
+    };
     }
 }
 
@@ -239,6 +203,23 @@ function applyModuleLayout(config) {
     const logoutLink = document.querySelector('#userDropdownMenu a[href="../../mainpage/logout/logout.php"]');
     if (logoutLink) {
         logoutLink.href = config.logoutUrl;
+    }
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get('from') || 'public';
+
+    if (from === 'public') {
+    document.body.classList.add('public-detail-page');
+
+    const dashboardContainer = document.querySelector('.dashboard-container');
+    const sidebar = document.getElementById('sidebar');
+    const topHeader = document.querySelector('.top-header');
+
+    if (sidebar) sidebar.remove();
+    if (topHeader) topHeader.remove();
+
+    if (dashboardContainer) {
+        dashboardContainer.className = 'public-detail-wrapper';
+    }
     }
 
     if (!config.avatar) {

@@ -25,6 +25,7 @@ async function loadCategories() {
 
         if (result.success) {
             const select = document.getElementById('categoryFilter');
+            select.innerHTML = '<option value="">All Categories</option>';
 
             result.data.forEach(category => {
                 const option = document.createElement('option');
@@ -83,6 +84,39 @@ async function loadItems() {
                     item.found_status === 'claimed' ? '#d4edda' :
                     '#d8ecff';
 
+                const detailUrl = `../user_page/item_details/view_item_details.html?id=${encodeURIComponent(item.item_id)}&from=public`;
+
+                const imageHtml = item.photo
+                    ? `
+                        <img src="../${escapeHtml(item.photo)}" 
+                             alt="Found item image"
+                             style="
+                                width: 100%;
+                                height: 150px;
+                                object-fit: cover;
+                                border-radius: 14px;
+                                border: 1px solid rgba(245, 166, 91, 0.25);
+                                background: #f8f8f8;
+                                margin-bottom: 14px;
+                             ">
+                    `
+                    : `
+                        <div style="
+                            width: 100%;
+                            height: 150px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 14px;
+                            border: 1px dashed rgba(245, 166, 91, 0.4);
+                            background: #FFF9F2;
+                            color: #C56218;
+                            margin-bottom: 14px;
+                        ">
+                            <i class="fas fa-image" style="font-size: 34px;"></i>
+                        </div>
+                    `;
+
                 return `
                     <div style="
                         background: white;
@@ -90,7 +124,15 @@ async function loadItems() {
                         border-radius: 20px;
                         padding: 20px;
                         box-shadow: 0 8px 18px rgba(0,0,0,0.04);
-                    ">
+                        cursor: pointer;
+                        transition: transform 0.2s, box-shadow 0.2s;
+                    "
+                    onclick="window.location.href='${detailUrl}'"
+                    onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 14px 28px rgba(245,166,91,0.18)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 18px rgba(0,0,0,0.04)'">
+
+                        ${imageHtml}
+
                         <div style="
                             display: flex;
                             justify-content: space-between;
@@ -153,7 +195,8 @@ async function loadItems() {
                             ${escapeHtml(item.description)}
                         </p>
 
-                        <a href="../user_page/item_details/view_item_details.html?id=${item.item_id}&from=public"
+                        <a href="${detailUrl}"
+                           onclick="event.stopPropagation();"
                            style="
                                 display:inline-block;
                                 background:#F5A65B;

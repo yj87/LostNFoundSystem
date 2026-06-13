@@ -147,6 +147,29 @@ async function loadItems() {
     }
 }
 
+function toggleUserDropdown() {
+    document.getElementById('userDropdownMenu')?.classList.toggle('show');
+}
+
+document.addEventListener('click', function (event) {
+    const dropdown = document.getElementById('userDropdownMenu');
+    const wrapper = document.querySelector('.user-info-wrapper');
+
+    if (dropdown && dropdown.classList.contains('show')) {
+        if (wrapper && !wrapper.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.remove('show');
+        }
+    }
+});
+
+function logoutUser() {
+    if (confirm('Are you sure you want to logout?')) {
+        window.location.href = '../../../mainpage/logout/logout.php';
+        return true;
+    }
+    return false;
+}
+
 async function loadCategories() {
     try {
         const res = await fetch('get_categories.php', { credentials: 'same-origin' });
