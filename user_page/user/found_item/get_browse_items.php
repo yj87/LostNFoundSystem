@@ -34,7 +34,15 @@ if (!empty($category)) {
 
 $where_sql = count($where_clauses) > 0 ? 'WHERE ' . implode(' AND ', $where_clauses) : '';
 
-$query = "SELECT f.item_id, f.item_name, f.location_found, f.description, f.date_found, f.found_status, c.category_name 
+$query = "SELECT 
+            f.item_id,
+            f.item_name,
+            f.location_found,
+            f.description,
+            f.date_found,
+            f.found_status,
+            f.photo,
+            c.category_name
           FROM found_items f 
           LEFT JOIN categories c ON f.category_id = c.category_id 
           $where_sql 

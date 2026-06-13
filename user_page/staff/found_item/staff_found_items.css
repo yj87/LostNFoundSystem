@@ -122,9 +122,59 @@
     display: block;
 }
 
-/* ── Summary pill ────────────────────────────────── */
 .results-summary {
     font-size: 13px;
     color: #888;
     margin-bottom: 10px;
+}
+
+/*view button*/
+.item-thumb {
+    width: 70px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #f5f5f5;
+}
+
+.no-image {
+    width: 70px;
+    height: 55px;
+    border-radius: 8px;
+    border: 1px dashed #ccc;
+    background: #f8f8f8;
+    color: #aaa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-view {
+    background: #e3f2fd;
+    color: #1976d2;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 11px;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s;
+    margin-right: 6px;
+}
+
+.btn-view:hover {
+    background: #bbdefb;
+}
+
+/* Detail box */
+.detail-box {
+    padding: 10px 12px;
+    border: 1px solid #CBDDC3;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #f8faf7;
+    color: #2b2d42;
+    min-height: 40px;
 }

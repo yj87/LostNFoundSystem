@@ -1,3 +1,5 @@
+// public_found_items.js
+
 const LOGIN_URL = '../mainpage/login/loginpage.html';
 const REGISTER_URL = '../mainpage/register/register.html';
 
@@ -9,7 +11,8 @@ function handleSearch() {
 }
 
 function escapeHtml(str) {
-    if (!str) return '-';
+    if (str === null || str === undefined || str === '') return '-';
+
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
@@ -70,6 +73,16 @@ async function loadItems() {
                     ? item.found_status.charAt(0).toUpperCase() + item.found_status.slice(1)
                     : 'Unknown';
 
+                const statusColor =
+                    item.found_status === 'pending' ? '#856404' :
+                    item.found_status === 'claimed' ? '#155724' :
+                    '#0056b3';
+
+                const statusBg =
+                    item.found_status === 'pending' ? '#fff3cd' :
+                    item.found_status === 'claimed' ? '#d4edda' :
+                    '#d8ecff';
+
                 return `
                     <div style="
                         background: white;
@@ -78,11 +91,22 @@ async function loadItems() {
                         padding: 20px;
                         box-shadow: 0 8px 18px rgba(0,0,0,0.04);
                     ">
-                        <div style="display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 14px;">
+                        <div style="
+                            display: flex;
+                            justify-content: space-between;
+                            gap: 12px;
+                            align-items: flex-start;
+                            margin-bottom: 14px;
+                        ">
                             <div>
-                                <h3 style="font-size: 20px; color: #2D1B0F; margin-bottom: 8px;">
+                                <h3 style="
+                                    font-size: 20px;
+                                    color: #2D1B0F;
+                                    margin-bottom: 8px;
+                                ">
                                     ${escapeHtml(item.item_name)}
                                 </h3>
+
                                 <span style="
                                     display: inline-block;
                                     padding: 5px 12px;
@@ -100,8 +124,8 @@ async function loadItems() {
                                 display: inline-block;
                                 padding: 5px 12px;
                                 border-radius: 30px;
-                                background: #EAF8ED;
-                                color: #2E7D32;
+                                background: ${statusBg};
+                                color: ${statusColor};
                                 font-size: 12px;
                                 font-weight: 700;
                             ">
@@ -119,13 +143,33 @@ async function loadItems() {
                             ${escapeHtml(item.date_found)}
                         </p>
 
-                        <p style="color: #6B5240; font-size: 14px; line-height: 1.5;">
+                        <p style="
+                            color: #6B5240;
+                            font-size: 14px;
+                            line-height: 1.5;
+                            margin-bottom: 14px;
+                        ">
                             <i class="fas fa-align-left" style="color: #F5A65B; width: 18px;"></i>
                             ${escapeHtml(item.description)}
                         </p>
 
+                        <a href="../user_page/item_details/view_item_details.html?id=${item.item_id}&from=public"
+                           style="
+                                display:inline-block;
+                                background:#F5A65B;
+                                color:white;
+                                padding:8px 14px;
+                                border-radius:20px;
+                                text-decoration:none;
+                                font-size:13px;
+                                font-weight:600;
+                                margin-right:8px;
+                           ">
+                            <i class="fas fa-eye"></i> View Details
+                        </a>
+
                         <div style="
-                            margin-top: 16px;
+                            margin-top: 14px;
                             background: #FFF5EA;
                             color: #C56218;
                             padding: 10px 12px;
@@ -134,13 +178,14 @@ async function loadItems() {
                             font-weight: 600;
                         ">
                             <i class="fas fa-lock"></i>
-                            Login required to claim this item.
+                            Login is required to claim this item.
                         </div>
                     </div>
                 `;
             }).join('');
         } else {
             summary.textContent = '';
+
             itemsGrid.innerHTML = `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: #7A624C;">
                     <i class="fas fa-box-open" style="font-size: 42px; color: #F5A65B; margin-bottom: 12px;"></i>
@@ -151,7 +196,9 @@ async function loadItems() {
         }
     } catch (error) {
         console.error('Error loading public found items:', error);
+
         summary.textContent = '';
+
         itemsGrid.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: #7A624C;">
                 <i class="fas fa-exclamation-triangle" style="font-size: 42px; color: #E87A1E; margin-bottom: 12px;"></i>
@@ -201,6 +248,12 @@ function setupNavigation() {
             }
         });
     }
+
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 768 && navLinks) {
+            navLinks.removeAttribute('style');
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {

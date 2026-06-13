@@ -1,0 +1,226 @@
+.detail-card {
+    width: min(100%, 980px);
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.item-detail-image {
+    width: 100%;
+    max-height: 340px;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+    margin-bottom: 24px;
+}
+
+.no-image-large {
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #ccc;
+    border-radius: 12px;
+    color: #aaa;
+    background: #fafafa;
+    margin-bottom: 24px;
+}
+
+.no-image-large i {
+    font-size: 46px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.detail-group {
+    margin-bottom: 18px;
+}
+
+.detail-group.full {
+    grid-column: 1 / -1;
+}
+
+.detail-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #2b2d42;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.detail-box {
+    min-height: 42px;
+    padding: 11px 14px;
+    background: #fafafa;
+    border: 1px solid #dfe3e6;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #2b2d42;
+    line-height: 1.5;
+}
+
+.description-box {
+    min-height: 110px;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.status-claimed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-unclaimed {
+    background: #d8ecff;
+    color: #0056b3;
+}
+
+.detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-back-detail {
+    background: #e9ecef;
+    color: #2b2d42;
+    padding: 10px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.btn-back-detail:hover {
+    background: #dfe3e6;
+}
+
+.error-box {
+    color: #c0392b;
+    background: #fde8e8;
+    border: 1px solid #f5c6c6;
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-group.full {
+        grid-column: auto;
+    }
+}
+
+/* Center item details page content */
+.main-content article {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.page-title {
+    width: min(100%, 980px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.detail-card {
+    width: min(100%, 980px);
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+/* Make image responsive */
+.item-detail-image {
+    width: 100%;
+    max-width: 100%;
+    height: clamp(220px, 35vw, 420px);
+    object-fit: contain;
+}
+
+/* Make form/details grid resize nicely */
+.detail-grid {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Make detail boxes fit inside card */
+.detail-box {
+    width: 100%;
+    overflow-wrap: break-word;
+}
+
+/* Back button stays aligned with the card */
+.detail-actions {
+    width: 100%;
+}
+
+/* Medium screens */
+@media (max-width: 1100px) {
+    .detail-card,
+    .page-title {
+        width: min(100%, 860px);
+    }
+}
+
+/* Small screens */
+@media (max-width: 768px) {
+    .main-content article {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .detail-card {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .page-title {
+        width: 100%;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .item-detail-image {
+        height: 260px;
+    }
+
+    .detail-actions {
+        justify-content: center;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .detail-card {
+        padding: 16px;
+    }
+
+    .item-detail-image {
+        height: 220px;
+    }
+}

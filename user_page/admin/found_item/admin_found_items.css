@@ -48,18 +48,114 @@
     color: #2b2d42;
 }
 
+/* ── Table alignment ─────────────────────────────── */
+.data-table table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.data-table th,
+.data-table td {
+    vertical-align: middle;
+    padding: 14px 12px;
+}
+
+/* Image column */
+.data-table th:nth-child(1),
+.data-table td:nth-child(1) {
+    width: 120px;
+    text-align: center;
+}
+
+/* Item name column */
+.data-table th:nth-child(2),
+.data-table td:nth-child(2) {
+    width: 210px;
+}
+
+/* Category column */
+.data-table th:nth-child(3),
+.data-table td:nth-child(3) {
+    width: 170px;
+}
+
+/* Date column */
+.data-table th:nth-child(4),
+.data-table td:nth-child(4) {
+    width: 150px;
+}
+
+/* Status column */
+.data-table th:nth-child(5),
+.data-table td:nth-child(5) {
+    width: 140px;
+    text-align: center;
+}
+
+/* Actions column */
+.data-table th:nth-child(6),
+.data-table td:nth-child(6) {
+    width: 240px;
+    text-align: center;
+}
+
+/* ── Item image thumbnail ────────────────────────── */
+.item-thumb,
+.no-image {
+    width: 70px;
+    height: 55px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-thumb {
+    object-fit: cover;
+    border: 1px solid #ddd;
+    background: #f5f5f5;
+}
+
+.no-image {
+    border: 1px dashed #ccc;
+    background: #f8f8f8;
+    color: #aaa;
+}
+
 /* ── Table action buttons ────────────────────────── */
-.btn-edit {
-    background: #F5D3D6;
-    color: #2b2d42;
+.btn-view,
+.btn-edit,
+.btn-delete {
     border: none;
     border-radius: 6px;
     padding: 5px 11px;
     font-size: 12px;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 58px;
+    height: 28px;
     transition: background 0.2s;
+    vertical-align: middle;
+    margin: 2px;
+}
+
+.btn-view {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.btn-view:hover {
+    background: #bbdefb;
+}
+
+.btn-edit {
+    background: #F5D3D6;
+    color: #2b2d42;
 }
 
 .btn-edit:hover {
@@ -69,16 +165,14 @@
 .btn-delete {
     background: #fde8e8;
     color: #c0392b;
-    border: none;
-    border-radius: 6px;
-    padding: 5px 11px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: background 0.2s;
 }
 
 .btn-delete:hover {
     background: #f5c6c6;
+}
+
+.data-table td:last-child {
+    white-space: nowrap;
 }
 
 /* ── Delete modal ────────────────────────────────── */
@@ -241,4 +335,15 @@
     font-size: 13px;
     color: #888;
     margin-bottom: 10px;
+}
+
+/* ── Responsive table ────────────────────────────── */
+@media (max-width: 900px) {
+    .data-table {
+        overflow-x: auto;
+    }
+
+    .data-table table {
+        min-width: 850px;
+    }
 }

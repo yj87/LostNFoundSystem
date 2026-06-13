@@ -7,6 +7,7 @@
     <meta name="description"
         content="Admin panel to view, manage and delete all found items in the Lost & Found System.">
     <title>Manage Found Items - Admin Panel</title>
+
     <link rel="stylesheet" href="../admin_dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="admin_found_items.css">
@@ -22,6 +23,7 @@
                 <h3>Lost &amp; Found</h3>
                 <p>Admin Panel</p>
             </div>
+
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
@@ -30,6 +32,7 @@
                         <span>Dashboard</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">User Management</div>
                     <a href="../user_management/manage.html" class="nav-item">
@@ -41,6 +44,7 @@
                         <span>Add User</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
                     <a href="admin_found_items.html" class="nav-item active">
@@ -48,6 +52,7 @@
                         <span>View All Items</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
                     <a href="../../profile/profile.html" class="nav-item">
@@ -71,10 +76,12 @@
                     </button>
                     <div class="page-title-header">Found Items Management</div>
                 </div>
+
                 <div class="user-dropdown">
                     <div class="user-info-wrapper" onclick="toggleUserDropdown()">
                         <div class="user-avatar" id="userAvatar">A</div>
                     </div>
+
                     <div class="user-dropdown-menu" id="userDropdownMenu">
                         <a href="../../profile/profile.html">
                             <i class="fas fa-user-circle"></i> My Profile
@@ -97,12 +104,14 @@
                 <div class="toolbar">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Search by name, location, reporter…"
+                        <input type="text" id="searchInput" placeholder="Search by name, location, description, reporter..."
                             oninput="handleSearch()">
                     </div>
+
                     <select id="categoryFilter" onchange="handleSearch()">
                         <option value="">All Categories</option>
                     </select>
+
                     <select id="statusFilter" onchange="handleSearch()">
                         <option value="">All Statuses</option>
                         <option value="unclaimed">Unclaimed</option>
@@ -119,20 +128,20 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>Image</th>
                                     <th>Item Name</th>
                                     <th>Category</th>
-                                    <th>Location Found</th>
                                     <th>Date Found</th>
-                                    <th>Reported By</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
+
                             <tbody id="adminItemsTable">
                                 <tr>
-                                    <td colspan="8" style="text-align:center; padding: 24px;">
-                                        <i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i> Loading items…
+                                    <td colspan="6" style="text-align:center; padding: 24px;">
+                                        <i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i>
+                                        Loading items…
                                     </td>
                                 </tr>
                             </tbody>
@@ -142,7 +151,8 @@
             </article>
 
             <footer>
-                <p id="copyright">© 2024 Lost &amp; Found System - Universiti Teknologi Malaysia. All rights reserved.
+                <p id="copyright">
+                    © 2024 Lost &amp; Found System - Universiti Teknologi Malaysia. All rights reserved.
                 </p>
             </footer>
         </div>
@@ -153,8 +163,12 @@
         <div class="modal-box">
             <i class="fas fa-trash-alt modal-icon"></i>
             <h3>Delete Found Item</h3>
-            <p>Are you sure you want to permanently delete <strong id="deleteItemName"></strong>? This action cannot be
-                undone.</p>
+            <p>
+                Are you sure you want to permanently delete
+                <strong id="deleteItemName"></strong>?
+                This action cannot be undone.
+            </p>
+
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
                 <button class="btn-confirm-delete" id="confirmDeleteBtn" onclick="confirmDelete()">
