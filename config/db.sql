@@ -26,6 +26,7 @@ CREATE TABLE found_items (
   found_status  ENUM('unclaimed','pending','claimed') DEFAULT 'unclaimed',
   category_id   INT,
   created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+  photo         VARCHAR(500) NULL,
   FOREIGN KEY (user_id)      REFERENCES users(user_id),
   FOREIGN KEY (category_id)  REFERENCES categories(category_id)
 );
@@ -40,6 +41,7 @@ CREATE TABLE lost_reports (
   lost_status   ENUM('searching','found','closed') DEFAULT 'searching',
   category_id   INT,
   created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+  photo         VARCHAR(500) NULL,
   FOREIGN KEY (user_id)     REFERENCES users(user_id),
   FOREIGN KEY (category_id) REFERENCES categories(category_id)
 );
