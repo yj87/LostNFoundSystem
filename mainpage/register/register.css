@@ -38,27 +38,14 @@
         }
 
         .brand-logo {
-            background: linear-gradient(145deg, #F5A65B, #E8892E);
             width: 48px;
             height: 48px;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-        }
-
-        .brand-logo i:first-child {
-            font-size: 26px;
-            color: white;
-        }
-
-        .brand-logo i:last-child {
-            position: absolute;
-            font-size: 16px;
-            bottom: -2px;
-            right: -4px;
-            color: #FFD966;
+            overflow: hidden;
+            background: transparent;
         }
 
         .nav-brand {

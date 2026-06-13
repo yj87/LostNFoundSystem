@@ -347,16 +347,14 @@ setDefaultCopyright();
 document.getElementById('backHomeBtn').addEventListener('click', (e) => {
     e.preventDefault();
     // Navigate directly without showing loading overlay
-    window.location.href = '../../index/first.html';
+    window.location.href = '../../index.php';
 });
 
 // Navigation buttons handlers
-document.getElementById('loginBtnNav').addEventListener('click', () => {
-    const overlay = document.getElementById('loadingOverlay');
-    overlay.style.display = 'flex';
-    setTimeout(() => {
-        window.location.href = '../login/loginpage.html';
-    }, 500);
+document.getElementById('loginBtnNav').addEventListener('click', (f) => {
+    f.preventDefault();
+    // Navigate directly without showing loading overlay
+    window.location.href = '../login/loginpage.html';
 });
 
 document.getElementById('registerBtnNav').addEventListener('click', () => {

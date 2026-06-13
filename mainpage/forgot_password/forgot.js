@@ -83,7 +83,7 @@ if (document.getElementById('verifyForm')) {
     if (backHomeBtn) {
         backHomeBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            window.location.href = '../../index/first.html';
+            window.location.href = '../../index.php';
         });
     }
 
@@ -387,7 +387,7 @@ if (document.getElementById('resetForm')) {
     if (backHomeBtn) {
         backHomeBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            window.location.href = '../../index/first.html';
+            window.location.href = '../../index.php';
         });
     }
 

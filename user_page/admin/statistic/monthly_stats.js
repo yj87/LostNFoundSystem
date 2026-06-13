@@ -57,14 +57,6 @@ function animateNumber(element, start, end, duration) {
     window.requestAnimationFrame(step);
 }
 
-// Format trend display
-function formatTrend(change, trend) {
-    const arrow = trend === 'up' ? '↑' : '↓';
-    const colorClass = trend === 'up' ? 'trend-up' : 'trend-down';
-    const changeAbs = Math.abs(change);
-    return `<span class="${colorClass}">${arrow} ${changeAbs}%</span>`;
-}
-
 // Load monthly data
 async function loadMonthlyData() {
     try {
@@ -85,7 +77,7 @@ async function loadMonthlyData() {
             if (monthTitle) monthTitle.innerHTML = `<i class="fas fa-calendar-alt"></i> ${data.month_name}`;
             if (chartMonth) chartMonth.textContent = data.month_name;
             
-            // Update stats cards with animations
+            // Update stats cards with animations (no comparison text)
             const stats = data.stats;
             
             const lostEl = document.getElementById('lostReports');
@@ -93,21 +85,21 @@ async function loadMonthlyData() {
             const claimsEl = document.getElementById('claimsCount');
             const usersEl = document.getElementById('newUsers');
             
-            if (lostEl) animateNumber(lostEl, 0, stats.lost_reports.current, 500);
-            if (foundEl) animateNumber(foundEl, 0, stats.found_items.current, 500);
-            if (claimsEl) animateNumber(claimsEl, 0, stats.claims.current, 500);
-            if (usersEl) animateNumber(usersEl, 0, stats.new_users.current, 500);
+            if (lostEl) animateNumber(lostEl, 0, stats.lost_reports, 500);
+            if (foundEl) animateNumber(foundEl, 0, stats.found_items, 500);
+            if (claimsEl) animateNumber(claimsEl, 0, stats.claims, 500);
+            if (usersEl) animateNumber(usersEl, 0, stats.new_users, 500);
             
-            // Update comparison texts
+            // Remove comparison texts or show simple message
             const lostComparison = document.getElementById('lostComparison');
             const foundComparison = document.getElementById('foundComparison');
             const claimsComparison = document.getElementById('claimsComparison');
             const usersComparison = document.getElementById('usersComparison');
             
-            if (lostComparison) lostComparison.innerHTML = `vs last month ${formatTrend(stats.lost_reports.change, stats.lost_reports.trend)}`;
-            if (foundComparison) foundComparison.innerHTML = `vs last month ${formatTrend(stats.found_items.change, stats.found_items.trend)}`;
-            if (claimsComparison) claimsComparison.innerHTML = `vs last month ${formatTrend(stats.claims.change, stats.claims.trend)}`;
-            if (usersComparison) usersComparison.innerHTML = `vs last month ${formatTrend(stats.new_users.change, stats.new_users.trend)}`;
+            if (lostComparison) lostComparison.innerHTML = `This month`;
+            if (foundComparison) foundComparison.innerHTML = `This month`;
+            if (claimsComparison) claimsComparison.innerHTML = `This month`;
+            if (usersComparison) usersComparison.innerHTML = `This month`;
             
             // Render bar chart
             renderBarChart(data.daily_stats, data.total_days);

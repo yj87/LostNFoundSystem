@@ -1,54 +1,54 @@
 <?php
-require_once '../../../config/db_connect.php';
-require_once '../../../includes/auth_check.php';
-$required_role = 'admin';
-require_once '../../../includes/role_check.php';
+session_start();
 
+// Include database connection
+require_once '../../../config/db_connect.php';
+
+// Set header to return JSON
 header('Content-Type: application/json');
 
-$user_name = $_SESSION['user_name'];
+// Check if user is logged in using user_id or user_name from session
+if (!isset($_SESSION['user_id']) && !isset($_SESSION['user_name'])) {
+    echo json_encode(['success' => false, 'error' => 'User not logged in']);
+    exit;
+}
+
+// Get username from session (it's stored as 'user_name', not 'username')
+$username = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Admin';
 
 // Get current month and year
 $current_month = date('m');
 $current_year = date('Y');
+$current_month_start = "$current_year-$current_month-01";
+$current_month_end = date('Y-m-t', strtotime($current_month_start));
 
-// Get this month's statistics
-// Lost reports this month
-$result = mysqli_query($conn, "SELECT COUNT(*) as count FROM lost_reports WHERE MONTH(created_at) = $current_month AND YEAR(created_at) = $current_year");
-$this_month_lost = mysqli_fetch_assoc($result)['count'];
+// Query: Lost reports this month
+$lost_query = "SELECT COUNT(*) as count FROM lost_reports WHERE DATE(created_at) BETWEEN '$current_month_start' AND '$current_month_end'";
+$lost_result = mysqli_query($conn, $lost_query);
+$this_month_lost = ($lost_result) ? mysqli_fetch_assoc($lost_result)['count'] : 0;
 
-// Found items this month
-$result = mysqli_query($conn, "SELECT COUNT(*) as count FROM found_items WHERE MONTH(created_at) = $current_month AND YEAR(created_at) = $current_year");
-$this_month_found = mysqli_fetch_assoc($result)['count'];
+// Query: Found items this month
+$found_query = "SELECT COUNT(*) as count FROM found_items WHERE DATE(created_at) BETWEEN '$current_month_start' AND '$current_month_end'";
+$found_result = mysqli_query($conn, $found_query);
+$this_month_found = ($found_result) ? mysqli_fetch_assoc($found_result)['count'] : 0;
 
-// Claims this month
-$result = mysqli_query($conn, "SELECT COUNT(*) as count FROM claims WHERE MONTH(created_at) = $current_month AND YEAR(created_at) = $current_year");
-$this_month_claims = mysqli_fetch_assoc($result)['count'];
+// Query: Claims this month (using submitted_at)
+$claims_query = "SELECT COUNT(*) as count FROM claims WHERE DATE(submitted_at) BETWEEN '$current_month_start' AND '$current_month_end'";
+$claims_result = mysqli_query($conn, $claims_query);
+$this_month_claims = ($claims_result) ? mysqli_fetch_assoc($claims_result)['count'] : 0;
 
-// New users this month
-$result = mysqli_query($conn, "SELECT COUNT(*) as count FROM users WHERE MONTH(created_at) = $current_month AND YEAR(created_at) = $current_year");
-$this_month_users = mysqli_fetch_assoc($result)['count'];
-
-// Get previous month statistics for comparison
-$prev_month = $current_month == 1 ? 12 : $current_month - 1;
-$prev_year = $current_month == 1 ? $current_year - 1 : $current_year;
-
-$result = mysqli_query($conn, "SELECT COUNT(*) as count FROM lost_reports WHERE MONTH(created_at) = $prev_month AND YEAR(created_at) = $prev_year");
-$prev_month_lost = mysqli_fetch_assoc($result)['count'];
-
-$result = mysqli_query($conn, "SELECT COUNT(*) as count FROM found_items WHERE MONTH(created_at) = $prev_month AND YEAR(created_at) = $prev_year");
-$prev_month_found = mysqli_fetch_assoc($result)['count'];
-
-$result = mysqli_query($conn, "SELECT COUNT(*) as count FROM claims WHERE MONTH(created_at) = $prev_month AND YEAR(created_at) = $prev_year");
-$prev_month_claims = mysqli_fetch_assoc($result)['count'];
-
-$result = mysqli_query($conn, "SELECT COUNT(*) as count FROM users WHERE MONTH(created_at) = $prev_month AND YEAR(created_at) = $prev_year");
-$prev_month_users = mysqli_fetch_assoc($result)['count'];
+// Query: New users this month
+$users_query = "SELECT COUNT(*) as count FROM users WHERE DATE(created_at) BETWEEN '$current_month_start' AND '$current_month_end'";
+$users_result = mysqli_query($conn, $users_query);
+$this_month_users = ($users_result) ? mysqli_fetch_assoc($users_result)['count'] : 0;
 
 // Get daily breakdown for this month
 $daily_stats = [];
-for ($day = 1; $day <= date('t'); $day++) {
+$total_days = date('t');
+
+for ($day = 1; $day <= $total_days; $day++) {
     $date_str = sprintf("%d-%02d-%02d", $current_year, $current_month, $day);
+    
     $daily_stats[$day] = [
         'date' => $date_str,
         'lost' => 0,
@@ -56,80 +56,57 @@ for ($day = 1; $day <= date('t'); $day++) {
         'claims' => 0,
         'users' => 0
     ];
+    
+    // Daily lost reports
+    $lost_day_query = "SELECT COUNT(*) as c FROM lost_reports WHERE DATE(created_at) = '$date_str'";
+    $lost_day_result = mysqli_query($conn, $lost_day_query);
+    if ($lost_day_result) {
+        $daily_stats[$day]['lost'] = (int)mysqli_fetch_assoc($lost_day_result)['c'];
+    }
+    
+    // Daily found items
+    $found_day_query = "SELECT COUNT(*) as c FROM found_items WHERE DATE(created_at) = '$date_str'";
+    $found_day_result = mysqli_query($conn, $found_day_query);
+    if ($found_day_result) {
+        $daily_stats[$day]['found'] = (int)mysqli_fetch_assoc($found_day_result)['c'];
+    }
+    
+    // Daily claims
+    $claims_day_query = "SELECT COUNT(*) as c FROM claims WHERE DATE(submitted_at) = '$date_str'";
+    $claims_day_result = mysqli_query($conn, $claims_day_query);
+    if ($claims_day_result) {
+        $daily_stats[$day]['claims'] = (int)mysqli_fetch_assoc($claims_day_result)['c'];
+    }
+    
+    // Daily new users
+    $users_day_query = "SELECT COUNT(*) as c FROM users WHERE DATE(created_at) = '$date_str'";
+    $users_day_result = mysqli_query($conn, $users_day_query);
+    if ($users_day_result) {
+        $daily_stats[$day]['users'] = (int)mysqli_fetch_assoc($users_day_result)['c'];
+    }
 }
-
-// Fill daily lost reports
-$result = mysqli_query($conn, "SELECT DAY(created_at) as day, COUNT(*) as count FROM lost_reports WHERE MONTH(created_at) = $current_month AND YEAR(created_at) = $current_year GROUP BY DAY(created_at)");
-while($row = mysqli_fetch_assoc($result)) {
-    $daily_stats[$row['day']]['lost'] = $row['count'];
-}
-
-// Fill daily found items
-$result = mysqli_query($conn, "SELECT DAY(created_at) as day, COUNT(*) as count FROM found_items WHERE MONTH(created_at) = $current_month AND YEAR(created_at) = $current_year GROUP BY DAY(created_at)");
-while($row = mysqli_fetch_assoc($result)) {
-    $daily_stats[$row['day']]['found'] = $row['count'];
-}
-
-// Fill daily claims
-$result = mysqli_query($conn, "SELECT DAY(created_at) as day, COUNT(*) as count FROM claims WHERE MONTH(created_at) = $current_month AND YEAR(created_at) = $current_year GROUP BY DAY(created_at)");
-while($row = mysqli_fetch_assoc($result)) {
-    $daily_stats[$row['day']]['claims'] = $row['count'];
-}
-
-// Fill daily new users
-$result = mysqli_query($conn, "SELECT DAY(created_at) as day, COUNT(*) as count FROM users WHERE MONTH(created_at) = $current_month AND YEAR(created_at) = $current_year GROUP BY DAY(created_at)");
-while($row = mysqli_fetch_assoc($result)) {
-    $daily_stats[$row['day']]['users'] = $row['count'];
-}
-
-// Calculate percentage changes
-function getPercentageChange($current, $previous) {
-    if ($previous == 0) return $current > 0 ? 100 : 0;
-    return round((($current - $previous) / $previous) * 100);
-}
-
-$lost_change = getPercentageChange($this_month_lost, $prev_month_lost);
-$found_change = getPercentageChange($this_month_found, $prev_month_found);
-$claims_change = getPercentageChange($this_month_claims, $prev_month_claims);
-$users_change = getPercentageChange($this_month_users, $prev_month_users);
 
 // Get month name
 $month_name = date('F Y');
 
+// Get user's first letter for avatar
+$user_initial = strtoupper(substr($username, 0, 1));
+
+// Return JSON response
 echo json_encode([
     'success' => true,
-    'user_name' => $user_name,
-    'user_avatar' => strtoupper(substr($user_name, 0, 1)),
+    'user_name' => $username,
+    'user_avatar' => $user_initial,
     'month_name' => $month_name,
     'current_year' => date('Y'),
     'stats' => [
-        'lost_reports' => [
-            'current' => $this_month_lost,
-            'previous' => $prev_month_lost,
-            'change' => $lost_change,
-            'trend' => $lost_change >= 0 ? 'up' : 'down'
-        ],
-        'found_items' => [
-            'current' => $this_month_found,
-            'previous' => $prev_month_found,
-            'change' => $found_change,
-            'trend' => $found_change >= 0 ? 'up' : 'down'
-        ],
-        'claims' => [
-            'current' => $this_month_claims,
-            'previous' => $prev_month_claims,
-            'change' => $claims_change,
-            'trend' => $claims_change >= 0 ? 'up' : 'down'
-        ],
-        'new_users' => [
-            'current' => $this_month_users,
-            'previous' => $prev_month_users,
-            'change' => $users_change,
-            'trend' => $users_change >= 0 ? 'up' : 'down'
-        ]
+        'lost_reports' => (int)$this_month_lost,
+        'found_items' => (int)$this_month_found,
+        'claims' => (int)$this_month_claims,
+        'new_users' => (int)$this_month_users
     ],
     'daily_stats' => $daily_stats,
-    'total_days' => date('t')
+    'total_days' => $total_days
 ]);
 
 mysqli_close($conn);
