@@ -25,9 +25,36 @@ if (empty($item_name) || $category_id <= 0 || empty($location_found) || empty($d
     exit;
 }
 
-// Insert into Database
-$insert_query = "INSERT INTO found_items (item_name, category_id, location_found, date_found, description, found_status, user_id, created_at) 
-                 VALUES ('$item_name', $category_id, '$location_found', '$date_found', '$description', 'unclaimed', $staff_user_id, NOW())";
+// Handle photo upload
+$photo_path = null;
+if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+    $upload_dir = '../../../uploads/found_items/';
+    
+    // Create folder if it doesn't exist
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
+    }
+    
+    // Get file extension
+    $file_ext = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
+    $allowed_ext = ['jpg', 'jpeg', 'png'];
+    
+    if (in_array($file_ext, $allowed_ext)) {
+        // Create unique filename
+        $filename = time() . '_' . rand(1000, 9999) . '.' . $file_ext;
+        $destination = $upload_dir . $filename;
+        
+        // Move uploaded file
+        if (move_uploaded_file($_FILES['photo']['tmp_name'], $destination)) {
+            // Store relative path for web access
+            $photo_path = 'uploads/found_items/' . $filename;
+        }
+    }
+}
+
+// Insert into Database (including photo)
+$insert_query = "INSERT INTO found_items (item_name, category_id, location_found, date_found, description, found_status, user_id, created_at, photo) 
+                 VALUES ('$item_name', $category_id, '$location_found', '$date_found', '$description', 'unclaimed', $staff_user_id, NOW(), " . ($photo_path ? "'$photo_path'" : "NULL") . ")";
 
 if (mysqli_query($conn, $insert_query)) {
     echo json_encode(['success' => true, 'message' => 'Found property record registered successfully.']);

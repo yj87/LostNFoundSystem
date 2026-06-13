@@ -69,6 +69,7 @@ async function submitReport() {
     const description = document.getElementById('description').value;
     const location_lost = document.getElementById('location_lost').value;
     const date_lost = document.getElementById('date_lost').value;
+    const photo = document.getElementById('photo').files[0]; // Get photo file
     
     if (!item_name || !category_id || !location_lost || !date_lost) {
         showAlert('Please fill all required fields', 'error');
@@ -89,6 +90,11 @@ async function submitReport() {
     formData.append('location_lost', location_lost);
     formData.append('date_lost', date_lost);
     
+    // Add photo if selected
+    if (photo) {
+        formData.append('photo', photo);
+    }
+    
     try {
         const response = await fetch('report_lost_items.php', {
             method: 'POST',
@@ -101,6 +107,8 @@ async function submitReport() {
             document.getElementById('reportForm').reset();
             setMaxDate();
             loadCategories();
+            // Clear file input
+            document.getElementById('photo').value = '';
         } else {
             showAlert(data.message || 'Failed to submit report', 'error');
         }

@@ -42,8 +42,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         exit();
     }
     
-    $query = "INSERT INTO lost_reports (user_id, item_name, description, location_lost, date_lost, category_id, lost_status) 
-              VALUES ($user_id, '$item_name', '$description', '$location_lost', '$date_lost', $category_id, 'searching')";
+    // Handle photo upload
+    $photo_path = null;
+    if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+        $upload_dir = '../../../uploads/lost_items/';
+        
+        // Create folder if it doesn't exist
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+        
+        // Get file extension
+        $file_ext = strtolower(pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION));
+        $allowed_ext = ['jpg', 'jpeg', 'png'];
+        
+        if (in_array($file_ext, $allowed_ext)) {
+            // Create unique filename
+            $filename = time() . '_' . rand(1000, 9999) . '.' . $file_ext;
+            $destination = $upload_dir . $filename;
+            
+            // Move uploaded file
+            if (move_uploaded_file($_FILES['photo']['tmp_name'], $destination)) {
+                // Store relative path for web access
+                $photo_path = 'uploads/lost_items/' . $filename;
+            }
+        }
+    }
+    
+    // Insert into database with photo
+    $query = "INSERT INTO lost_reports (user_id, item_name, description, location_lost, date_lost, category_id, lost_status, photo) 
+              VALUES ($user_id, '$item_name', '$description', '$location_lost', '$date_lost', $category_id, 'searching', " . ($photo_path ? "'$photo_path'" : "NULL") . ")";
     
     if (mysqli_query($conn, $query)) {
         echo json_encode(['success' => true, 'message' => 'Lost report submitted successfully!']);
