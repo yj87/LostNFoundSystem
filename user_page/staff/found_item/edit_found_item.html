@@ -18,9 +18,16 @@
         <!-- SIDEBAR -->
         <aside id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🔍</div>
-                <h3>Lost &amp; Found</h3>
-                <p>Staff Panel</p>
+                <div class="logo-nav">
+                    <div class="brand-logo">
+                        <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
+                    </div>
+
+                    <div class="brand-text">
+                        <div class="brand-name">Lost<span>Find</span></div>
+                        <div class="admin-tag">Staff Panel</div>
+                    </div>
+                </div>
             </div>
 
             <nav>
@@ -85,10 +92,10 @@
                     <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
                     </button>
+
                     <div class="page-title-header" id="pageHeaderTitle">Edit Found Item</div>
                 </div>
 
-                <!-- User Dropdown Menu -->
                 <div class="user-dropdown">
                     <div class="user-info-wrapper" onclick="toggleUserDropdown()">
                         <div class="user-avatar" id="userAvatar">S</div>
@@ -109,7 +116,7 @@
             </header>
 
             <article>
-                <div class="page-title" style="max-width: 800px; margin: 0 auto 20px auto;">
+                <div class="page-title">
                     <h1 id="editTitle">Edit Found Item</h1>
                     <p>Update the selected found item record.</p>
                 </div>
@@ -118,7 +125,6 @@
 
                 <div class="form-card">
                     <form id="editFoundItemForm" enctype="multipart/form-data">
-
                         <input type="hidden" id="itemId" name="item_id">
 
                         <div class="form-row">
@@ -160,6 +166,7 @@
                             <div class="form-group">
                                 <label for="photo">Replace Photo (Optional)</label>
                                 <input type="file" id="photo" name="photo" accept="image/jpeg, image/png, image/jpg">
+
                                 <small style="color:#666; display:block; margin-top:5px;">
                                     Leave empty if you do not want to change the current photo.
                                 </small>

@@ -17,9 +17,16 @@
         <!-- SIDEBAR -->
         <aside id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🔍</div>
-                <h3>Lost &amp; Found</h3>
-                <p>Staff Panel</p>
+                <div class="logo-nav">
+                    <div class="brand-logo">
+                        <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
+                    </div>
+
+                    <div class="brand-text">
+                        <div class="brand-name">Lost<span>Find</span></div>
+                        <div class="admin-tag">Staff Panel</div>
+                    </div>
+                </div>
             </div>
 
             <nav>
@@ -84,10 +91,10 @@
                     <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
                     </button>
+
                     <div class="page-title-header">My Found Items</div>
                 </div>
 
-                <!-- User Dropdown Menu -->
                 <div class="user-dropdown">
                     <div class="user-info-wrapper" onclick="toggleUserDropdown()">
                         <div class="user-avatar" id="userAvatar">S</div>
@@ -113,7 +120,6 @@
                     <p>View or edit found items you have logged.</p>
                 </div>
 
-                <!-- Toolbar -->
                 <div class="toolbar">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
@@ -175,7 +181,6 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle" id="toastIcon"></i>
         <span id="toastMessage"></span>
@@ -183,4 +188,5 @@
 
     <script src="staff_items.js"></script>
 </body>
+
 </html>

@@ -1,3 +1,4 @@
+/* ── Detail card ─────────────────────────────────── */
 .detail-card {
     width: min(100%, 980px);
     max-width: 980px;
@@ -6,7 +7,8 @@
 
 .item-detail-image {
     width: 100%;
-    max-height: 340px;
+    max-width: 100%;
+    height: clamp(220px, 35vw, 420px);
     object-fit: contain;
     border-radius: 12px;
     border: 1px solid #ddd;
@@ -30,9 +32,11 @@
     font-size: 46px;
 }
 
+/* ── Detail grid ─────────────────────────────────── */
 .detail-grid {
+    width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 20px;
 }
 
@@ -55,6 +59,7 @@
 }
 
 .detail-box {
+    width: 100%;
     min-height: 42px;
     padding: 11px 14px;
     background: #fafafa;
@@ -63,12 +68,14 @@
     font-size: 14px;
     color: #2b2d42;
     line-height: 1.5;
+    overflow-wrap: break-word;
 }
 
 .description-box {
     min-height: 110px;
 }
 
+/* ── Status pill ─────────────────────────────────── */
 .status-pill {
     display: inline-block;
     padding: 5px 14px;
@@ -92,7 +99,9 @@
     color: #0056b3;
 }
 
+/* ── Actions ─────────────────────────────────────── */
 .detail-actions {
+    width: 100%;
     display: flex;
     justify-content: flex-end;
     gap: 12px;
@@ -113,6 +122,7 @@
     background: #dfe3e6;
 }
 
+/* ── Error ───────────────────────────────────────── */
 .error-box {
     color: #c0392b;
     background: #fde8e8;
@@ -122,17 +132,7 @@
     text-align: center;
 }
 
-@media (max-width: 768px) {
-    .detail-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .detail-group.full {
-        grid-column: auto;
-    }
-}
-
-/* Center item details page content */
+/* ── Center item details page content ────────────── */
 .main-content article {
     width: 100%;
     display: flex;
@@ -146,38 +146,7 @@
     margin-right: auto;
 }
 
-.detail-card {
-    width: min(100%, 980px);
-    max-width: 980px;
-    margin: 0 auto;
-}
-
-/* Make image responsive */
-.item-detail-image {
-    width: 100%;
-    max-width: 100%;
-    height: clamp(220px, 35vw, 420px);
-    object-fit: contain;
-}
-
-/* Make form/details grid resize nicely */
-.detail-grid {
-    width: 100%;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-/* Make detail boxes fit inside card */
-.detail-box {
-    width: 100%;
-    overflow-wrap: break-word;
-}
-
-/* Back button stays aligned with the card */
-.detail-actions {
-    width: 100%;
-}
-
-/* Medium screens */
+/* ── Medium screens ──────────────────────────────── */
 @media (max-width: 1100px) {
     .detail-card,
     .page-title {
@@ -185,7 +154,7 @@
     }
 }
 
-/* Small screens */
+/* ── Small screens ───────────────────────────────── */
 @media (max-width: 768px) {
     .main-content article {
         padding-left: 14px;
@@ -205,6 +174,10 @@
         grid-template-columns: 1fr;
     }
 
+    .detail-group.full {
+        grid-column: auto;
+    }
+
     .item-detail-image {
         height: 260px;
     }
@@ -214,7 +187,7 @@
     }
 }
 
-/* Very small screens */
+/* ── Very small screens ──────────────────────────── */
 @media (max-width: 480px) {
     .detail-card {
         padding: 16px;
@@ -225,7 +198,7 @@
     }
 }
 
-/* Public item details page */
+/* ── Public item details page ────────────────────── */
 body.public-detail-page {
     background: #ffffff;
 }

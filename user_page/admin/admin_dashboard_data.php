@@ -30,9 +30,15 @@ $approved_claims = mysqli_fetch_assoc($result)['count'];
 
 // Get recent items
 $recent_items_query = mysqli_query($conn, "
-    SELECT item_id, item_name, category_id, location_found, found_status 
-    FROM found_items 
-    ORDER BY created_at DESC 
+    SELECT 
+        f.item_id, 
+        f.item_name, 
+        f.location_found, 
+        f.found_status, 
+        c.category_name 
+    FROM found_items f
+    LEFT JOIN categories c ON f.category_id = c.category_id
+    ORDER BY f.created_at DESC 
     LIMIT 5
 ");
 $recent_items = [];

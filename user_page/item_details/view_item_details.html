@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>View Item Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -14,14 +16,13 @@
     <div class="dashboard-container">
 
         <aside id="sidebar">
-            <div class="sidebar-header">
+            <div class="sidebar-header" id="sidebarHeader">
                 <div class="logo">🔍</div>
                 <h3 id="panelTitle">Lost &amp; Found</h3>
                 <p id="panelSubtitle">Item Details</p>
             </div>
 
-            <nav id="sideNav">
-            </nav>
+            <nav id="sideNav"></nav>
         </aside>
 
         <div class="main-content">
@@ -30,6 +31,7 @@
                     <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
                     </button>
+
                     <div class="page-title-header" id="pageHeaderTitle">View Item Details</div>
                 </div>
 
@@ -39,11 +41,13 @@
                     </div>
 
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../profile/profile.html">
+                        <a href="../profile/profile.html" id="profileDropdownLink">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
+
                         <div class="dropdown-divider"></div>
-                        <a href="../../mainpage/logout/logout.php" onclick="return logoutUser();">
+
+                        <a href="../../mainpage/logout/logout.php" id="logoutDropdownLink" onclick="return logoutUser();">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
                     </div>
@@ -67,4 +71,5 @@
 
     <script src="view_item_details.js"></script>
 </body>
+
 </html>

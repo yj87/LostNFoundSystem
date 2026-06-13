@@ -193,7 +193,7 @@ async function loadItems() {
 
     tbody.innerHTML = `
         <tr>
-            <td colspan="6" style="text-align:center;padding:24px;">
+            <td colspan="7" style="text-align:center;padding:24px;">
                 <i class="fas fa-spinner fa-spin"></i> Loading…
             </td>
         </tr>
@@ -221,24 +221,28 @@ async function loadItems() {
                 const safeItemNameForModal = escapeHtml(item.item_name).replace(/'/g, "\\'");
 
                 return `
-                    <tr>
-                        <td>${imageHtml}</td>
+                <tr>
+                <td>${imageHtml}</td>
 
-                        <td>
-                            <strong>${escapeHtml(item.item_name)}</strong>
-                        </td>
+                <td>
+                <strong>#${escapeHtml(item.item_id)}</strong>
+                </td>
 
-                        <td>${escapeHtml(item.category_name)}</td>
+                <td>
+                <strong>${escapeHtml(item.item_name)}</strong>
+                </td>
 
-                        <td>${escapeHtml(item.date_found)}</td>
+                <td>${escapeHtml(item.category_name)}</td>
 
-                        <td>
-                            <span class="status-badge ${statusClass}">
-                                ${statusLabel}
-                            </span>
-                        </td>
+                <td>${escapeHtml(item.date_found)}</td>
 
-                        <td style="white-space:nowrap;">
+                <td>
+                    <span class="status-badge ${statusClass}">
+                    ${statusLabel}
+                    </span>
+                </td>
+
+                <td style="white-space:nowrap;">
                             <a href="../../item_details/view_item_details.html?id=${item.item_id}&from=admin"
                                class="btn-view"
                                title="View Details">
@@ -265,7 +269,7 @@ async function loadItems() {
 
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         <div class="empty-state">
                             <i class="fas fa-box-open"></i>
                             No found items match your search.
@@ -279,7 +283,7 @@ async function loadItems() {
 
         document.getElementById('adminItemsTable').innerHTML = `
             <tr>
-                <td colspan="6" style="text-align:center;color:red;padding:20px;">
+                <td colspan="7" style="text-align:center;color:red;padding:20px;">
                     Failed to load items. Please try again.
                 </td>
             </tr>

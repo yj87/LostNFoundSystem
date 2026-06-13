@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report Found Property - Staff Panel</title>
+    <title>Add Found Item - Staff Panel</title>
 
     <link rel="stylesheet" href="../staff_dashboard.css">
     <link rel="stylesheet" href="add_found_item.css">
@@ -17,9 +17,16 @@
         <!-- SIDEBAR -->
         <aside id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🔍</div>
-                <h3>Lost &amp; Found</h3>
-                <p>Staff Panel</p>
+                <div class="logo-nav">
+                    <div class="brand-logo">
+                        <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
+                    </div>
+
+                    <div class="brand-text">
+                        <div class="brand-name">Lost<span>Find</span></div>
+                        <div class="admin-tag">Staff Panel</div>
+                    </div>
+                </div>
             </div>
 
             <nav>
@@ -33,6 +40,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
+
                     <a href="add_found_item.html" class="nav-item active">
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Add Found Item</span>
@@ -46,7 +54,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="claims/staff_claims.html" class="nav-item">
+                    <a href="../claims/view_claims.html" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View Claims</span>
                     </a>
@@ -62,6 +70,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
+
                     <a href="../../profile/profile.html" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
@@ -82,10 +91,10 @@
                     <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <div class="page-title-header">Inventory Intake Portal</div>
+
+                    <div class="page-title-header">Add Found Item</div>
                 </div>
 
-                <!-- TOP RIGHT PROFILE DROPDOWN -->
                 <div class="user-dropdown">
                     <div class="user-info-wrapper" onclick="toggleUserDropdown()">
                         <div class="user-avatar" id="userAvatar">S</div>
@@ -95,7 +104,9 @@
                         <a href="../../profile/profile.html">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
+
                         <div class="dropdown-divider"></div>
+
                         <a href="../../../mainpage/logout/logout.php" onclick="return logoutUser();">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
@@ -104,7 +115,7 @@
             </header>
 
             <article>
-                <div class="page-title" style="max-width: 800px; margin: 0 auto 20px auto;">
+                <div class="page-title">
                     <h1>Log Discovered Item</h1>
                     <p>Register newly found property records into the main system database archive.</p>
                 </div>
@@ -123,7 +134,7 @@
                             <div class="form-group">
                                 <label for="categorySelect">Category Group <span style="color:red;">*</span></label>
                                 <select id="categorySelect" name="category_id" required>
-                                    <option value="">-- Choose Category--</option>
+                                    <option value="">-- Choose Category --</option>
                                 </select>
                             </div>
                         </div>
@@ -153,6 +164,7 @@
                             <div class="form-group full-width">
                                 <label for="photo">Upload Photo (Optional)</label>
                                 <input type="file" id="photo" name="photo" accept="image/jpeg, image/png, image/jpg">
+
                                 <small style="color: #666; display: block; margin-top: 5px;">
                                     Max size: 5MB (JPG, PNG only)
                                 </small>
@@ -173,6 +185,10 @@
                     </form>
                 </div>
             </article>
+
+            <footer>
+                <p id="copyright">© 2026 Lost &amp; Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
+            </footer>
         </div>
     </div>
 

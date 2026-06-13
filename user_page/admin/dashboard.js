@@ -143,7 +143,7 @@ function loadRecentItemsTable(items) {
             html += `
                 <tr>
                     <td>${escapeHtml(item.item_name)}</td>
-                    <td>${escapeHtml(item.category_id)}</td>
+                    <td>${escapeHtml(item.category_name)}</td>
                     <td>${escapeHtml(item.location_found)}</td>
                     <td>
                         <span class="status-badge ${statusClass}">

@@ -18,28 +18,29 @@
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: #aaa;
+    color: #9aa59a;
     font-size: 14px;
 }
 
 .toolbar .search-box input {
     width: 100%;
     padding: 9px 12px 9px 36px;
-    border: 1px solid #e0c8cb;
+    border: 1px solid #CBDDC3;
     border-radius: 8px;
     font-size: 14px;
     background: #fff;
     outline: none;
-    transition: border 0.2s;
+    transition: border 0.2s, box-shadow 0.2s;
 }
 
 .toolbar .search-box input:focus {
-    border-color: #fa8a9c;
+    border-color: #A3BCA3;
+    box-shadow: 0 0 0 3px rgba(203, 221, 195, 0.35);
 }
 
 .toolbar select {
     padding: 9px 14px;
-    border: 1px solid #e0c8cb;
+    border: 1px solid #CBDDC3;
     border-radius: 8px;
     font-size: 14px;
     background: #fff;
@@ -48,7 +49,36 @@
     color: #2b2d42;
 }
 
-/* ── Table action buttons ────────────────────────── */
+.toolbar select:focus {
+    border-color: #A3BCA3;
+    box-shadow: 0 0 0 3px rgba(203, 221, 195, 0.35);
+}
+
+/* ── Buttons ─────────────────────────────────────── */
+.btn-view {
+    background: #DFEBE0;
+    color: #2b2d42;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 11px;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 58px;
+    height: 28px;
+    margin: 2px;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.btn-view:hover {
+    background: #CBDDC3;
+    transform: translateY(-1px);
+}
+
 .btn-claim {
     background: #e3f2fd;
     color: #1976d2;
@@ -58,15 +88,22 @@
     font-size: 12px;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block;
-    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 58px;
+    height: 28px;
+    margin: 2px;
+    transition: background 0.2s, transform 0.15s;
 }
 
 .btn-claim:hover {
     background: #bbdefb;
+    transform: translateY(-1px);
 }
 
-.btn-claim:disabled, .btn-claim.disabled {
+.btn-claim.disabled {
     background: #f5f5f5;
     color: #ccc;
     cursor: not-allowed;
@@ -96,6 +133,7 @@
         transform: translateY(20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -124,18 +162,17 @@
 .empty-state i {
     font-size: 48px;
     margin-bottom: 14px;
-    color: #ddd;
+    color: #CBDDC3;
     display: block;
 }
 
-/* ── Summary pill ────────────────────────────────── */
 .results-summary {
     font-size: 13px;
-    color: #888;
+    color: #6c757d;
     margin-bottom: 10px;
 }
 
-/* Image thumbnail */
+/* ── Image thumbnail ─────────────────────────────── */
 .item-thumb,
 .no-image {
     width: 70px;
@@ -148,45 +185,17 @@
 
 .item-thumb {
     object-fit: cover;
-    border: 1px solid #ddd;
+    border: 1px solid #CBDDC3;
     background: #f5f5f5;
 }
 
 .no-image {
-    border: 1px dashed #ccc;
-    background: #f8f8f8;
-    color: #aaa;
+    border: 1px dashed #CBDDC3;
+    background: #F7FBF7;
+    color: #A3BCA3;
 }
 
-/* View button */
-.btn-view {
-    background: #e3f2fd;
-    color: #1976d2;
-    border: none;
-    border-radius: 6px;
-    padding: 5px 11px;
-    font-size: 12px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    min-width: 58px;
-    height: 26px;
-    margin-right: 6px;
-}
-
-.btn-view:hover {
-    background: #bbdefb;
-}
-
-/* Keep action buttons aligned */
-.data-table td:last-child {
-    white-space: nowrap;
-}
-
-/* Stable table layout */
+/* ── Table layout ────────────────────────────────── */
 .data-table table {
     width: 100%;
     border-collapse: collapse;
@@ -197,19 +206,19 @@
 .data-table td {
     vertical-align: middle;
     padding: 14px 12px;
+    text-align: center;
 }
 
 /* Image column */
 .data-table th:nth-child(1),
 .data-table td:nth-child(1) {
     width: 120px;
-    text-align: center;
 }
 
 /* Item name column */
 .data-table th:nth-child(2),
 .data-table td:nth-child(2) {
-    width: 180px;
+    width: 190px;
 }
 
 /* Category column */
@@ -228,26 +237,13 @@
 .data-table th:nth-child(5),
 .data-table td:nth-child(5) {
     width: 130px;
-    text-align: center;
 }
 
 /* Action column */
 .data-table th:nth-child(6),
 .data-table td:nth-child(6) {
-    width: 180px;
-    text-align: center;
-}
-
-.btn-view,
-.btn-claim {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    min-width: 58px;
-    height: 28px;
-    vertical-align: middle;
-    margin: 2px;
+    width: 190px;
+    white-space: nowrap;
 }
 
 @media (max-width: 900px) {
@@ -256,6 +252,6 @@
     }
 
     .data-table table {
-        min-width: 780px;
+        min-width: 820px;
     }
 }

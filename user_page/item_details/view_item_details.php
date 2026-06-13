@@ -1,4 +1,5 @@
 <?php
+// view_item_details.php
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
