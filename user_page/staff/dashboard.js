@@ -195,7 +195,8 @@ function loadRecentItemsTable(items) {
                         </span>
                     </td>
                     <td>
-                        <a href="found_item/edit_found_item.html?id=${item.item_id}" class="btn btn-primary">Edit</a>
+                    <a href="../item_details/view_item_details.html?id=${item.item_id}&from=staff" class="btn btn-view">View</a>    
+                    <a href="found_item/edit_found_item.html?id=${item.item_id}" class="btn btn-primary">Edit</a>
                     </td>
                 </tr>
             `;

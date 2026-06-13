@@ -482,6 +482,23 @@ tr:hover {
     color: #2b2d42;
 }
 
+.btn-view {
+    background: #17a2b8;
+    color: white;
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.btn-view:hover {
+    background: #138496;
+    color: white;
+    text-decoration: none;
+}
+
 /* FOOTER */
 footer {
     background: #E4F2F6;
