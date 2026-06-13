@@ -151,7 +151,7 @@ function loadRecentItemsTable(items) {
                         </span>
                     </td>
                     <td>
-                        <a href="admin_view_item.php?id=${item.item_id}" class="btn btn-primary">View</a>
+                        <a href="../item_details/view_item_details.html?id=${item.item_id}&from=admin" class="btn btn-primary">View</a>
                     </td>
                 </tr>
             `;

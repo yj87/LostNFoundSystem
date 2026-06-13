@@ -241,7 +241,7 @@ async function loadItems() {
                         </td>
 
                         <td>
-                            <a href="${viewUrl}" class="btn-view" title="View Details">
+                            <a href="../../item_details/view_item_details.html?id=${item.item_id}&from=user" class="btn-view" title="View Details">
                                 <i class="fas fa-eye"></i> View
                             </a>
 
