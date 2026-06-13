@@ -1,0 +1,684 @@
+.review-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.card-header i {
+    font-size: 18px;
+    color: #fa8a9c;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #2b2d42;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #6c757d;
+    margin-bottom: 4px;
+}
+
+.detail-value {
+    font-size: 14px;
+    color: #2b2d42;
+    font-weight: 500;
+}
+
+.proof-content {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #2b2d42;
+    white-space: pre-wrap;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* Reference Card */
+.reference-card {
+    border-left: 4px solid #fa8a9c;
+    background: #fff5f6;
+    margin-top: 20px;
+}
+
+.badge-reference {
+    background: #fa8a9c;
+    color: white;
+    font-size: 10px;
+    padding: 2px 10px;
+    border-radius: 20px;
+}
+
+/* Lost Report Card */
+.lost-report-card {
+    border-left: 4px solid #ff9800;
+    background: #fff8e1;
+}
+
+.lost-report-summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.lost-report-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+}
+
+.lost-report-info {
+    flex: 1;
+}
+
+.lost-report-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2b2d42;
+    margin-bottom: 4px;
+}
+
+.lost-report-meta {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.lost-report-meta i {
+    margin-right: 4px;
+}
+
+.lost-report-status {
+    margin-left: auto;
+}
+
+.lost-report-action {
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px solid #e9ecef;
+    text-align: right;
+}
+
+.btn-view-lost {
+    background: #ff9800;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-view-lost:hover {
+    background: #f57c00;
+    transform: translateY(-1px);
+}
+
+.status-searching {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-found {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-closed {
+    background: #cce5ff;
+    color: #004085;
+}
+
+/* Comparison Container */
+.comparison-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.comparison-col {
+    flex: 1;
+}
+
+.comparison-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-top: 3px solid #ff9800;
+}
+
+.comparison-card .card-body {
+    flex: 1;
+}
+
+.badge-claimant {
+    background: #ff9800;
+    color: white;
+    font-size: 10px;
+    padding: 2px 10px;
+    border-radius: 20px;
+}
+
+.comparison-actions {
+    padding: 15px 20px;
+    border-top: 1px solid #e9ecef;
+    background: #f8f9fa;
+}
+
+.comparison-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2b2d42;
+    margin-bottom: 10px;
+}
+
+.verdict-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.verdict-yes,
+.verdict-no {
+    padding: 6px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.verdict-yes {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+}
+
+.verdict-yes:hover {
+    background: #c8e6c9;
+}
+
+.verdict-yes.active {
+    background: #4caf50;
+    color: white;
+    border-color: #4caf50;
+}
+
+.verdict-no {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+.verdict-no:hover {
+    background: #ffcdd2;
+}
+
+.verdict-no.active {
+    background: #f44336;
+    color: white;
+    border-color: #f44336;
+}
+
+/* Found Item Summary */
+.found-item-summary {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 15px;
+}
+
+.icon-tag {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #fa8a9c 0%, #f5babe 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    box-shadow: 0 2px 8px rgba(250,138,156,0.3);
+}
+
+.found-item-info {
+    flex: 1;
+}
+
+.found-item-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2b2d42;
+    margin-bottom: 4px;
+}
+
+.found-item-meta {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.found-item-meta i {
+    margin-right: 4px;
+    font-size: 11px;
+}
+
+.found-item-details {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.found-detail {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 13px;
+    padding: 6px 0;
+}
+
+.found-detail .label {
+    font-weight: 600;
+    color: #6c757d;
+    min-width: 70px;
+}
+
+.found-detail .value {
+    color: #2b2d42;
+}
+
+/* Match Summary */
+.match-summary {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+.match-summary .match-good {
+    color: #2e7d32;
+}
+
+.match-summary .match-bad {
+    color: #c62828;
+}
+
+.match-summary .match-pending {
+    color: #ff9800;
+}
+
+/* Decision Card */
+.decision-card {
+    border: 1px solid #ffc107;
+    background: #fff8e1;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #2b2d42;
+    font-size: 13px;
+}
+
+.required {
+    color: #dc3545;
+    font-weight: normal;
+    font-size: 11px;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: #fa8a9c;
+    box-shadow: 0 0 0 2px rgba(250,138,156,0.2);
+}
+
+.decision-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-approve,
+.btn-reject,
+.btn-cancel {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    flex: 1;
+    justify-content: center;
+}
+
+.btn-approve {
+    background: #28a745;
+    color: white;
+}
+
+.btn-approve:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+.btn-approve:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-reject {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-reject:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+}
+
+.btn-reject:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-cancel {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background: #5a6268;
+}
+
+.loading {
+    text-align: center;
+    padding: 60px;
+}
+
+.loading i {
+    font-size: 48px;
+    color: #fa8a9c;
+}
+
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.toast.show {
+    display: flex;
+    animation: slideUp 0.3s ease;
+}
+
+.toast-success {
+    background: #28a745;
+}
+
+.toast-error {
+    background: #dc3545;
+}
+
+/* MODAL POPUP STYLES */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-container {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-container .modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff5f6;
+    border-radius: 12px 12px 0 0;
+}
+
+.modal-container .modal-header h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal-container .modal-header .modal-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #999;
+}
+
+.modal-container .modal-header .modal-close:hover {
+    color: #dc3545;
+}
+
+.modal-container .modal-body {
+    padding: 20px;
+}
+
+.modal-container .modal-footer {
+    padding: 12px 20px;
+    border-top: 1px solid #eee;
+    text-align: right;
+    background: #f9f9f9;
+    border-radius: 0 0 12px 12px;
+}
+
+.modal-row {
+    display: flex;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-row .modal-label {
+    width: 100px;
+    font-weight: 600;
+    color: #555;
+    font-size: 12px;
+}
+
+.modal-row .modal-value {
+    flex: 1;
+    color: #333;
+    font-size: 12px;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .comparison-container {
+        flex-direction: column;
+    }
+    .detail-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .decision-buttons {
+        flex-direction: column;
+    }
+    .btn-approve,
+    .btn-reject,
+    .btn-cancel {
+        justify-content: center;
+    }
+    .verdict-buttons {
+        justify-content: center;
+    }
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .found-item-details {
+        grid-template-columns: 1fr;
+    }
+    .found-item-summary {
+        flex-direction: column;
+        text-align: center;
+    }
+    .lost-report-summary {
+        flex-direction: column;
+        text-align: center;
+    }
+    .lost-report-status {
+        margin-left: 0;
+    }
+    .modal-row {
+        flex-direction: column;
+    }
+    .modal-row .modal-label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+}

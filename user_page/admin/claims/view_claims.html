@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Staff - View Lost Items</title>
-    <link rel="stylesheet" href="view_lost_items.css">
+    <title>Admin - View Claims</title>
+    <link rel="stylesheet" href="../admin_dashboard.css">
+    <link rel="stylesheet" href="view_claims.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="dashboard-container">
-        <aside class="sidebar" id="sidebar">
+        <aside id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">🔍</div>
                 <h3>Lost & Found</h3>
-                <p>Staff Panel</p>
+                <p>Admin Panel</p>
             </div>
             <nav>
                 <div class="nav-group">
@@ -23,35 +24,45 @@
                         <span>Dashboard</span>
                     </a>
                 </div>
-
+                <div class="nav-group">
+                    <div class="nav-group-title">User Management</div>
+                    <a href="../user_management/manage.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-users"></i></span>
+                        <span>View Users</span>
+                    </a>
+                    <a href="../user_management/add.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-user-plus"></i></span>
+                        <span>Add User</span>
+                    </a>
+                </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/add_found_item.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
-                        <span>Add Found Item</span>
-                    </a>
-                    <a href="../found_item/staff_found_items.html" class="nav-item">
+                    <a href="../found_item/admin_found_items.html" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
-                        <span>My Found Items</span>
+                        <span>View All Items</span>
                     </a>
                 </div>
-
-                <div class="nav-group">
-                    <div class="nav-group-title">Claims</div>
-                    <a href="../claims/view_claims.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
-                        <span>View Claims</span>
-                    </a>
-                </div>
-
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="view_lost_items.html" class="nav-item active">
+                    <a href="../lost_reports/view_lost_reports.html" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
-                        <span>View Lost Items</span>
+                        <span>View Lost Reports</span>
                     </a>
                 </div>
-
+                <div class="nav-group">
+                    <div class="nav-group-title">Claims</div>
+                    <a href="view_claims.html" class="nav-item active">
+                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                        <span>View All Claims</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Reports & Statistics</div>
+                    <a href="../reports.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-chart-line"></i></span>
+                        <span>Statistics</span>
+                    </a>
+                </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
                     <a href="../../profile/profile.html" class="nav-item">
@@ -72,10 +83,12 @@
                     <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <div class="page-title-header">Lost Items Management</div>
+                    <div class="page-title-header">Claims Management</div>
                 </div>
                 <div class="user-dropdown">
-                    <div class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">S</div>
+                    <div class="user-info-wrapper" onclick="toggleUserDropdown()">
+                        <div class="user-avatar" id="userAvatar">A</div>
+                    </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
                         <a href="../../profile/profile.html">
                             <i class="fas fa-user-circle"></i> My Profile
@@ -90,22 +103,23 @@
 
             <article class="content-area">
                 <div class="page-header">
-                    <h1>Lost Items</h1>
-                    <p>View all lost item reports from users</p>
+                    <h1>All Claims</h1>
+                    <p>View and manage all claims submitted by users</p>
                 </div>
 
+                <!-- Stats Row -->
                 <div class="stats-row">
                     <div class="stat-box">
-                        <h3>Searching</h3>
-                        <div class="number" id="statSearching">0</div>
+                        <h3>Pending</h3>
+                        <div class="number" id="statPending">0</div>
                     </div>
                     <div class="stat-box">
-                        <h3>Found</h3>
-                        <div class="number" id="statFound">0</div>
+                        <h3>Approved</h3>
+                        <div class="number" id="statApproved">0</div>
                     </div>
                     <div class="stat-box">
-                        <h3>Closed</h3>
-                        <div class="number" id="statClosed">0</div>
+                        <h3>Rejected</h3>
+                        <div class="number" id="statRejected">0</div>
                     </div>
                     <div class="stat-box">
                         <h3>Total</h3>
@@ -113,66 +127,56 @@
                     </div>
                 </div>
 
+                <!-- Filter Bar -->
                 <div class="filter-bar">
                     <div class="filter-group">
-                        <label for="searchInput">Search</label>
-                        <input type="text" id="searchInput" placeholder="Item name, location...">
-                    </div>
-                    <div class="filter-group">
-                        <label for="statusFilter">Status</label>
+                        <label for="statusFilter">Filter by Status</label>
                         <select id="statusFilter">
                             <option value="">All</option>
-                            <option value="searching">Searching</option>
-                            <option value="found">Found</option>
-                            <option value="closed">Closed</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label for="categoryFilter">Category</label>
-                        <select id="categoryFilter">
-                            <option value="0">All Categories</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <label for="dateFrom">Date From</label>
-                        <input type="date" id="dateFrom">
-                    </div>
-                    <div class="filter-group">
-                        <label for="dateTo">Date To</label>
-                        <input type="date" id="dateTo">
+                        <label for="searchInput">Search</label>
+                        <input type="text" id="searchInput" placeholder="Item name, claimant...">
                     </div>
                     <div class="filter-actions">
                         <button class="btn btn-primary" id="searchBtn">Search</button>
-                        <button class="btn" id="resetBtn">Reset</button>
+                        <button class="btn btn-outline" id="resetBtn">Reset</button>
                     </div>
                 </div>
 
-                <div class="reports-table-container">
-                    <div id="loadingDiv" class="loading" style="display: none;">
-                        <i class="fas fa-spinner fa-spin"></i> Loading reports...
-                    </div>
-                    <div class="table-responsive">
-                        <table class="reports-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Item Name</th>
-                                    <th>Reported By</th>
-                                    <th>Location</th>
-                                    <th>Date Lost</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="reportsTableBody">
-                                <tr>
-                                    <td colspan="7" class="text-center">Loading reports...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div id="pagination" class="pagination-container"></div>
+                <!-- Claims Table -->
+                <div id="loadingDiv" class="loading" style="display: none;">
+                    <i class="fas fa-spinner fa-spin"></i> Loading claims...
                 </div>
+
+                <div class="claims-table-container" id="claimsContainer">
+                    <table class="claims-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Item Name</th>
+                                <th>Claimant</th>
+                                <th>Staff Owner</th>
+                                <th>Location</th>
+                                <th>Submitted</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="claimsTableBody">
+                            <tr>
+                                <td colspan="8" class="text-center">Loading claims...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div id="pagination" class="pagination-container"></div>
             </article>
 
             <footer>
@@ -181,29 +185,33 @@
         </div>
     </div>
 
-    <div id="viewModal" class="modal">
+    <!-- Claim Details Modal -->
+    <div id="claimModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Report Details</h3>
-                <button class="modal-close" onclick="closeViewModal()">&times;</button>
+                <h3>Claim Details</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body" id="modalBody"></div>
             <div class="modal-footer">
-                <button class="btn" onclick="closeViewModal()">Close</button>
+                <a href="review_claims.html" id="reviewClaimBtn" class="btn-review">Review Claim</a>
+                <button class="btn" onclick="closeModal()">Close</button>
             </div>
         </div>
     </div>
 
-    <script src="view_lost_items.js"></script>
+    <script src="view_claims.js"></script>
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
         }
+
         function toggleUserDropdown() {
             const dropdown = document.getElementById('userDropdownMenu');
             dropdown.classList.toggle('show');
         }
+
         function logoutUser() {
             if (confirm('Are you sure you want to logout?')) {
                 window.location.href = '../../../mainpage/logout/logout.php';
@@ -211,6 +219,7 @@
             }
             return false;
         }
+
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('userDropdownMenu');
             const avatar = document.getElementById('userAvatar');

@@ -190,7 +190,7 @@ function loadRecentLostTable(lostReports) {
                         </span>
                     </td>
                     <td>
-                        <a href="item_details.php?id=${report.report_id}&type=lost" class="btn btn-primary">View Details</a>
+                        <button class="btn btn-primary" onclick="viewLostReportDetails(${report.report_id})">View Details</button>
                     </td>
                 </tr>
             `;
@@ -222,7 +222,7 @@ function loadRecentClaimsTable(claims) {
                     </td>
                     <td>${formatDate(claim.submitted_at)}</td>
                     <td>
-                        <a href="claim_details.php?id=${claim.claim_id}" class="btn btn-primary">View Details</a>
+                        <button class="btn btn-primary" onclick="viewClaimDetails(${claim.claim_id})">View Details</button>
                     </td>
                 </tr>
             `;
@@ -230,6 +230,218 @@ function loadRecentClaimsTable(claims) {
         tbody.innerHTML = html;
     } else {
         tbody.innerHTML = '<tr><td colspan="4" class="text-center">No claims found</td></tr>';
+    }
+}
+
+// View Lost Report Details (opens modal)
+async function viewLostReportDetails(reportId) {
+    try {
+        const response = await fetch('lost_reports/my_lost_reports.php?id=' + reportId);
+        const data = await response.json();
+        
+        if (data.success) {
+            showLostReportModal(data.report);
+        } else {
+            alert('Failed to load report details');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Network error occurred');
+    }
+}
+
+// View Claim Details (opens modal)
+async function viewClaimDetails(claimId) {
+    try {
+        const response = await fetch('claims/my_claims.php?id=' + claimId);
+        const data = await response.json();
+        
+        if (data.success) {
+            showClaimModal(data.claim);
+        } else {
+            alert('Failed to load claim details');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Network error occurred');
+    }
+}
+
+// Show Lost Report Modal
+function showLostReportModal(report) {
+    let modal = document.getElementById('lostReportModal');
+    
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'lostReportModal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Lost Report Details</h3>
+                    <button class="modal-close" onclick="closeLostReportModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="lostReportModalBody"></div>
+                <div class="modal-footer">
+                    <button class="btn" onclick="closeLostReportModal()">Close</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    
+    const modalBody = document.getElementById('lostReportModalBody');
+    
+    let statusClass = '';
+    let statusText = '';
+    
+    if (report.lost_status === 'searching') {
+        statusClass = 'status-searching';
+        statusText = 'Searching';
+    } else if (report.lost_status === 'found') {
+        statusClass = 'status-found';
+        statusText = 'Found';
+    } else if (report.lost_status === 'closed') {
+        statusClass = 'status-closed';
+        statusText = 'Closed';
+    }
+    
+    modalBody.innerHTML = `
+        <div class="detail-row">
+            <div class="detail-label">Item Name</div>
+            <div class="detail-value">${escapeHtml(report.item_name)}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Category</div>
+            <div class="detail-value">${escapeHtml(report.category_name || 'Uncategorized')}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Location Lost</div>
+            <div class="detail-value">${escapeHtml(report.location_lost)}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Date Lost</div>
+            <div class="detail-value">${escapeHtml(report.date_lost)}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Status</div>
+            <div class="detail-value"><span class="status-badge ${statusClass}">${statusText}</span></div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Description</div>
+            <div class="detail-value">${report.description || 'No description provided'}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Reported On</div>
+            <div class="detail-value">${escapeHtml(report.created_at)}</div>
+        </div>
+    `;
+    
+    modal.classList.add('active');
+}
+
+function closeLostReportModal() {
+    const modal = document.getElementById('lostReportModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// Show Claim Modal
+function showClaimModal(claim) {
+    let modal = document.getElementById('claimModal');
+    
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'claimModal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Claim Details</h3>
+                    <button class="modal-close" onclick="closeClaimModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="claimModalBody"></div>
+                <div class="modal-footer">
+                    <button class="btn" onclick="closeClaimModal()">Close</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+    
+    const modalBody = document.getElementById('claimModalBody');
+    
+    let statusClass = '';
+    let statusText = '';
+    
+    if (claim.claim_status === 'pending') {
+        statusClass = 'status-pending';
+        statusText = 'Pending';
+    } else if (claim.claim_status === 'approved') {
+        statusClass = 'status-approved';
+        statusText = 'Approved';
+    } else if (claim.claim_status === 'rejected') {
+        statusClass = 'status-rejected';
+        statusText = 'Rejected';
+    }
+    
+    modalBody.innerHTML = `
+        <div class="detail-row">
+            <div class="detail-label">Item Name</div>
+            <div class="detail-value">${escapeHtml(claim.item_name)}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Location Found</div>
+            <div class="detail-value">${escapeHtml(claim.location_found)}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Date Found</div>
+            <div class="detail-value">${escapeHtml(claim.date_found)}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Status</div>
+            <div class="detail-value"><span class="status-badge ${statusClass}">${statusText}</span></div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Submitted On</div>
+            <div class="detail-value">${escapeHtml(claim.submitted_at)}</div>
+        </div>
+        ${claim.reviewed_at ? `
+        <div class="detail-row">
+            <div class="detail-label">Reviewed On</div>
+            <div class="detail-value">${escapeHtml(claim.reviewed_at)}</div>
+        </div>
+        ` : ''}
+        ${claim.reviewed_by_name ? `
+        <div class="detail-row">
+            <div class="detail-label">Reviewed By</div>
+            <div class="detail-value">${escapeHtml(claim.reviewed_by_name)}</div>
+        </div>
+        ` : ''}
+        <div class="detail-row">
+            <div class="detail-label">Ownership Proof</div>
+            <div class="detail-value">${escapeHtml(claim.ownership_proof)}</div>
+        </div>
+        <div class="detail-row">
+            <div class="detail-label">Identifying Details</div>
+            <div class="detail-value">${escapeHtml(claim.identifying_details)}</div>
+        </div>
+        ${claim.review_note ? `
+        <div class="detail-row">
+            <div class="detail-label">Review Note</div>
+            <div class="detail-value">${escapeHtml(claim.review_note)}</div>
+        </div>
+        ` : ''}
+    `;
+    
+    modal.classList.add('active');
+}
+
+function closeClaimModal() {
+    const modal = document.getElementById('claimModal');
+    if (modal) {
+        modal.classList.remove('active');
     }
 }
 
