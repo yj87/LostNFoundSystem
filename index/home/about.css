@@ -260,6 +260,15 @@ body {
     padding: 40px 0 20px;
 }
 
+.team-icon img {
+    width: 90px;
+    height: 90px;  
+    object-fit: cover;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-bottom: 8px
+}
+
 .section-header {
     text-align: center;
     margin-bottom: 50px;
