@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Item Details</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Dynamic dashboard CSS will be loaded by JS -->
+    <link rel="stylesheet" href="view_item_details.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+
+        <aside id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">🔍</div>
+                <h3 id="panelTitle">Lost &amp; Found</h3>
+                <p id="panelSubtitle">Item Details</p>
+            </div>
+
+            <nav id="sideNav">
+            </nav>
+        </aside>
+
+        <div class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="page-title-header" id="pageHeaderTitle">View Item Details</div>
+                </div>
+
+                <div class="user-dropdown" id="dashboardUserDropdown">
+                    <div class="user-info-wrapper" onclick="toggleUserDropdown()">
+                        <div class="user-avatar" id="userAvatar">U</div>
+                    </div>
+
+                    <div class="user-dropdown-menu" id="userDropdownMenu">
+                        <a href="../profile/profile.html">
+                            <i class="fas fa-user-circle"></i> My Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="../../mainpage/logout/logout.php" onclick="return logoutUser();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <article>
+                <div class="page-title">
+                    <h1 id="pageTitle">View Item Details</h1>
+                    <p>Full information about the selected found item.</p>
+                </div>
+
+                <div class="form-card detail-card" id="itemDetails">
+                    <p style="text-align:center; padding: 20px;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading item details...
+                    </p>
+                </div>
+            </article>
+        </div>
+    </div>
+
+    <script src="view_item_details.js"></script>
+</body>
+</html>

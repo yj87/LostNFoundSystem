@@ -87,7 +87,7 @@ async function loadItems() {
     if (category) url += `category=${encodeURIComponent(category)}`;
 
     const tbody = document.getElementById('staffItemsTable');
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;"><i class="fas fa-spinner fa-spin"></i> Loading…</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;"><i class="fas fa-spinner fa-spin"></i> Loading…</td></tr>';
 
     try {
         const response = await fetch(url, { credentials: 'same-origin' });
@@ -97,23 +97,31 @@ async function loadItems() {
 
         if (result.success && result.data.length > 0) {
             summary.textContent = `Showing ${result.data.length} item${result.data.length !== 1 ? 's' : ''}`;
+
             tbody.innerHTML = result.data.map(item => {
                 const statusClass = item.found_status === 'claimed' ? 'status-claimed' :
                     item.found_status === 'pending' ? 'status-pending' :
                         'status-unclaimed';
+
                 const statusLabel = item.found_status
                     ? item.found_status.charAt(0).toUpperCase() + item.found_status.slice(1)
                     : 'Unknown';
 
+                const imageHtml = item.photo
+                    ? `<img src="../../../${escapeHtml(item.photo)}" class="item-thumb" alt="Found item image">`
+                    : `<div class="no-image"><i class="fas fa-image"></i></div>`;
+
                 return `
                     <tr>
+                        <td>${imageHtml}</td>
                         <td><strong>${escapeHtml(item.item_name)}</strong></td>
                         <td>${escapeHtml(item.category_name ?? '-')}</td>
-                        <td>${escapeHtml(item.location_found)}</td>
-                        <td>${escapeHtml(item.description ?? '-')}</td>
                         <td>${escapeHtml(item.date_found)}</td>
                         <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
-                        <td>
+                        <td style="white-space:nowrap;">
+                            <a href="../../item_details/view_item_details.html?id=${item.item_id}&from=staff" class="btn-view" title="View Details">
+                                <i class="fas fa-eye"></i> View
+                            </a>
                             <a href="edit_found_item.html?id=${item.item_id}" class="btn-edit" title="Edit">
                                 <i class="fas fa-edit"></i> Edit
                             </a>
@@ -124,7 +132,7 @@ async function loadItems() {
             summary.textContent = '';
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="7">
+                    <td colspan="6">
                         <div class="empty-state">
                             <i class="fas fa-box-open"></i>
                             No found items match your search.
@@ -135,7 +143,7 @@ async function loadItems() {
     } catch (error) {
         console.error('Error fetching items:', error);
         document.getElementById('staffItemsTable').innerHTML =
-            '<tr><td colspan="7" style="text-align:center;color:red;padding:20px;">Failed to load items.</td></tr>';
+            '<tr><td colspan="6" style="text-align:center;color:red;padding:20px;">Failed to load items.</td></tr>';
     }
 }
 
