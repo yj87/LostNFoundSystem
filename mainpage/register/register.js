@@ -347,7 +347,7 @@ setDefaultCopyright();
 document.getElementById('backHomeBtn').addEventListener('click', (e) => {
     e.preventDefault();
     // Navigate directly without showing loading overlay
-    window.location.href = '../../index/first.html';
+    window.location.href = '../../index.php';
 });
 
 // Navigation buttons handlers
