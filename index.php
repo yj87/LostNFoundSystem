@@ -61,27 +61,14 @@ $copyright_data = [
         }
 
         .brand-logo {
-            background: linear-gradient(145deg, #F5A65B, #E8892E);
             width: 48px;
             height: 48px;
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-        }
-
-        .brand-logo i:first-child {
-            font-size: 26px;
-            color: white;
-        }
-
-        .brand-logo i:last-child {
-            position: absolute;
-            font-size: 16px;
-            bottom: -2px;
-            right: -4px;
-            color: #FFD966;
+            overflow: hidden;
+            background: transparent;
         }
 
         .nav-brand {
@@ -581,8 +568,7 @@ $copyright_data = [
         <div class="nav-container">
             <div class="logo-nav">
                 <div class="brand-logo">
-                    <i class="fas fa-magnifying-glass"></i>
-                    <i class="fas fa-handshake"></i>
+                    <img src="logo/lostfind.webp" alt="LostFind Logo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 16px;">
                 </div>
                 <h2 class="nav-brand">Lost<span>Find</span></h2>
             </div>

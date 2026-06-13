@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const registerNavBtn = document.getElementById('registerBtnNav');
     
     // Page URLs
-    const LOGIN_URL = '../mainpage/login/loginpage.html';
-    const REGISTER_URL = '../mainpage/register/register.html';
+    const LOGIN_URL = '../../mainpage/login/loginpage.html';
+    const REGISTER_URL = '../../mainpage/register/register.html';
     
     // Track menu state
     let isMobileMenuOpen = false;
