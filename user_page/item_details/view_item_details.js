@@ -20,84 +20,151 @@ function getStatusClass(status) {
 function getModuleConfig(from) {
     switch (from) {
         case 'admin':
-            return {
-                dashboardCss: '../admin/admin_dashboard.css',
-                panelTitle: 'Lost & Found',
-                panelSubtitle: 'Admin Panel',
-                avatar: 'A',
-                profileUrl: '../profile/profile.html',
-                logoutUrl: '../../mainpage/logout/logout.php',
-                backUrl: '../admin/found_item/admin_found_items.html',
-                navHtml: `
-                    <div class="nav-group">
-                        <div class="nav-group-title">Main</div>
-                        <a href="../admin/dashboard.html" class="nav-item">
-                            <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-                            <span>Dashboard</span>
-                        </a>
-                    </div>
+    return {
+        dashboardCss: '../admin/admin_dashboard.css',
+        panelTitle: 'Lost & Found',
+        panelSubtitle: 'Admin Panel',
+        avatar: 'A',
+        profileUrl: '../profile/profile.html',
+        logoutUrl: '../../mainpage/logout/logout.php',
+        backUrl: '../admin/found_item/admin_found_items.html',
+        navHtml: `
+            <div class="nav-group">
+                <div class="nav-group-title">Main</div>
+                <a href="../admin/dashboard.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                    <span>Dashboard</span>
+                </a>
+            </div>
 
-                    <div class="nav-group">
-                        <div class="nav-group-title">Found Items</div>
-                        <a href="../admin/found_item/admin_found_items.html" class="nav-item active">
-                            <span class="icon"><i class="fas fa-box"></i></span>
-                            <span>View All Items</span>
-                        </a>
-                    </div>
+            <div class="nav-group">
+                <div class="nav-group-title">User Management</div>
 
-                    <div class="nav-group">
-                        <div class="nav-group-title">Account</div>
-                        <a href="../profile/profile.html" class="nav-item">
-                            <span class="icon"><i class="fas fa-user-circle"></i></span>
-                            <span>My Profile</span>
-                        </a>
-                        <a href="../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
-                            <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                            <span>Logout</span>
-                        </a>
-                    </div>
-                `
-            };
+                <a href="../admin/user_management/manage.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-users"></i></span>
+                    <span>Manage Users</span>
+                </a>
+
+                <a href="../admin/user_management/add.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-user-plus"></i></span>
+                    <span>Add User</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Found Items</div>
+
+                <a href="../admin/found_item/admin_found_items.html" class="nav-item active">
+                    <span class="icon"><i class="fas fa-box"></i></span>
+                    <span>View All Items</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Lost Reports</div>
+
+                <a href="../admin/lost_reports/view_lost_reports.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-search"></i></span>
+                    <span>View All Reports</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Claims</div>
+
+                <a href="../admin/claims/view_claims.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                    <span>View All Claims</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Reports & Statistics</div>
+
+                <a href="../admin/reports.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-chart-line"></i></span>
+                    <span>Statistics</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Account</div>
+
+                <a href="../profile/profile.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-user-circle"></i></span>
+                    <span>My Profile</span>
+                </a>
+
+                <a href="../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
+                    <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        `
+    };
 
         case 'staff':
-            return {
-                dashboardCss: '../staff/staff_dashboard.css',
-                panelTitle: 'Lost & Found',
-                panelSubtitle: 'Staff Panel',
-                avatar: 'S',
-                profileUrl: '../profile/profile.html',
-                logoutUrl: '../../mainpage/logout/logout.php',
-                backUrl: '../staff/found_item/staff_found_items.html',
-                navHtml: `
-                    <div class="nav-group">
-                        <div class="nav-group-title">Main</div>
-                        <a href="../staff/dashboard.html" class="nav-item">
-                            <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-                            <span>Dashboard</span>
-                        </a>
-                    </div>
+    return {
+        dashboardCss: '../staff/staff_dashboard.css',
+        panelTitle: 'Lost & Found',
+        panelSubtitle: 'Staff Panel',
+        avatar: 'S',
+        profileUrl: '../profile/profile.html',
+        logoutUrl: '../../mainpage/logout/logout.php',
+        backUrl: '../staff/found_item/staff_found_items.html',
+        navHtml: `
+            <div class="nav-group">
+                <div class="nav-group-title">Main</div>
+                <a href="../staff/dashboard.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                    <span>Dashboard</span>
+                </a>
+            </div>
 
-                    <div class="nav-group">
-                        <div class="nav-group-title">Found Items</div>
-                        <a href="../staff/found_item/staff_found_items.html" class="nav-item active">
-                            <span class="icon"><i class="fas fa-box"></i></span>
-                            <span>My Found Items</span>
-                        </a>
-                    </div>
+            <div class="nav-group">
+                <div class="nav-group-title">Found Items</div>
 
-                    <div class="nav-group">
-                        <div class="nav-group-title">Account</div>
-                        <a href="../profile/profile.html" class="nav-item">
-                            <span class="icon"><i class="fas fa-user-circle"></i></span>
-                            <span>My Profile</span>
-                        </a>
-                        <a href="../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
-                            <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                            <span>Logout</span>
-                        </a>
-                    </div>
-                `
-            };
+                <a href="../staff/found_item/add_found_item.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-plus-circle"></i></span>
+                    <span>Add Found Item</span>
+                </a>
+
+                <a href="../staff/found_item/staff_found_items.html" class="nav-item active">
+                    <span class="icon"><i class="fas fa-box"></i></span>
+                    <span>My Found Items</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Claims</div>
+                <a href="../staff/claims/view_claims.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                    <span>View Claims</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Lost Reports</div>
+                <a href="../staff/lost_reports/view_lost_items.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-search"></i></span>
+                    <span>View Lost Items</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Account</div>
+                <a href="../profile/profile.html" class="nav-item">
+                    <span class="icon"><i class="fas fa-user-circle"></i></span>
+                    <span>My Profile</span>
+                </a>
+
+                <a href="../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
+                    <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        `
+    };
 
         case 'user':
             return {
