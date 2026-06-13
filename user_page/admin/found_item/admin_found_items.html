@@ -4,12 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Admin panel to view, manage and delete all found items in the Lost & Found System.">
     <title>Manage Found Items - Admin Panel</title>
+
     <link rel="stylesheet" href="../admin_dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="admin_found_items.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
@@ -22,6 +21,7 @@
                 <h3>Lost &amp; Found</h3>
                 <p>Admin Panel</p>
             </div>
+
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
@@ -30,17 +30,20 @@
                         <span>Dashboard</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">User Management</div>
                     <a href="../user_management/manage.html" class="nav-item">
                         <span class="icon"><i class="fas fa-users"></i></span>
-                        <span>View Users</span>
+                        <span>Manage Users</span>
                     </a>
+
                     <a href="../user_management/add.html" class="nav-item">
                         <span class="icon"><i class="fas fa-user-plus"></i></span>
                         <span>Add User</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
                     <a href="admin_found_items.html" class="nav-item active">
@@ -48,12 +51,38 @@
                         <span>View All Items</span>
                     </a>
                 </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Lost Reports</div>
+                    <a href="../lost_reports/view_lost_reports.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>View All Reports</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Claims</div>
+                    <a href="../claims/view_claims.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                        <span>View All Claims</span>
+                    </a>
+                </div>
+
+                <div class="nav-group">
+                    <div class="nav-group-title">Reports & Statistics</div>
+                    <a href="../reports.html" class="nav-item">
+                        <span class="icon"><i class="fas fa-chart-line"></i></span>
+                        <span>Statistics</span>
+                    </a>
+                </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
                     <a href="../../profile/profile.html" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
+
                     <a href="../../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
                         <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                         <span>Logout</span>
@@ -66,20 +95,25 @@
         <div class="main-content">
             <header class="top-header">
                 <div class="header-left">
-                    <button class="menu-toggle" id="menuToggleBtn" onclick="toggleSidebar()">
+                    <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
                     </button>
                     <div class="page-title-header">Found Items Management</div>
                 </div>
+
+                <!-- User Dropdown Menu -->
                 <div class="user-dropdown">
                     <div class="user-info-wrapper" onclick="toggleUserDropdown()">
                         <div class="user-avatar" id="userAvatar">A</div>
                     </div>
+
                     <div class="user-dropdown-menu" id="userDropdownMenu">
                         <a href="../../profile/profile.html">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
+
                         <div class="dropdown-divider"></div>
+
                         <a href="../../../mainpage/logout/logout.php" onclick="return logoutUser();">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
@@ -97,12 +131,15 @@
                 <div class="toolbar">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="searchInput" placeholder="Search by name, location, reporter…"
+                        <input type="text" id="searchInput"
+                            placeholder="Search by name, location, description, reporter..."
                             oninput="handleSearch()">
                     </div>
+
                     <select id="categoryFilter" onchange="handleSearch()">
                         <option value="">All Categories</option>
                     </select>
+
                     <select id="statusFilter" onchange="handleSearch()">
                         <option value="">All Statuses</option>
                         <option value="unclaimed">Unclaimed</option>
@@ -115,24 +152,27 @@
 
                 <!-- Table -->
                 <div class="recent-section">
+                    <div class="section-header">
+                        <h3>Found Items</h3>
+                    </div>
+
                     <div class="data-table">
                         <table>
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>Image</th>
                                     <th>Item Name</th>
                                     <th>Category</th>
-                                    <th>Location Found</th>
                                     <th>Date Found</th>
-                                    <th>Reported By</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
+
                             <tbody id="adminItemsTable">
                                 <tr>
-                                    <td colspan="8" style="text-align:center; padding: 24px;">
-                                        <i class="fas fa-spinner fa-spin" style="margin-right:6px;"></i> Loading items…
+                                    <td colspan="6" class="text-center" style="text-align:center; padding: 20px;">
+                                        Loading items...
                                     </td>
                                 </tr>
                             </tbody>
@@ -142,8 +182,7 @@
             </article>
 
             <footer>
-                <p id="copyright">© 2024 Lost &amp; Found System - Universiti Teknologi Malaysia. All rights reserved.
-                </p>
+                <p id="copyright">© 2026 Lost &amp; Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
             </footer>
         </div>
     </div>
@@ -153,8 +192,12 @@
         <div class="modal-box">
             <i class="fas fa-trash-alt modal-icon"></i>
             <h3>Delete Found Item</h3>
-            <p>Are you sure you want to permanently delete <strong id="deleteItemName"></strong>? This action cannot be
-                undone.</p>
+            <p>
+                Are you sure you want to permanently delete
+                <strong id="deleteItemName"></strong>?
+                This action cannot be undone.
+            </p>
+
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeDeleteModal()">Cancel</button>
                 <button class="btn-confirm-delete" id="confirmDeleteBtn" onclick="confirmDelete()">

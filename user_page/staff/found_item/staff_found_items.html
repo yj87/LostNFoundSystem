@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Found Items - Lost & Found</title>
+
     <link rel="stylesheet" href="../staff_dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="staff_found_items.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
 <body>
@@ -17,9 +18,10 @@
         <aside id="sidebar">
             <div class="sidebar-header">
                 <div class="logo">🔍</div>
-                <h3>Lost & Found</h3>
+                <h3>Lost &amp; Found</h3>
                 <p>Staff Panel</p>
             </div>
+
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
@@ -28,24 +30,29 @@
                         <span>Dashboard</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
+
                     <a href="add_found_item.html" class="nav-item">
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Add Found Item</span>
                     </a>
+
                     <a href="staff_found_items.html" class="nav-item active">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>My Found Items</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="claims/staff_claims.html" class="nav-item">
+                    <a href="../claims/view_claims.html" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View Claims</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
                     <a href="../lost_reports/view_lost_items.html" class="nav-item">
@@ -53,12 +60,15 @@
                         <span>View Lost Items</span>
                     </a>
                 </div>
+
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../profile/profile.html" class="nav-item">
+
+                    <a href="../../profile/profile.html" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
+
                     <a href="../../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
                         <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                         <span>Logout</span>
@@ -76,6 +86,25 @@
                     </button>
                     <div class="page-title-header">My Found Items</div>
                 </div>
+
+                <!-- User Dropdown Menu -->
+                <div class="user-dropdown">
+                    <div class="user-info-wrapper" onclick="toggleUserDropdown()">
+                        <div class="user-avatar" id="userAvatar">S</div>
+                    </div>
+
+                    <div class="user-dropdown-menu" id="userDropdownMenu">
+                        <a href="../../profile/profile.html">
+                            <i class="fas fa-user-circle"></i> My Profile
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <a href="../../../mainpage/logout/logout.php" onclick="return logoutUser();">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
             </header>
 
             <article>
@@ -91,9 +120,11 @@
                         <input type="text" id="searchInput" placeholder="Search by name, location, description..."
                             oninput="handleSearch()">
                     </div>
+
                     <select id="categoryFilter" onchange="handleSearch()">
                         <option value="">All Categories</option>
                     </select>
+
                     <select id="statusFilter" onchange="handleSearch()">
                         <option value="">All Statuses</option>
                         <option value="unclaimed">Unclaimed</option>
@@ -107,32 +138,40 @@
                 <div class="recent-section">
                     <div class="section-header">
                         <h3>My Items</h3>
-                        <a href="add_found_item.html" class="btn btn-primary" style="padding: 8px 16px;">
+
+                        <a href="add_found_item.html" class="btn btn-primary">
                             <i class="fas fa-plus"></i> Add New Item
                         </a>
                     </div>
+
                     <div class="data-table">
                         <table>
                             <thead>
                                 <tr>
+                                    <th>Image</th>
                                     <th>Item Name</th>
                                     <th>Category</th>
-                                    <th>Location</th>
-                                    <th>Description</th>
                                     <th>Date Found</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
+
                             <tbody id="staffItemsTable">
                                 <tr>
-                                    <td colspan="7" style="text-align:center; padding: 20px;">Loading your items...</td>
+                                    <td colspan="6" class="text-center" style="text-align:center; padding:20px;">
+                                        Loading your items...
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </article>
+
+            <footer>
+                <p id="copyright">© 2026 Lost &amp; Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
+            </footer>
         </div>
     </div>
 
@@ -144,5 +183,4 @@
 
     <script src="staff_items.js"></script>
 </body>
-
 </html>

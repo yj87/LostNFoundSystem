@@ -12,7 +12,7 @@ $types = "";
 $params = [];
 
 // Public users should only see viewable found items.
-// Usually show unclaimed and pending, but hide claimed.
+// Usually show unclaimed and pending, hide claimed.
 $where_clauses[] = "f.found_status IN ('unclaimed', 'pending')";
 
 if (!empty($search)) {
@@ -40,6 +40,7 @@ $query = "SELECT
             f.description,
             f.date_found,
             f.found_status,
+            f.photo,
             c.category_name
           FROM found_items f
           LEFT JOIN categories c ON f.category_id = c.category_id
