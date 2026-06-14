@@ -113,7 +113,7 @@ async function loadItems() {
 
                 return `
                     <tr>
-                        <td>F${escapeHtml(item.item_id)}</td>
+                        <td>${escapeHtml(item.item_id)}</td>
                         <td>${imageHtml}</td>
                         <td><strong>${escapeHtml(item.item_name)}</strong></td>
                         <td>${escapeHtml(item.category_name ?? '-')}</td>

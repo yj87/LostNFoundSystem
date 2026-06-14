@@ -25,16 +25,12 @@ if (!empty($search)) {
     /*
         Allow admin to search by:
         - item ID: 14
-        - displayed item ID: F14
         - item name
         - location
         - description
         - category name
         - reporter name
     */
-
-    $cleanSearch = strtoupper($search);
-    $cleanSearch = str_replace('F', '', $cleanSearch);
 
     $where_clauses[] = "(
         f.item_name LIKE ?
@@ -46,7 +42,7 @@ if (!empty($search)) {
     )";
 
     $searchTerm = '%' . $search . '%';
-    $idSearchTerm = '%' . $cleanSearch . '%';
+    $idSearchTerm = '%' . $search . '%';
 
     $types .= "ssssss";
     $params[] = $searchTerm;

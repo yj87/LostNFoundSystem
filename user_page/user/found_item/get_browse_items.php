@@ -21,9 +21,6 @@ $params = [];
 $where_clauses[] = "f.found_status IN ('unclaimed', 'pending')";
 
 if (!empty($search)) {
-    
-    $cleanSearch = strtoupper($search);
-    $cleanSearch = str_replace('F', '', $cleanSearch);
 
     $where_clauses[] = "(
         f.item_name LIKE ? 
@@ -34,7 +31,7 @@ if (!empty($search)) {
     )";
 
     $searchTerm = '%' . $search . '%';
-    $idSearchTerm = '%' . $cleanSearch . '%';
+    $idSearchTerm = '%' . $search . '%';
 
     $types .= "sssss";
     $params[] = $searchTerm;

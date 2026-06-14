@@ -512,7 +512,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
                 <div class="detail-group">
                     <label>Item ID</label>
-                    <div class="detail-box">${type === 'lost' ? 'L' : 'F'}${escapeHtml(item.item_id)}</div>
+                    <div class="detail-box">${escapeHtml(item.item_id)}</div>
                 </div>
             </div>
 

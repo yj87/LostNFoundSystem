@@ -34,9 +34,6 @@ if (!empty($search)) {
         - category name
     */
 
-    $cleanSearch = strtoupper($search);
-    $cleanSearch = str_replace('F', '', $cleanSearch);
-
     $where_clauses[] = "(
         f.item_name LIKE ?
         OR f.location_found LIKE ?
@@ -46,7 +43,7 @@ if (!empty($search)) {
     )";
 
     $searchTerm = '%' . $search . '%';
-    $idSearchTerm = '%' . $cleanSearch . '%';
+    $idSearchTerm = '%' . $search . '%';
 
     $types .= "sssss";
     $params[] = $searchTerm;
