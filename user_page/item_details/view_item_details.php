@@ -1,5 +1,4 @@
 <?php
-// user_page/item_details/view_item_details.php
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -60,10 +59,10 @@ if ($type === 'lost') {
                 'item_id' => $row['item_id'],
                 'item_name' => $row['item_name'],
                 'category_name' => $row['category_name'] ?? 'Uncategorized',
-                'location_found' => $row['location_lost'],
-                'date_found' => date('d M Y', strtotime($row['date_lost'])),
+                'location_lost' => $row['location_lost'],  
+                'date_lost' => date('d M Y', strtotime($row['date_lost'])), 
                 'description' => $row['description'] ?? 'No description provided',
-                'found_status' => $row['lost_status'],
+                'lost_status' => $row['lost_status'], 
                 'photo' => $row['photo'],
                 'reported_by' => $row['reported_by'] ?? 'Unknown'
             ]
@@ -115,7 +114,17 @@ $result = mysqli_stmt_get_result($stmt);
 if ($row = mysqli_fetch_assoc($result)) {
     echo json_encode([
         'success' => true,
-        'data' => $row
+        'data' => [
+            'item_id' => $row['item_id'],
+            'item_name' => $row['item_name'],
+            'category_name' => $row['category_name'] ?? 'Uncategorized',
+            'location_found' => $row['location_found'],
+            'date_found' => date('d M Y', strtotime($row['date_found'])),
+            'description' => $row['description'] ?? 'No description provided',
+            'found_status' => $row['found_status'],
+            'photo' => $row['photo'],
+            'reported_by' => $row['reported_by'] ?? 'Unknown'
+        ]
     ]);
 } else {
     echo json_encode([

@@ -431,6 +431,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const item = result.data;
+        console.log('Full item object:', item);
+console.log('Type:', type);
+console.log('lost_status:', item.lost_status);
+console.log('found_status:', item.found_status);
+console.log('Any status field:', item.status);
         
         // Set page titles based on item type
         const pageTitle = type === 'lost' ? 'Lost Report Details' : 'Found Item Details';
@@ -447,7 +452,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Adjust labels based on item type
         const locationLabel = type === 'lost' ? 'Location Lost' : 'Location Found';
         const dateLabel = type === 'lost' ? 'Date Lost' : 'Date Found';
-        const statusValue = type === 'lost' ? item.lost_status : item.found_status;
+        let statusValue = '';
+        if (type === 'lost') {
+            statusValue = item.lost_status || item.found_status || 'searching';
+        } else {
+            statusValue = item.found_status || item.lost_status || 'unclaimed';
+        }
 
         container.innerHTML = `
             ${imageHtml}

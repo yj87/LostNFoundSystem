@@ -106,7 +106,25 @@ function renderClaimsTable(claims) {
     const tableBody = document.getElementById('claimsTableBody');
     
     if (!claims || claims.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No claims found</td></tr>';
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty-state">
+                    <div class="empty-state-content">
+                        <i class="fas fa-clipboard-list"></i>
+                        <h3>No Claims Found</h3>
+                        <p>We couldn't find any claims matching your criteria.</p>
+                        <div class="empty-state-suggestions">
+                            <span class="suggestion-tag">Try clearing your filters</span>
+                            <span class="suggestion-tag">Check your spelling</span>
+                            <span class="suggestion-tag">Use fewer keywords</span>
+                        </div>
+                        <button class="btn-empty-reset" onclick="resetFilters()">
+                            ✕ Clear All Filters
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
         return;
     }
     

@@ -108,6 +108,22 @@
     color: #0056b3;
 }
 
+/* ── Lost Item Status Styles ─────────────────────── */
+.status-searching {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-found {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-closed {
+    background: #e2d5f5;
+    color: #4a2c7a;
+}
+
 /* ── Actions ─────────────────────────────────────── */
 .detail-actions {
     width: 100%;

@@ -50,17 +50,19 @@ CREATE TABLE claims (
   claim_id          INT AUTO_INCREMENT PRIMARY KEY,
   item_id           INT NOT NULL,
   user_id           INT NOT NULL,
-  reviewed_by       INT,
-  ownership_proof   TEXT,
-  identifying_details TEXT,
+  reviewed_by       INT NULL,
+  lost_report_id    INT NULL,
+  ownership_proof   TEXT NOT NULL,
+  identifying_details TEXT NOT NULL,
   claim_status      ENUM('pending','approved','rejected') DEFAULT 'pending',
   review_note       TEXT,
   submitted_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
-  reviewed_at       DATETIME,
+  reviewed_at       DATETIME NULL,
   evidence_photo    VARCHAR(255) NULL,
   FOREIGN KEY (item_id)     REFERENCES found_items(item_id),
   FOREIGN KEY (user_id)     REFERENCES users(user_id),
-  FOREIGN KEY (reviewed_by) REFERENCES users(user_id)
+  FOREIGN KEY (reviewed_by) REFERENCES users(user_id),
+  FOREIGN KEY (lost_report_id) REFERENCES lost_reports(report_id) ON DELETE SET NULL
 );
 
 -- Insert categories

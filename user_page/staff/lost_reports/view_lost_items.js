@@ -130,7 +130,25 @@ function renderReportsTable(reports) {
     if (!tableBody) return;
     
     if (!reports || reports.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="8" class="text-center">No lost reports found</td></tr>';
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty-state">
+                    <div class="empty-state-content">
+                        <i class="fas fa-search"></i>
+                        <h3>No Lost Reports Found</h3>
+                        <p>We couldn't find any lost reports matching your criteria.</p>
+                        <div class="empty-state-suggestions">
+                            <span class="suggestion-tag">Try clearing your filters</span>
+                            <span class="suggestion-tag">Check your spelling</span>
+                            <span class="suggestion-tag">Use fewer keywords</span>
+                        </div>
+                        <button class="btn-empty-reset" onclick="resetFilters()">
+                            ✕ Clear All Filters
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
         return;
     }
     
@@ -161,7 +179,7 @@ function renderReportsTable(reports) {
         
         html += '<tr>';
         html += '<td>' + report.report_id + '</td>';
-        html += '<td>' + photoHtml + '</td>';  // ADD THIS LINE
+        html += '<td>' + photoHtml + '</td>';
         html += '<td><strong>' + escapeHtml(report.item_name) + '</strong></td>';
         html += '<td>' + escapeHtml(report.user_name) + '</td>';
         html += '<td>' + escapeHtml(report.location_lost) + '</td>';

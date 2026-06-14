@@ -83,7 +83,7 @@ async function loadClaimDetails() {
     if (loadingDiv) loadingDiv.style.display = 'block';
     
     try {
-        const response = await fetch('view_claims.php?id=' + claimId);
+        const response = await fetch('review_claims.php?id=' + claimId);
         const data = await response.json();
         
         if (data.success) {
