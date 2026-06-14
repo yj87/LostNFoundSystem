@@ -145,12 +145,12 @@
 }
 
 .btn-view {
-    background: #e3f2fd;
-    color: #1976d2;
+    background: #FEFAF9;
+    color: #c0392b;
 }
 
 .btn-view:hover {
-    background: #bbdefb;
+    background: #F6DADF;
 }
 
 .btn-edit {
@@ -159,16 +159,16 @@
 }
 
 .btn-edit:hover {
-    background: #eda0a6;
+    background: #F6DADF;
 }
 
 .btn-delete {
-    background: #fde8e8;
-    color: #c0392b;
+    background: #f09199;
+    color: #721c24;
 }
 
 .btn-delete:hover {
-    background: #f5c6c6;
+    background: #f5c6cb;
 }
 
 .data-table td:last-child {

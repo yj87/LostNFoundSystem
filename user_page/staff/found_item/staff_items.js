@@ -87,7 +87,7 @@ async function loadItems() {
     if (category) url += `category=${encodeURIComponent(category)}`;
 
     const tbody = document.getElementById('staffItemsTable');
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;"><i class="fas fa-spinner fa-spin"></i> Loading…</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;"><i class="fas fa-spinner fa-spin"></i> Loading…</td></tr>';
 
     try {
         const response = await fetch(url, { credentials: 'same-origin' });
@@ -113,6 +113,7 @@ async function loadItems() {
 
                 return `
                     <tr>
+                        <td>F${escapeHtml(item.item_id)}</td>
                         <td>${imageHtml}</td>
                         <td><strong>${escapeHtml(item.item_name)}</strong></td>
                         <td>${escapeHtml(item.category_name ?? '-')}</td>
@@ -132,7 +133,7 @@ async function loadItems() {
             summary.textContent = '';
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         <div class="empty-state">
                             <i class="fas fa-box-open"></i>
                             No found items match your search.
@@ -143,7 +144,7 @@ async function loadItems() {
     } catch (error) {
         console.error('Error fetching items:', error);
         document.getElementById('staffItemsTable').innerHTML =
-            '<tr><td colspan="6" style="text-align:center;color:red;padding:20px;">Failed to load items.</td></tr>';
+            '<tr><td colspan="7" style="text-align:center;color:red;padding:20px;">Failed to load items.</td></tr>';
     }
 }
 

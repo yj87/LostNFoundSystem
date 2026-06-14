@@ -162,7 +162,7 @@ function loadRecentClaimsTable(claims) {
                     </td>
                     <td>${formatDate(claim.submitted_at)}</td>
                     <td>
-                        <a href="claims/review_claims.html?id=${claim.claim_id}" class="btn btn-primary">Review</a>
+                        <a href="claims/review_claims.html?id=${claim.claim_id}" class="btn btn-primary">view</a>
                     </td>
                 </tr>
             `;
@@ -195,8 +195,7 @@ function loadRecentItemsTable(items) {
                         </span>
                     </td>
                     <td>
-                    <a href="../item_details/view_item_details.html?id=${item.item_id}&from=staff" class="btn btn-view">View</a>    
-                    <a href="found_item/edit_found_item.html?id=${item.item_id}" class="btn btn-primary">Edit</a>
+                    <a href="../item_details/view_item_details.html?id=${item.item_id}&from=staff" class="btn btn-primary">View</a>    
                     </td>
                 </tr>
             `;
