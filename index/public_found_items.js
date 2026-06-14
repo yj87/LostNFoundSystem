@@ -21,7 +21,16 @@ function escapeHtml(str) {
 async function loadCategories() {
     try {
         const response = await fetch('get_public_categories.php');
-        const result = await response.json();
+        const text = await response.text();
+
+        let result;
+
+        try {
+            result = JSON.parse(text);
+        } catch (jsonError) {
+            console.error('get_public_categories.php did not return JSON:', text);
+            throw new Error('Invalid JSON from get_public_categories.php');
+        }
 
         if (result.success) {
             const select = document.getElementById('categoryFilter');
@@ -64,7 +73,16 @@ async function loadItems() {
 
     try {
         const response = await fetch(url);
-        const result = await response.json();
+        const text = await response.text();
+
+        let result;
+
+        try {
+            result = JSON.parse(text);
+        } catch (jsonError) {
+            console.error('get_public_found_items.php did not return JSON:', text);
+            throw new Error('Invalid JSON from get_public_found_items.php');
+        }
 
         if (result.success && result.data.length > 0) {
             summary.textContent = `Showing ${result.data.length} found item${result.data.length !== 1 ? 's' : ''}`;
@@ -84,7 +102,7 @@ async function loadItems() {
                     item.found_status === 'claimed' ? '#d4edda' :
                     '#d8ecff';
 
-                const detailUrl = `../user_page/item_details/view_item_details.html?id=${encodeURIComponent(item.item_id)}&from=public`;
+                const detailUrl = `../user_page/item_details/view_item_details.html?id=${encodeURIComponent(item.item_id)}&from=public&type=found`;
 
                 const imageHtml = item.photo
                     ? `
