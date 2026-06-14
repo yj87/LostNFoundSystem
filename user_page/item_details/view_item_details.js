@@ -409,8 +409,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     applyModuleLayout(config, from);
 
     const container = document.getElementById('itemDetails');
-    const pageTitle = document.getElementById('pageTitle');
-    const pageHeaderTitle = document.getElementById('pageHeaderTitle');
 
     if (!itemId) {
         container.innerHTML = `<div class="error-box">Invalid item ID.</div>`;
@@ -449,23 +447,23 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const item = result.data;
-        
-        // Set page titles based on item type
-        const pageTitle = type === 'lost' ? 'Lost Report Details' : 'Found Item Details';
-        document.getElementById('pageTitle').textContent = pageTitle;
-        document.getElementById('pageHeaderTitle').textContent = `${pageTitle}: ${item.item_name}`;
+
+        const titleText = type === 'lost' ? 'Lost Report Details' : 'Found Item Details';
+
+        const pageTitle = document.getElementById('pageTitle');
+        const pageHeaderTitle = document.getElementById('pageHeaderTitle');
+
+        if (pageTitle) pageTitle.textContent = titleText;
+        if (pageHeaderTitle) pageHeaderTitle.textContent = `${titleText}: ${item.item_name}`;
 
         let imageHtml = '<div class="no-image-large"><i class="fas fa-image"></i></div>';
-        
+
         if (item.photo) {
             const imagePath = '/LostNFoundSystem/' + item.photo;
-            imageHtml = `<img src="${imagePath}" class="item-detail-image" alt="Item image" onerror="this.alt='Image not found';">`;
+            imageHtml = `<img src="${imagePath}" class="item-detail-image" alt="Item image" onerror="this.style.display='none';">`;
         }
 
-        // Adjust labels based on item type
-        const locationLabel = type === 'lost' ? 'Location Lost' : 'Location Found';
-        const dateLabel = type === 'lost' ? 'Date Lost' : 'Date Found';
-        const statusValue = type === 'lost' ? item.lost_status : item.found_status;
+        const statusValue = item.found_status || item.lost_status || 'unknown';
 
         container.innerHTML = `
             ${imageHtml}
@@ -484,8 +482,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 <div class="detail-group">
                     <label>Status</label>
                     <div class="detail-box">
-                        <span class="status-pill ${getStatusClass(item.found_status)}">
-                            ${escapeHtml(formatStatus(item.found_status))}
+                        <span class="status-pill ${getStatusClass(statusValue)}">
+                            ${escapeHtml(formatStatus(statusValue))}
                         </span>
                     </div>
                 </div>

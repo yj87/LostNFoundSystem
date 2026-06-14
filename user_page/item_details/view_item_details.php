@@ -1,6 +1,8 @@
 <?php
 // user_page/item_details/view_item_details.php
 
+ob_start();
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
