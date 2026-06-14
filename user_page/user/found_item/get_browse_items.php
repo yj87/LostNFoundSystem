@@ -21,14 +21,27 @@ $params = [];
 $where_clauses[] = "f.found_status IN ('unclaimed', 'pending')";
 
 if (!empty($search)) {
-    $where_clauses[] = "(f.item_name LIKE ? OR f.location_found LIKE ? OR f.description LIKE ? OR c.category_name LIKE ?)";
-    $searchTerm = '%' . $search . '%';
+    
+    $cleanSearch = strtoupper($search);
+    $cleanSearch = str_replace('F', '', $cleanSearch);
 
-    $types .= "ssss";
+    $where_clauses[] = "(
+        f.item_name LIKE ? 
+        OR f.location_found LIKE ? 
+        OR f.description LIKE ? 
+        OR c.category_name LIKE ? 
+        OR CAST(f.item_id AS CHAR) LIKE ?
+    )";
+
+    $searchTerm = '%' . $search . '%';
+    $idSearchTerm = '%' . $cleanSearch . '%';
+
+    $types .= "sssss";
     $params[] = $searchTerm;
     $params[] = $searchTerm;
     $params[] = $searchTerm;
     $params[] = $searchTerm;
+    $params[] = $idSearchTerm;
 }
 
 if (!empty($category)) {

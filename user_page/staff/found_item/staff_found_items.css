@@ -50,8 +50,8 @@
 
 /* ── Table action buttons ────────────────────────── */
 .btn-edit {
-    background: #F5D3D6;
-    color: #2b2d42;
+    background: #A5CBD7;
+    color: #F1F8FA;
     border: none;
     border-radius: 6px;
     padding: 5px 11px;
@@ -63,7 +63,7 @@
 }
 
 .btn-edit:hover {
-    background: #eda0a6;
+    background: #1976d2;
 }
 
 /* ── Toast notification ──────────────────────────── */

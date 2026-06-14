@@ -416,7 +416,7 @@ table {
 
 th, td {
     padding: 12px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #A5CBD7;
 }
 
@@ -473,12 +473,12 @@ tr:hover {
 }
 
 .btn-primary {
-    background: #A5CBD7;
+    background: #bde6f2;
     color: #2b2d42;
 }
 
 .btn-primary:hover {
-    background: #B3D4DF;
+    background: #9ac1ce;
     color: #2b2d42;
 }
 
