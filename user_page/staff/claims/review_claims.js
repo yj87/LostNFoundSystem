@@ -4,6 +4,7 @@ const claimId = urlParams.get('id');
 let claimData = null;
 let proofMatch = null;
 let identifyingMatch = null;
+let photoMatch = null;
 let currentLostReport = null;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -46,10 +47,95 @@ function setupEventListeners() {
         identifyingMatchNo.addEventListener('click', function() { setIdentifyingMatch(false); });
     }
     
+    const photoMatchYes = document.getElementById('photoMatchYes');
+    const photoMatchNo = document.getElementById('photoMatchNo');
+    if (photoMatchYes) {
+        photoMatchYes.addEventListener('click', function() { setPhotoMatch(true); });
+    }
+    if (photoMatchNo) {
+        photoMatchNo.addEventListener('click', function() { setPhotoMatch(false); });
+    }
+    
     const viewLostReportBtn = document.getElementById('viewLostReportBtn');
     if (viewLostReportBtn) {
         viewLostReportBtn.addEventListener('click', function() { viewLostReportDetails(); });
     }
+}
+
+function setProofMatch(match) {
+    proofMatch = match;
+    const yesBtn = document.getElementById('proofMatchYes');
+    const noBtn = document.getElementById('proofMatchNo');
+    
+    if (match) {
+        yesBtn.classList.add('active');
+        noBtn.classList.remove('active');
+    } else {
+        yesBtn.classList.remove('active');
+        noBtn.classList.add('active');
+    }
+    updateMatchSummary();
+}
+
+function setIdentifyingMatch(match) {
+    identifyingMatch = match;
+    const yesBtn = document.getElementById('identifyingMatchYes');
+    const noBtn = document.getElementById('identifyingMatchNo');
+    
+    if (match) {
+        yesBtn.classList.add('active');
+        noBtn.classList.remove('active');
+    } else {
+        yesBtn.classList.remove('active');
+        noBtn.classList.add('active');
+    }
+    updateMatchSummary();
+}
+
+function setPhotoMatch(match) {
+    photoMatch = match;
+    const yesBtn = document.getElementById('photoMatchYes');
+    const noBtn = document.getElementById('photoMatchNo');
+    
+    if (match) {
+        yesBtn.classList.add('active');
+        noBtn.classList.remove('active');
+    } else {
+        yesBtn.classList.remove('active');
+        noBtn.classList.add('active');
+    }
+    updateMatchSummary();
+}
+
+function updateMatchSummary() {
+    const summaryDiv = document.getElementById('matchSummary');
+    let html = '<strong>📋 Comparison Summary:</strong><br>';
+    
+    if (proofMatch === true) {
+        html += '<span class="match-good">✓ Proof of ownership matches the found item</span><br>';
+    } else if (proofMatch === false) {
+        html += '<span class="match-bad">✗ Proof of ownership does NOT match the found item</span><br>';
+    } else {
+        html += '<span class="match-pending">○ Please verify if proof of ownership matches</span><br>';
+    }
+    
+    if (identifyingMatch === true) {
+        html += '<span class="match-good">✓ Identifying details match the found item</span><br>';
+    } else if (identifyingMatch === false) {
+        html += '<span class="match-bad">✗ Identifying details do NOT match the found item</span><br>';
+    } else {
+        html += '<span class="match-pending">○ Please verify if identifying details match</span><br>';
+    }
+    
+    if (photoMatch === true) {
+        html += '<span class="match-good">✓ Photos match the found item</span><br>';
+    } else if (photoMatch === false) {
+        html += '<span class="match-bad">✗ Photos do NOT match the found item</span><br>';
+    } else {
+        html += '<span class="match-pending">○ Please verify if photos match</span><br>';
+    }
+    
+    summaryDiv.innerHTML = html;
 }
 
 async function loadStaffInfo() {
@@ -73,7 +159,7 @@ async function loadClaimDetails() {
     loadingDiv.style.display = 'block';
     
     try {
-        const response = await fetch('view_claims.php?id=' + claimId);
+        const response = await fetch('review_claims.php?id=' + claimId);
         const data = await response.json();
         
         if (data.success) {
@@ -95,7 +181,6 @@ function displayClaimDetails(claim) {
     let statusClass = '';
     if (claim.claim_status === 'pending') statusClass = 'status-pending';
 
-    document.getElementById('itemIconTag').innerHTML = '<i class="fas fa-box"></i>';
     document.getElementById('foundItemName').innerHTML = escapeHtml(claim.item_name);
     document.getElementById('foundItemMeta').innerHTML = `
         <i class="fas fa-calendar-alt"></i> Found on ${escapeHtml(claim.date_found)}
@@ -147,6 +232,23 @@ function displayClaimDetails(claim) {
     
     document.getElementById('ownershipProof').innerHTML = claim.ownership_proof || '<em>No proof of ownership provided.</em>';
     document.getElementById('identifyingDetails').innerHTML = claim.identifying_details || '<em>No identifying details provided.</em>';
+    
+    // Display Found Item Photo
+    const foundItemPhotoContainer = document.getElementById('foundItemPhotoContainer');
+    if (claim.item_photo) {
+        foundItemPhotoContainer.innerHTML = `<img src="../../../${claim.item_photo}" alt="Found Item">`;
+    } else {
+        foundItemPhotoContainer.innerHTML = '<div class="photo-placeholder"><i class="fas fa-image"></i><p>No photo available</p></div>';
+    }
+    
+    // Display Evidence Photo
+    const evidencePhotoContainer = document.getElementById('evidencePhotoContainer');
+    if (claim.evidence_photo) {
+        evidencePhotoContainer.innerHTML = `<img src="../../../${claim.evidence_photo}" alt="Evidence Photo">`;
+    } else {
+        evidencePhotoContainer.innerHTML = '<div class="photo-placeholder"><i class="fas fa-camera"></i><p>No evidence photo uploaded</p></div>';
+    }
+    
     displayLostReport(claim);
 }
 
@@ -163,10 +265,12 @@ function displayLostReport(claim) {
             location_lost: claim.lost_location,
             date_lost: claim.lost_date,
             status: claim.lost_status,
-            description: claim.lost_description || 'No description provided'
+            description: claim.lost_description,
+            photo: claim.lost_photo
         };
         
         let statusBadge = '';
+        
         if (claim.lost_status === 'searching') {
             statusBadge = '<span class="status-badge status-searching">🔍 Searching</span>';
         } else if (claim.lost_status === 'found') {
@@ -223,6 +327,16 @@ function viewLostReportDetails() {
         statusText = 'Closed';
     }
     
+    let photoHtml = '';
+    if (currentLostReport.photo) {
+        photoHtml = `
+            <div class="modal-row">
+                <div class="modal-label">Photo:</div>
+                <div class="modal-value"><img src="../../../${currentLostReport.photo}" style="max-width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px;"></div>
+            </div>
+        `;
+    }
+    
     modalBody.innerHTML = `
         <div class="modal-row">
             <div class="modal-label">Item Name:</div>
@@ -244,6 +358,7 @@ function viewLostReportDetails() {
             <div class="modal-label">Description:</div>
             <div class="modal-value">${escapeHtml(currentLostReport.description)}</div>
         </div>
+        ${photoHtml}
     `;
     
     modal.classList.add('active');
@@ -256,59 +371,6 @@ function closeLostReportModal() {
     }
 }
 
-function setProofMatch(match) {
-    proofMatch = match;
-    const yesBtn = document.getElementById('proofMatchYes');
-    const noBtn = document.getElementById('proofMatchNo');
-    
-    if (match) {
-        yesBtn.classList.add('active');
-        noBtn.classList.remove('active');
-    } else {
-        yesBtn.classList.remove('active');
-        noBtn.classList.add('active');
-    }
-    updateMatchSummary();
-}
-
-function setIdentifyingMatch(match) {
-    identifyingMatch = match;
-    const yesBtn = document.getElementById('identifyingMatchYes');
-    const noBtn = document.getElementById('identifyingMatchNo');
-    
-    if (match) {
-        yesBtn.classList.add('active');
-        noBtn.classList.remove('active');
-    } else {
-        yesBtn.classList.remove('active');
-        noBtn.classList.add('active');
-    }
-    updateMatchSummary();
-}
-
-function updateMatchSummary() {
-    const summaryDiv = document.getElementById('matchSummary');
-    let html = '<strong>📋 Comparison Summary:</strong><br>';
-    
-    if (proofMatch === true) {
-        html += '<span class="match-good">✓ Proof of ownership matches the found item</span><br>';
-    } else if (proofMatch === false) {
-        html += '<span class="match-bad">✗ Proof of ownership does NOT match the found item</span><br>';
-    } else {
-        html += '<span class="match-pending">○ Please verify if proof of ownership matches</span><br>';
-    }
-    
-    if (identifyingMatch === true) {
-        html += '<span class="match-good">✓ Identifying details match the found item</span>';
-    } else if (identifyingMatch === false) {
-        html += '<span class="match-bad">✗ Identifying details do NOT match the found item</span>';
-    } else {
-        html += '<span class="match-pending">○ Please verify if identifying details match</span>';
-    }
-    
-    summaryDiv.innerHTML = html;
-}
-
 async function submitDecision(decision) {
     if (decision === 'rejected') {
         const reviewNote = document.getElementById('review_note').value.trim();
@@ -319,8 +381,8 @@ async function submitDecision(decision) {
     }
     
     if (decision === 'approved') {
-        if (proofMatch === null || identifyingMatch === null) {
-            showToast('Please verify if the claimant\'s proof and details match the found item', 'error');
+        if (proofMatch === null || identifyingMatch === null || photoMatch === null) {
+            showToast('Please verify all comparison criteria (proof, details, and photos)', 'error');
             return;
         }
     }

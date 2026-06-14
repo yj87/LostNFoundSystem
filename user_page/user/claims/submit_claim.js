@@ -1,5 +1,6 @@
 let itemData = null;
 let lostReportsList = [];
+let selectedEvidenceFile = null;
 const urlParams = new URLSearchParams(window.location.search);
 const itemId = urlParams.get('item_id');
 
@@ -15,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
     loadItemDetails();
     loadLostReports();
     
-    // Attach event listeners
     const cancelBtn = document.getElementById('cancelBtn');
     const confirmBtn = document.getElementById('confirmContinueBtn');
     const backToStep1Btn = document.getElementById('backToStep1Btn');
@@ -33,7 +33,100 @@ document.addEventListener('DOMContentLoaded', function() {
     if (reviewBtn) reviewBtn.onclick = goToStep4;
     if (backToStep3Btn) backToStep3Btn.onclick = goToStep3;
     if (submitBtn) submitBtn.onclick = submitClaim;
+    
+    setupEvidencePhotoUpload();
 });
+
+function refreshEvidencePhotoReview() {
+    const reviewEvidencePhoto = document.getElementById('reviewEvidencePhoto');
+    if (!reviewEvidencePhoto) return;
+    
+    if (selectedEvidenceFile) {
+        if (selectedEvidenceFile.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                reviewEvidencePhoto.innerHTML = `
+                    <div class="evidence-file-info">
+                        <i class="fas fa-image"></i>
+                        <span>${escapeHtml(selectedEvidenceFile.name)}</span>
+                    </div>
+                    <div>
+                        <img src="${event.target.result}" class="evidence-preview-img" alt="Evidence Preview">
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(selectedEvidenceFile);
+        } else {
+            reviewEvidencePhoto.innerHTML = `
+                <div class="evidence-file-info">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>${escapeHtml(selectedEvidenceFile.name)}</span>
+                </div>
+                <div class="evidence-placeholder">
+                    <i class="fas fa-file-alt"></i>
+                    <p>Document uploaded as evidence</p>
+                </div>
+            `;
+        }
+    } else {
+        reviewEvidencePhoto.innerHTML = `
+            <div class="evidence-placeholder">
+                <i class="fas fa-camera"></i>
+                <p>No evidence photo uploaded</p>
+            </div>
+        `;
+    }
+}
+
+function setupEvidencePhotoUpload() {
+    const evidenceInput = document.getElementById('evidence_photo');
+    const photoPreview = document.getElementById('photoPreview');
+    const evidenceFileName = document.getElementById('evidenceFileName');
+    
+    if (evidenceInput) {
+        evidenceInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                selectedEvidenceFile = file;
+                if (evidenceFileName) {
+                    evidenceFileName.textContent = file.name;
+                }
+                
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        if (photoPreview) {
+                            photoPreview.innerHTML = '<img src="' + event.target.result + '" alt="Evidence Preview">';
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    if (photoPreview) {
+                        photoPreview.innerHTML = '<div class="photo-placeholder"><i class="fas fa-file-pdf"></i><p>' + file.name + '</p></div>';
+                    }
+                }
+                
+                const step4 = document.getElementById('step4');
+                if (step4 && step4.classList.contains('active')) {
+                    refreshEvidencePhotoReview();
+                }
+            } else {
+                selectedEvidenceFile = null;
+                if (evidenceFileName) {
+                    evidenceFileName.textContent = '';
+                }
+                if (photoPreview) {
+                    photoPreview.innerHTML = '<div class="photo-placeholder"><i class="fas fa-image"></i><p>No image selected</p></div>';
+                }
+                
+                const step4 = document.getElementById('step4');
+                if (step4 && step4.classList.contains('active')) {
+                    refreshEvidencePhotoReview();
+                }
+            }
+        });
+    }
+}
 
 async function loadLostReports() {
     try {
@@ -77,7 +170,6 @@ function setupLostReportPreview() {
         const selectedReport = lostReportsList.find(r => r.report_id == selectedValue);
         
         if (selectedReport) {
-            
             previewContent.innerHTML = `
                 <div class="preview-row">
                     <div class="preview-icon"><i class="fas fa-tag"></i></div>
@@ -105,7 +197,6 @@ function setupLostReportPreview() {
     });
 }
 
-// ========== LOAD ITEM DETAILS ==========
 async function loadItemDetails() {
     const loadingDiv = document.getElementById('loadingDiv');
     const formContainer = document.getElementById('formContainer');
@@ -137,7 +228,6 @@ async function loadItemDetails() {
     }
 }
 
-// ========== DISPLAY ITEM PREVIEW ==========
 function displayItemPreview(item) {
     const previewDiv = document.getElementById('itemPreview');
     
@@ -176,7 +266,6 @@ function displayItemPreview(item) {
     `;
 }
 
-// ========== STEP NAVIGATION ==========
 function goToStep1() {
     document.getElementById('step1').classList.add('active');
     document.getElementById('step2').classList.remove('active');
@@ -236,30 +325,101 @@ function goToStep4() {
         return;
     }
     
-    // Update review section
+    // Item Details with grid layout
     if (itemData) {
         document.getElementById('reviewItemDetails').innerHTML = `
-            <div class="review-row"><strong>Item Name:</strong> ${escapeHtml(itemData.item_name)}</div>
-            <div class="review-row"><strong>Category:</strong> ${escapeHtml(itemData.category_name || 'Uncategorized')}</div>
-            <div class="review-row"><strong>Location Found:</strong> ${escapeHtml(itemData.location_found)}</div>
-            <div class="review-row"><strong>Date Found:</strong> ${escapeHtml(itemData.date_found)}</div>
-            ${itemData.description ? `<div class="review-row"><strong>Description:</strong> ${escapeHtml(itemData.description)}</div>` : ''}
+            <div class="review-item">
+                <div class="review-item-label"><i class="fas fa-tag"></i> Item Name</div>
+                <div class="review-item-value">${escapeHtml(itemData.item_name)}</div>
+            </div>
+            <div class="review-item">
+                <div class="review-item-label"><i class="fas fa-folder"></i> Category</div>
+                <div class="review-item-value">${escapeHtml(itemData.category_name || 'Uncategorized')}</div>
+            </div>
+            <div class="review-item">
+                <div class="review-item-label"><i class="fas fa-map-marker-alt"></i> Location Found</div>
+                <div class="review-item-value">${escapeHtml(itemData.location_found)}</div>
+            </div>
+            <div class="review-item">
+                <div class="review-item-label"><i class="fas fa-calendar"></i> Date Found</div>
+                <div class="review-item-value">${escapeHtml(itemData.date_found)}</div>
+            </div>
+            ${itemData.description ? `
+            <div class="review-item" style="grid-column: span 2;">
+                <div class="review-item-label"><i class="fas fa-align-left"></i> Description</div>
+                <div class="review-item-value">${escapeHtml(itemData.description)}</div>
+            </div>
+            ` : ''}
         `;
     }
     
-    // Update lost report review section
+    // Linked Lost Report
     if (selectedLostReport) {
         document.getElementById('reviewLostReport').innerHTML = `
-            <div class="review-row"><strong>Item Name:</strong> ${escapeHtml(selectedLostReport.item_name)}</div>
-            <div class="review-row"><strong>Location Lost:</strong> ${escapeHtml(selectedLostReport.location_lost)}</div>
-            <div class="review-row"><strong>Date Lost:</strong> ${escapeHtml(selectedLostReport.date_lost)}</div>
+            <div class="review-item">
+                <div class="review-item-label"><i class="fas fa-tag"></i> Item Name</div>
+                <div class="review-item-value">${escapeHtml(selectedLostReport.item_name)}</div>
+            </div>
+            <div class="review-item">
+                <div class="review-item-label"><i class="fas fa-map-marker-alt"></i> Location Lost</div>
+                <div class="review-item-value">${escapeHtml(selectedLostReport.location_lost)}</div>
+            </div>
+            <div class="review-item">
+                <div class="review-item-label"><i class="fas fa-calendar"></i> Date Lost</div>
+                <div class="review-item-value">${escapeHtml(selectedLostReport.date_lost)}</div>
+            </div>
         `;
     } else {
-        document.getElementById('reviewLostReport').innerHTML = `<div class="review-row">No lost report linked. You haven't reported this item as lost before.</div>`;
+        document.getElementById('reviewLostReport').innerHTML = `
+            <div class="empty-lost-report">
+                <i class="fas fa-link-slash"></i>
+                <p>No lost report linked. You haven't reported this item as lost before.</p>
+            </div>
+        `;
     }
     
+    // Proof of Ownership
     document.getElementById('reviewOwnershipProof').innerHTML = `<div class="review-text">${escapeHtml(ownership_proof)}</div>`;
+    
+    // Identifying Details
     document.getElementById('reviewIdentifyingDetails').innerHTML = `<div class="review-text">${escapeHtml(identifying_details)}</div>`;
+    
+    // Evidence Photo
+    if (selectedEvidenceFile) {
+        if (selectedEvidenceFile.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                document.getElementById('reviewEvidencePhoto').innerHTML = `
+                    <div class="evidence-file-info">
+                        <i class="fas fa-image"></i>
+                        <span>${escapeHtml(selectedEvidenceFile.name)}</span>
+                    </div>
+                    <div>
+                        <img src="${event.target.result}" class="evidence-preview-img" alt="Evidence Preview">
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(selectedEvidenceFile);
+        } else {
+            document.getElementById('reviewEvidencePhoto').innerHTML = `
+                <div class="evidence-file-info">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>${escapeHtml(selectedEvidenceFile.name)}</span>
+                </div>
+                <div class="evidence-placeholder">
+                    <i class="fas fa-file-alt"></i>
+                    <p>Document uploaded as evidence</p>
+                </div>
+            `;
+        }
+    } else {
+        document.getElementById('reviewEvidencePhoto').innerHTML = `
+            <div class="evidence-placeholder">
+                <i class="fas fa-camera"></i>
+                <p>No evidence photo uploaded</p>
+            </div>
+        `;
+    }
     
     document.getElementById('step1').classList.remove('active');
     document.getElementById('step2').classList.remove('active');
@@ -276,7 +436,6 @@ function goBack() {
     window.location.href = '../found_item/browse_found_items.html';
 }
 
-// ========== SUBMIT CLAIM ==========
 async function submitClaim() {
     const ownership_proof = document.getElementById('ownership_proof').value.trim();
     const identifying_details = document.getElementById('identifying_details').value.trim();
@@ -293,11 +452,16 @@ async function submitClaim() {
     formData.append('identifying_details', identifying_details);
     formData.append('lost_report_id', lost_report_id);
     
+    if (selectedEvidenceFile) {
+        formData.append('evidence_photo', selectedEvidenceFile);
+    }
+    
     try {
         const response = await fetch('submit_claim.php', {
             method: 'POST',
             body: formData
         });
+
         const data = await response.json();
         
         if (data.success) {
@@ -318,7 +482,6 @@ async function submitClaim() {
     }
 }
 
-// ========== HELPER FUNCTIONS ==========
 function showError(message) {
     const errorDiv = document.getElementById('errorDiv');
     errorDiv.textContent = message;

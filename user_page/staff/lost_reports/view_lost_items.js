@@ -101,12 +101,12 @@ async function loadReports() {
             updateCategoryFilter(data.categories);
             if (tableBody) tableBody.style.display = 'table-row-group';
         } else {
-            tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Failed to load reports: ' + (data.message || 'Unknown error') + '</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="8" class="text-center">Failed to load reports: ' + (data.message || 'Unknown error') + '</td></tr>';
         }
     } catch (error) {
         console.error('Error:', error);
         if (tableBody) {
-            tableBody.innerHTML = '<tr><td colspan="7" class="text-center" style="color: red;">Network error occurred</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="8" class="text-center" style="color: red;">Network error occurred</td></tr>';
         }
     } finally {
         loadingDiv.style.display = 'none';
@@ -130,7 +130,7 @@ function renderReportsTable(reports) {
     if (!tableBody) return;
     
     if (!reports || reports.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No lost reports found</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="8" class="text-center">No lost reports found</td></tr>';
         return;
     }
     
@@ -151,8 +151,17 @@ function renderReportsTable(reports) {
             statusText = 'Closed';
         }
         
+        // Photo thumbnail
+        let photoHtml = '';
+        if (report.photo) {
+            photoHtml = '<img src="../../../' + report.photo + '" class="photo-thumb" alt="Photo" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;">';
+        } else {
+            photoHtml = '<div class="photo-placeholder" style="width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; background: #f0f0f0; border-radius: 6px;"><i class="fas fa-image"></i></div>';
+        }
+        
         html += '<tr>';
         html += '<td>' + report.report_id + '</td>';
+        html += '<td>' + photoHtml + '</td>';  // ADD THIS LINE
         html += '<td><strong>' + escapeHtml(report.item_name) + '</strong></td>';
         html += '<td>' + escapeHtml(report.user_name) + '</td>';
         html += '<td>' + escapeHtml(report.location_lost) + '</td>';
@@ -216,88 +225,9 @@ function updateCategoryFilter(categories) {
     }
 }
 
-async function viewReport(reportId) {
-    try {
-        const response = await fetch('view_lost_items.php?id=' + reportId);
-        const data = await response.json();
-        
-        if (data.success) {
-            showReportModal(data.report);
-        } else {
-            alert('Failed to load report details: ' + (data.message || 'Unknown error'));
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Network error occurred');
-    }
-}
-
-function showReportModal(report) {
-    const modal = document.getElementById('viewModal');
-    const modalBody = document.getElementById('modalBody');
-    
-    let statusClass = '';
-    let statusText = '';
-    
-    if (report.lost_status === 'searching') {
-        statusClass = 'status-searching';
-        statusText = 'Searching';
-    } else if (report.lost_status === 'found') {
-        statusClass = 'status-found';
-        statusText = 'Found';
-    } else if (report.lost_status === 'closed') {
-        statusClass = 'status-closed';
-        statusText = 'Closed';
-    }
-    
-    modalBody.innerHTML = 
-        '<div class="detail-row">' +
-            '<div class="detail-label">Item Name:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.item_name) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Category:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.category_name) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Description:</div>' +
-            '<div class="detail-value">' + (report.description || 'No description provided') + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Location Lost:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.location_lost) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Date Lost:</div>' +
-            '<div class="detail-value">' + report.date_lost + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Status:</div>' +
-            '<div class="detail-value"><span class="status-badge ' + statusClass + '">' + statusText + '</span></div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Reported By:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.user_name) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Email:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.user_email) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Phone:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.user_phone) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Reported On:</div>' +
-            '<div class="detail-value">' + report.created_at + '</div>' +
-        '</div>';
-    
-    modal.classList.add('active');
-}
-
-function closeViewModal() {
-    const modal = document.getElementById('viewModal');
-    modal.classList.remove('active');
+function viewReport(reportId) {
+    // Redirect to global view_item_details page
+    window.location.href = '../../item_details/view_item_details.html?id=' + reportId + '&from=staff&type=lost';
 }
 
 function escapeHtml(str) {

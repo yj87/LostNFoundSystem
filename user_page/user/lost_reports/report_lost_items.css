@@ -190,6 +190,59 @@ nav {
     margin: 0;
 }
 
+.logo-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+}
+
+.brand-logo {
+    width: 65px;
+    height: 65px;
+    border-radius: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-logo img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.brand-text {
+    text-align: left;
+}
+
+.brand-name {
+    font-size: 26px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.brand-name span {
+    color: #a9c9a9;
+    font-weight: 800;
+}
+
+.admin-tag {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+}
+
 article {
     padding: 30px;
     background-color: #F7FBF7;

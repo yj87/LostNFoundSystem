@@ -12,9 +12,15 @@
     <div class="dashboard-container">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🔍</div>
-                <h3>Lost & Found</h3>
-                <p>Admin Panel</p>
+                <div class="logo-nav">
+                    <div class="brand-logo">
+                        <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-name">Lost<span>Find</span></div>
+                        <div class="admin-tag">Admin Panel</div>
+                    </div>
+                </div>
             </div>
             <nav>
                 <div class="nav-group">
@@ -109,11 +115,26 @@
                 </div>
 
                 <div class="form-container" id="formContainer" style="display: none;">
-                    <form id="editForm">
+                    <form id="editForm" enctype="multipart/form-data">
                         <input type="hidden" id="report_id" name="report_id">
                         
+                        <!-- PHOTO SECTION -->
                         <div class="form-group">
-                            <label for="item_name">Item Name *</label>
+                            <label>Item Photo</label>
+                            <div class="current-photo-wrapper" style="text-align: center; margin-bottom: 15px;">
+                                <div id="currentPhotoContainer"></div>
+                            </div>
+                            <div class="photo-upload">
+                                <label for="photo" class="btn-upload-photo">
+                                    <i class="fas fa-upload"></i> Change Photo
+                                </label>
+                                <input type="file" id="photo" name="photo" accept="image/jpeg, image/png, image/jpg" style="display: none;">
+                                <small>Upload new photo (JPG, PNG, max 5MB). Leave empty to keep current.</small>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="item_name">Item Name <span style="color: red;">*</span></label>
                             <input type="text" id="item_name" name="item_name" required>
                         </div>
                         
@@ -126,29 +147,29 @@
                         
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea id="description" name="description"></textarea>
+                            <textarea id="description" name="description" rows="4"></textarea>
                         </div>
                         
                         <div class="form-group">
-                            <label for="location_lost">Location Lost *</label>
+                            <label for="location_lost">Location Lost <span style="color: red;">*</span></label>
                             <input type="text" id="location_lost" name="location_lost" required>
                         </div>
                         
                         <div class="form-group">
-                            <label for="date_lost">Date Lost *</label>
+                            <label for="date_lost">Date Lost <span style="color: red;">*</span></label>
                             <input type="date" id="date_lost" name="date_lost" required>
                         </div>
                         
                         <div class="form-group">
                             <label for="lost_status">Status</label>
                             <select id="lost_status" name="lost_status">
-                                <option value="searching">Searching</option>
-                                <option value="found">Found</option>
-                                <option value="closed">Closed</option>
+                                <option value="searching">🔍 Searching</option>
+                                <option value="found">✅ Found</option>
+                                <option value="closed">❌ Closed</option>
                             </select>
                         </div>
                         
-                        <div class="form-group">
+                        <div class="form-buttons">
                             <button type="submit" class="btn-save">
                                 <i class="fas fa-save"></i> Save Changes
                             </button>
@@ -180,6 +201,30 @@
 
         function goBack() {
             window.location.href = 'view_lost_reports.html';
+        }
+
+        // Photo upload button trigger
+        const uploadBtn = document.querySelector('.btn-upload-photo');
+        const photoInput = document.getElementById('photo');
+        
+        if (uploadBtn && photoInput) {
+            uploadBtn.addEventListener('click', function() {
+                photoInput.click();
+            });
+            
+            photoInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const container = document.getElementById('currentPhotoContainer');
+                        if (container) {
+                            container.innerHTML = '<img src="' + event.target.result + '" style="max-width: 300px; max-height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">';
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
         }
 
         document.addEventListener('click', function(event) {

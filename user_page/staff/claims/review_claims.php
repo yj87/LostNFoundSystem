@@ -9,6 +9,57 @@ header('Content-Type: application/json');
 $staff_id = $_SESSION['user_id'];
 $staff_name = $_SESSION['user_name'];
 
+// Get claim details with all photos
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
+    $claim_id = intval($_GET['id']);
+    
+    $query = "SELECT c.*, 
+                     f.item_name, f.description as item_description, f.location_found, f.date_found, f.photo as item_photo,
+                     u.name as claimant_name, u.email as claimant_email, u.phone as claimant_phone,
+                     lr.item_name as lost_item_name, lr.location_lost, lr.date_lost, lr.description as lost_description, lr.lost_status, lr.photo as lost_photo
+              FROM claims c
+              JOIN found_items f ON c.item_id = f.item_id
+              JOIN users u ON c.user_id = u.user_id
+              LEFT JOIN lost_reports lr ON c.lost_report_id = lr.report_id
+              WHERE c.claim_id = $claim_id";
+    
+    $result = mysqli_query($conn, $query);
+    
+    if (mysqli_num_rows($result) == 0) {
+        echo json_encode(['success' => false, 'message' => 'Claim not found']);
+        exit();
+    }
+    
+    $row = mysqli_fetch_assoc($result);
+    $claim = [
+        'claim_id' => $row['claim_id'],
+        'item_name' => htmlspecialchars($row['item_name']),
+        'item_description' => nl2br(htmlspecialchars($row['item_description'])),
+        'item_photo' => $row['item_photo'],
+        'location_found' => htmlspecialchars($row['location_found']),
+        'date_found' => date('d M Y', strtotime($row['date_found'])),
+        'claim_status' => $row['claim_status'],
+        'ownership_proof' => nl2br(htmlspecialchars($row['ownership_proof'])),
+        'identifying_details' => nl2br(htmlspecialchars($row['identifying_details'])),
+        'evidence_photo' => $row['evidence_photo'],
+        'submitted_at' => date('d M Y, h:i A', strtotime($row['submitted_at'])),
+        'claimant_name' => htmlspecialchars($row['claimant_name']),
+        'claimant_email' => htmlspecialchars($row['claimant_email']),
+        'claimant_phone' => htmlspecialchars($row['claimant_phone'] ?? '-'),
+        'lost_report_id' => $row['lost_report_id'],
+        'lost_item_name' => htmlspecialchars($row['lost_item_name'] ?? ''),
+        'lost_location' => htmlspecialchars($row['location_lost'] ?? ''),
+        'lost_date' => $row['date_lost'] ? date('d M Y', strtotime($row['date_lost'])) : '',
+        'lost_description' => nl2br(htmlspecialchars($row['lost_description'] ?? '')),
+        'lost_status' => $row['lost_status'] ?? '',
+        'lost_photo' => $row['lost_photo']
+    ];
+    
+    echo json_encode(['success' => true, 'claim' => $claim]);
+    exit();
+}
+
+// Process decision
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $claim_id = intval($_POST['claim_id']);
     $decision = $_POST['decision'];
@@ -22,11 +73,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $check_query = "SELECT c.*, f.user_id as owner_id, f.item_id, c.lost_report_id
                     FROM claims c
                     JOIN found_items f ON c.item_id = f.item_id
-                    WHERE c.claim_id = $claim_id AND f.user_id = $staff_id";
+                    WHERE c.claim_id = $claim_id";
     $check_result = mysqli_query($conn, $check_query);
     
     if (mysqli_num_rows($check_result) == 0) {
-        echo json_encode(['success' => false, 'message' => 'Claim not found or you do not have permission']);
+        echo json_encode(['success' => false, 'message' => 'Claim not found']);
         exit();
     }
     

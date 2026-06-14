@@ -217,6 +217,78 @@
     margin-right: 4px;
 }
 
+/* Evidence Photo Upload Section */
+.photo-upload-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.photo-upload-section label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 600;
+    color: #2b2d42;
+    font-size: 13px;
+}
+
+.photo-upload-section label i {
+    color: #90CF8E;
+    margin-right: 6px;
+}
+
+.btn-upload {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #90CF8E 0%, #d9f8ab 100%);
+    color: #2b2d42;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-upload:hover {
+    background: linear-gradient(135deg, #7bc079 0%, #c8f09a 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(144,207,142,0.3);
+}
+
+.photo-preview {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.photo-preview img {
+    max-width: 200px;
+    max-height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.photo-placeholder {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    color: #999;
+    text-align: center;
+}
+
+.evidence-file-name {
+    font-size: 12px;
+    color: #28a745;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    text-align: center;
+    word-break: break-all;
+}
+
 /* Step Actions */
 .step-actions {
     display: flex;
@@ -285,105 +357,206 @@
     transform: translateX(-3px);
 }
 
-/* Review Section */
+/* ===== REVIEW SECTION IMPROVED STYLES ===== */
 .review-section {
-    margin-bottom: 25px;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e9ecef;
 }
 
-.review-section h4 {
-    font-size: 14px;
-    color: #2b2d42;
-    margin-bottom: 12px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #e9ecef;
+.review-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.review-section-header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
-.review-section h4 i {
+.review-section-header .header-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, #90CF8E 0%, #d9f8ab 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.review-section-header .header-icon i {
+    font-size: 16px;
+    color: #2b5a2a;
+}
+
+.review-section-header h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2b2d42;
+    margin: 0;
+}
+
+.review-section-header .section-badge {
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #e9ecef;
+    color: #6c757d;
+    margin-left: auto;
+}
+
+.review-section-header .section-badge.required {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.review-section-header .section-badge.optional {
+    background: #e2f3e4;
+    color: #2e7d32;
+}
+
+/* Review Grid Layout */
+.review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.review-item {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 12px 15px;
+    transition: all 0.2s ease;
+}
+
+.review-item:hover {
+    background: #f0f2f4;
+}
+
+.review-item-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.review-item-label i {
+    font-size: 11px;
     color: #90CF8E;
 }
 
-.review-content {
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 12px 15px;
-}
-
-.review-row {
-    margin-bottom: 8px;
-    font-size: 13px;
-}
-
-.review-row strong {
+.review-item-value {
+    font-size: 14px;
     color: #2b2d42;
-    width: 120px;
-    display: inline-block;
+    font-weight: 500;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+/* Review Text Content */
+.review-text-content {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 16px;
 }
 
 .review-text {
-    font-size: 13px;
-    color: #2b2d42;
-    line-height: 1.5;
-    white-space: pre-wrap;
-}
-
-/* Loading */
-.loading {
-    text-align: center;
-    padding: 60px;
-}
-
-.loading i {
-    font-size: 48px;
-    color: #90CF8E;
-}
-
-/* Alert */
-.alert {
-    padding: 15px 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
-
-.alert-error {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-}
-
-/* Toast */
-.toast {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    padding: 12px 20px;
-    border-radius: 8px;
     font-size: 14px;
-    font-weight: 500;
-    color: white;
-    z-index: 3000;
-    display: none;
+    color: #2b2d42;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* Evidence Photo Content */
+.evidence-photo-content {
+    text-align: center;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.evidence-file-info {
+    display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    background: #e8f5e9;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
+.evidence-file-info i {
+    font-size: 14px;
+    color: #28a745;
+}
+
+.evidence-file-info span {
+    font-size: 13px;
+    color: #2b5a2a;
+    font-weight: 500;
+}
+
+.evidence-preview-img {
+    max-width: 220px;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.evidence-preview-img:hover {
+    transform: scale(1.02);
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-.toast.show {
-    display: flex;
-    animation: slideUp 0.3s ease;
+.evidence-placeholder {
+    text-align: center;
+    color: #999;
+    padding: 30px;
 }
 
-.toast-success {
-    background: #28a745;
+.evidence-placeholder i {
+    font-size: 48px;
+    margin-bottom: 10px;
+    display: block;
+    opacity: 0.5;
 }
 
-.toast-error {
-    background: #dc3545;
+.evidence-placeholder p {
+    font-size: 13px;
+    margin: 0;
 }
 
-/* ========== SELECT BAR ========== */
+/* Empty state for lost report */
+.empty-lost-report {
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+}
+
+.empty-lost-report i {
+    font-size: 32px;
+    margin-bottom: 10px;
+    display: block;
+    opacity: 0.5;
+}
+
+.empty-lost-report p {
+    font-size: 13px;
+    margin: 0;
+}
+
+/* Select Bar */
 .form-group select {
     appearance: none;
     -webkit-appearance: none;
@@ -412,25 +585,7 @@
     box-shadow: 0 0 0 3px rgba(144,207,142,0.15);
 }
 
-.form-group select option {
-    padding: 12px;
-    font-size: 13px;
-}
-
-.form-group select optgroup {
-    font-weight: 600;
-    color: #90CF8E;
-    background: #f8f9fa;
-    padding: 8px;
-}
-
-.form-group select option:disabled {
-    color: #adb5bd;
-    font-style: italic;
-    background: #f8f9fa;
-}
-
-/* ========== LOST REPORT PREVIEW ========== */
+/* Lost Report Preview */
 .lost-report-preview {
     margin-top: 16px;
     background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
@@ -517,32 +672,61 @@
     font-weight: 500;
 }
 
-/* Status badge in preview */
-.lost-report-preview .status-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    background: #fff3cd;
-    color: #856404;
-    border-radius: 20px;
-    font-size: 10px;
+/* Alert */
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Toast */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
     font-weight: 500;
+    color: white;
+    z-index: 3000;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-/* Empty state preview */
-.lost-report-preview.empty .preview-body {
+.toast.show {
+    display: flex;
+    animation: slideUp 0.3s ease;
+}
+
+.toast-success {
+    background: #28a745;
+}
+
+.toast-error {
+    background: #dc3545;
+}
+
+/* Loading */
+.loading {
     text-align: center;
-    color: #6c757d;
-    font-size: 13px;
-    padding: 20px;
+    padding: 60px;
 }
 
-.lost-report-preview.empty .preview-body i {
-    font-size: 24px;
-    margin-bottom: 8px;
-    display: block;
-    color: #dee2e6;
+.loading i {
+    font-size: 48px;
+    color: #90CF8E;
 }
 
+/* Animations */
 @keyframes slideUp {
     from {
         transform: translateY(20px);
@@ -577,8 +761,29 @@
         gap: 10px;
     }
     
-    .review-row strong {
-        display: block;
-        margin-bottom: 4px;
+    .review-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .review-section-header {
+        flex-wrap: wrap;
+    }
+    
+    .review-section-header .section-badge {
+        margin-left: 0;
+    }
+    
+    .evidence-preview-img {
+        max-width: 100%;
+    }
+    
+    .photo-preview img {
+        max-width: 100%;
+    }
+    
+    .btn-upload {
+        width: 100%;
+        justify-content: center;
     }
 }

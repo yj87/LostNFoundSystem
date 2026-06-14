@@ -79,12 +79,12 @@ async function loadReports() {
             renderPagination(data);
             if (tableBody) tableBody.style.display = 'table-row-group';
         } else {
-            tableBody.innerHTML = '<tr><td colspan="6" class="text-center">Failed to load reports: ' + (data.message || 'Unknown error') + '</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Failed to load reports: ' + (data.message || 'Unknown error') + '</td></tr>';
         }
     } catch (error) {
         console.error('Error:', error);
         if (tableBody) {
-            tableBody.innerHTML = '<tr><td colspan="6" class="text-center" style="color: red;">Network error occurred</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="7" class="text-center" style="color: red;">Network error occurred</td></tr>';
         }
     } finally {
         loadingDiv.style.display = 'none';
@@ -96,7 +96,25 @@ function renderReportsTable(reports) {
     if (!tableBody) return;
     
     if (!reports || reports.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="6" class="text-center">No lost reports found</td></tr>';
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty-state">
+                    <div class="empty-state-content">
+                        <i class="fas fa-search"></i>
+                        <h3>No Lost Reports Found</h3>
+                        <p>We couldn't find any lost reports matching your criteria.</p>
+                        <div class="empty-state-suggestions">
+                            <span class="suggestion-tag">Try clearing your filters</span>
+                            <span class="suggestion-tag">Check your spelling</span>
+                            <span class="suggestion-tag">Use fewer keywords</span>
+                        </div>
+                        <button class="btn-empty-reset" onclick="resetFilters()">
+                            ✕ Clear All Filters
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `;
         return;
     }
     
@@ -117,13 +135,22 @@ function renderReportsTable(reports) {
             statusText = 'Closed';
         }
         
+        // Photo thumbnail
+        let photoHtml = '';
+        if (report.photo) {
+            photoHtml = '<img src="../../../' + report.photo + '" class="photo-thumb" alt="Photo">';
+        } else {
+            photoHtml = '<div class="photo-placeholder"><i class="fas fa-image"></i></div>';
+        }
+        
         html += '<tr>';
         html += '<td>' + report.report_id + '</td>';
+        html += '<td>' + photoHtml + '</td>';
         html += '<td><strong>' + escapeHtml(report.item_name) + '</strong></td>';
         html += '<td>' + escapeHtml(report.location_lost) + '</td>';
         html += '<td>' + report.date_lost + '</td>';
         html += '<td><span class="status-badge ' + statusClass + '">' + statusText + '</span></td>';
-        html += '<td><button class="btn-view" onclick="viewReport(' + report.report_id + ')"><i class="fas fa-eye"></i> View</button></td>';
+        html += '<td><button class="btn-view" onclick="viewReport(' + report.report_id + ')"><i class="fas fa-eye"></i> View Details</button></td>';
         html += '</tr>';
     }
     
@@ -164,76 +191,8 @@ function goToPage(page) {
     loadReports();
 }
 
-async function viewReport(reportId) {
-    try {
-        const response = await fetch('my_lost_reports.php?id=' + reportId);
-        const data = await response.json();
-        
-        if (data.success) {
-            showReportModal(data.report);
-        } else {
-            alert('Failed to load report details: ' + (data.message || 'Unknown error'));
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Network error occurred');
-    }
-}
-
-function showReportModal(report) {
-    const modal = document.getElementById('viewModal');
-    const modalBody = document.getElementById('modalBody');
-    
-    let statusClass = '';
-    let statusText = '';
-    
-    if (report.lost_status === 'searching') {
-        statusClass = 'status-searching';
-        statusText = 'Searching';
-    } else if (report.lost_status === 'found') {
-        statusClass = 'status-found';
-        statusText = 'Found';
-    } else if (report.lost_status === 'closed') {
-        statusClass = 'status-closed';
-        statusText = 'Closed';
-    }
-    
-    modalBody.innerHTML = 
-        '<div class="detail-row">' +
-            '<div class="detail-label">Item Name:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.item_name) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Category:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.category_name) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Description:</div>' +
-            '<div class="detail-value">' + (report.description || 'No description provided') + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Location Lost:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.location_lost) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Date Lost:</div>' +
-            '<div class="detail-value">' + report.date_lost + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Status:</div>' +
-            '<div class="detail-value"><span class="status-badge ' + statusClass + '">' + statusText + '</span></div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Reported On:</div>' +
-            '<div class="detail-value">' + report.created_at + '</div>' +
-        '</div>';
-    
-    modal.classList.add('active');
-}
-
-function closeViewModal() {
-    const modal = document.getElementById('viewModal');
-    modal.classList.remove('active');
+function viewReport(reportId) {
+    window.location.href = '../../item_details/view_item_details.html?id=' + reportId + '&from=user&type=lost';
 }
 
 function escapeHtml(str) {

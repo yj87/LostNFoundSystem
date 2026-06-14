@@ -42,7 +42,8 @@ if (isset($_GET['id'])) {
         'review_note' => nl2br(htmlspecialchars($row['review_note'] ?? '')),
         'submitted_at' => date('d M Y, h:i A', strtotime($row['submitted_at'])),
         'reviewed_at' => $row['reviewed_at'] ? date('d M Y, h:i A', strtotime($row['reviewed_at'])) : '',
-        'reviewed_by_name' => htmlspecialchars($row['reviewed_by_name'] ?? '')
+        'reviewed_by_name' => htmlspecialchars($row['reviewed_by_name'] ?? ''),
+        'evidence_photo' => $row['evidence_photo'] ?? null  // ADD THIS LINE
     ];
     
     echo json_encode(['success' => true, 'claim' => $claim]);
@@ -69,7 +70,7 @@ $count_query = "SELECT COUNT(*) as total FROM claims c JOIN found_items f ON c.i
 $count_result = mysqli_query($conn, $count_query);
 $total_count = mysqli_fetch_assoc($count_result)['total'];
 
-$query = "SELECT c.claim_id, c.claim_status, c.submitted_at, c.review_note,
+$query = "SELECT c.claim_id, c.claim_status, c.submitted_at, c.review_note, c.item_id,
           f.item_name, f.location_found, f.date_found
           FROM claims c
           JOIN found_items f ON c.item_id = f.item_id
@@ -83,6 +84,7 @@ $claims = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $claims[] = [
         'claim_id' => $row['claim_id'],
+        'item_id' => $row['item_id'],
         'item_name' => htmlspecialchars($row['item_name']),
         'location_found' => htmlspecialchars($row['location_found']),
         'date_found' => date('d M Y', strtotime($row['date_found'])),

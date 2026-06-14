@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
     $report_id = intval($_GET['id']);
     $user_id = $_SESSION['user_id'];
     
-    $query = "SELECT lr.*, c.category_name
+    $query = "SELECT lr.*, lr.photo, c.category_name
               FROM lost_reports lr
               LEFT JOIN categories c ON lr.category_id = c.category_id
               WHERE lr.report_id = $report_id AND lr.user_id = $user_id";
@@ -38,7 +38,8 @@ if (isset($_GET['id'])) {
         'date_lost' => date('d F Y', strtotime($row['date_lost'])),
         'lost_status' => $row['lost_status'],
         'category_name' => $row['category_name'] ?? 'Uncategorized',
-        'created_at' => date('d F Y, h:i A', strtotime($row['created_at']))
+        'created_at' => date('d F Y, h:i A', strtotime($row['created_at'])),
+        'photo' => $row['photo'] ?? null
     ];
     
     echo json_encode(['success' => true, 'report' => $report]);
@@ -65,7 +66,7 @@ $count_query = "SELECT COUNT(*) as total FROM lost_reports WHERE $where";
 $count_result = mysqli_query($conn, $count_query);
 $total_count = mysqli_fetch_assoc($count_result)['total'];
 
-$query = "SELECT report_id, item_name, location_lost, date_lost, lost_status
+$query = "SELECT report_id, item_name, location_lost, date_lost, lost_status, photo
           FROM lost_reports
           WHERE $where
           ORDER BY created_at DESC
@@ -80,7 +81,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         'item_name' => htmlspecialchars($row['item_name']),
         'location_lost' => htmlspecialchars($row['location_lost']),
         'date_lost' => date('d M Y', strtotime($row['date_lost'])),
-        'lost_status' => $row['lost_status']
+        'lost_status' => $row['lost_status'],
+        'photo' => $row['photo'] ?? null
     ];
 }
 

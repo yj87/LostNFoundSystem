@@ -11,9 +11,15 @@
     <div class="dashboard-container">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🔍</div>
-                <h3>Lost & Found</h3>
-                <p>Admin Panel</p>
+                <div class="logo-nav">
+                    <div class="brand-logo">
+                        <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-name">Lost<span>Find</span></div>
+                        <div class="admin-tag">Admin Panel</div>
+                    </div>
+                </div>
             </div>
             <nav>
                 <div class="nav-group">
@@ -165,6 +171,7 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Photo</th>
                                 <th>Item Name</th>
                                 <th>Reported By</th>
                                 <th>Location</th>
@@ -175,7 +182,7 @@
                         </thead>
                         <tbody id="reportsTableBody">
                             <tr id="loadingRow">
-                                <td colspan="7" style="text-align: center; padding: 40px;">
+                                <td colspan="8" style="text-align: center; padding: 40px;">
                                     <i class="fas fa-spinner fa-spin"></i> Loading reports...
                                 </td>
                             </tr>
@@ -188,19 +195,6 @@
             <footer>
                 <p>&copy; 2026 Lost & Found System - Universiti Teknologi Malaysia</p>
             </footer>
-        </div>
-    </div>
-
-    <div id="viewModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Report Details</h3>
-                <button class="modal-close" onclick="closeViewModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBody"></div>
-            <div class="modal-footer">
-                <button class="btn" onclick="closeViewModal()">Close</button>
-            </div>
         </div>
     </div>
 

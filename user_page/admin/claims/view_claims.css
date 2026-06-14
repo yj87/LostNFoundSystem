@@ -105,6 +105,58 @@
     border-color: #fa8a9c;
 }
 
+.logo-nav {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-logo {
+    width: 65px;
+    height: 65px;
+    border-radius: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-logo img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.brand-text {
+    text-align: left;
+}
+
+.brand-name {
+    font-size: 26px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.brand-name span {
+    color: #fbedee;
+    font-weight: 800;
+}
+
+.admin-tag {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+}
+
 /* Claims Table */
 .claims-table-container {
     background: white;
@@ -122,7 +174,7 @@
 .claims-table th,
 .claims-table td {
     padding: 12px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #eee;
 }
 
@@ -159,19 +211,33 @@
     color: #721c24;
 }
 
-/* Lost Report Badge */
+.item-name-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.item-name {
+    font-weight: 600;
+    color: #2b2d42;
+    word-break: break-word;
+}
+
 .badge-lost {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     background: #e8f5e9;
     color: #2e7d32;
     font-size: 10px;
     padding: 2px 8px;
     border-radius: 20px;
-    margin-left: 8px;
+    white-space: nowrap;
 }
 
 .badge-lost i {
-    font-size: 10px;
+    font-size: 9px;
     margin-right: 3px;
 }
 
@@ -179,6 +245,8 @@
 .action-buttons {
     display: flex;
     gap: 8px;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
 }
 
@@ -365,6 +433,7 @@
     .claims-table th,
     .claims-table td {
         padding: 8px;
+        text-align: center;
         font-size: 12px;
     }
     .action-buttons {

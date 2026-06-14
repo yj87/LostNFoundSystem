@@ -12,9 +12,15 @@
     <div class="dashboard-container">
         <aside id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🔍</div>
-                <h3>Lost & Found</h3>
-                <p>Admin Panel</p>
+                <div class="logo-nav">
+                    <div class="brand-logo">
+                        <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-name">Lost<span>Find</span></div>
+                        <div class="admin-tag">Admin Panel</div>
+                    </div>
+                </div>
             </div>
             <nav>
                 <div class="nav-group">
@@ -124,7 +130,7 @@
                         </div>
                         <div class="card-body">
                             <div class="found-item-summary">
-                                <div class="icon-tag" id="itemIconTag">
+                                <div class="icon-tag">
                                     <i class="fas fa-box"></i>
                                 </div>
                                 <div class="found-item-info">
@@ -147,7 +153,51 @@
                         </div>
                     </div>
 
-                    <!-- CARD 3: Staff Who Uploaded the Item -->
+                    <!-- CARD 3: Photo Comparison -->
+                    <div class="card">
+                        <div class="card-header">
+                            <i class="fas fa-images"></i>
+                            <h3>Photo Comparison</h3>
+                            <span class="badge-reference">Visual Evidence</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="photo-comparison-grid">
+                                <div class="photo-card">
+                                    <div class="photo-card-header">
+                                        <i class="fas fa-box"></i>
+                                        <h4>Found Item Photo</h4>
+                                    </div>
+                                    <div class="photo-card-body" id="foundItemPhotoContainer">
+                                        <div class="photo-placeholder">
+                                            <i class="fas fa-image"></i>
+                                            <p>No photo available</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="photo-card">
+                                    <div class="photo-card-header">
+                                        <i class="fas fa-camera"></i>
+                                        <h4>Claimant's Evidence Photo</h4>
+                                    </div>
+                                    <div class="photo-card-body" id="evidencePhotoContainer">
+                                        <div class="photo-placeholder">
+                                            <i class="fas fa-image"></i>
+                                            <p>No evidence photo uploaded</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="photo-comparison-actions">
+                                <label class="comparison-label">Do the photos match or show the same item?</label>
+                                <div class="verdict-buttons">
+                                    <button type="button" class="verdict-yes" id="photoMatchYes">✓ Yes, photos match</button>
+                                    <button type="button" class="verdict-no" id="photoMatchNo">✗ No, photos don't match</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 4: Staff Who Uploaded the Item -->
                     <div class="card">
                         <div class="card-header">
                             <i class="fas fa-user-tie"></i>
@@ -158,7 +208,7 @@
                         </div>
                     </div>
 
-                    <!-- CARD 4: Linked Lost Report -->
+                    <!-- CARD 5: Linked Lost Report -->
                     <div id="lostReportCard" class="card lost-report-card" style="display: none;">
                         <div class="card-header">
                             <i class="fas fa-link"></i>
@@ -174,7 +224,7 @@
                         </div>
                     </div>
 
-                    <!-- CARD 5: Side-by-Side Comparison -->
+                    <!-- CARD 6: Side-by-Side Comparison -->
                     <div class="comparison-container">
                         <div class="comparison-col">
                             <div class="card comparison-card">
@@ -216,7 +266,7 @@
                         </div>
                     </div>
 
-                    <!-- CARD 6: Make Decision -->
+                    <!-- CARD 7: Make Decision -->
                     <div class="card decision-card">
                         <div class="card-header">
                             <i class="fas fa-gavel"></i>
@@ -226,7 +276,8 @@
                             <div class="match-summary" id="matchSummary">
                                 <strong>📋 Comparison Summary:</strong><br>
                                 <span class="match-pending">○ Please verify if proof of ownership matches</span><br>
-                                <span class="match-pending">○ Please verify if identifying details match</span>
+                                <span class="match-pending">○ Please verify if identifying details match</span><br>
+                                <span class="match-pending">○ Please verify if photos match</span>
                             </div>
                             <div class="form-group">
                                 <label for="review_note">Review Note <span class="required">(required for rejection)</span></label>

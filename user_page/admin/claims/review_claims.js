@@ -4,6 +4,7 @@ const claimId = urlParams.get('id');
 let claimData = null;
 let proofMatch = null;
 let identifyingMatch = null;
+let photoMatch = null;
 let currentLostReport = null;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -46,6 +47,15 @@ function setupEventListeners() {
         identifyingMatchNo.addEventListener('click', function() { setIdentifyingMatch(false); });
     }
     
+    const photoMatchYes = document.getElementById('photoMatchYes');
+    const photoMatchNo = document.getElementById('photoMatchNo');
+    if (photoMatchYes) {
+        photoMatchYes.addEventListener('click', function() { setPhotoMatch(true); });
+    }
+    if (photoMatchNo) {
+        photoMatchNo.addEventListener('click', function() { setPhotoMatch(false); });
+    }
+    
     const viewLostReportBtn = document.getElementById('viewLostReportBtn');
     if (viewLostReportBtn) {
         viewLostReportBtn.addEventListener('click', function() { viewLostReportDetails(); });
@@ -70,7 +80,7 @@ async function loadClaimDetails() {
     const reviewContainer = document.getElementById('reviewContainer');
     const errorDiv = document.getElementById('errorDiv');
     
-    loadingDiv.style.display = 'block';
+    if (loadingDiv) loadingDiv.style.display = 'block';
     
     try {
         const response = await fetch('view_claims.php?id=' + claimId);
@@ -79,7 +89,7 @@ async function loadClaimDetails() {
         if (data.success) {
             claimData = data.claim;
             displayClaimDetails(data.claim);
-            reviewContainer.style.display = 'block';
+            if (reviewContainer) reviewContainer.style.display = 'block';
         } else {
             showError(data.message || 'Failed to load claim details');
         }
@@ -87,20 +97,21 @@ async function loadClaimDetails() {
         console.error('Error:', error);
         showError('Network error occurred');
     } finally {
-        loadingDiv.style.display = 'none';
+        if (loadingDiv) loadingDiv.style.display = 'none';
     }
 }
 
 function displayClaimDetails(claim) {
-    let statusClass = '';
-    if (claim.claim_status === 'pending') statusClass = 'status-pending';
-
-    document.getElementById('itemIconTag').innerHTML = '<i class="fas fa-box"></i>';
-    document.getElementById('foundItemName').innerHTML = escapeHtml(claim.item_name);
-    document.getElementById('foundItemMeta').innerHTML = `
-        <i class="fas fa-calendar-alt"></i> Found on ${escapeHtml(claim.date_found)}
-    `;
+    // Found Item Details
+    const foundItemName = document.getElementById('foundItemName');
+    if (foundItemName) foundItemName.innerHTML = escapeHtml(claim.item_name);
     
+    const foundItemMeta = document.getElementById('foundItemMeta');
+    if (foundItemMeta) {
+        foundItemMeta.innerHTML = `<i class="fas fa-calendar-alt"></i> Found on ${escapeHtml(claim.date_found)}`;
+    }
+    
+    // Found Item Details
     let detailsHtml = `
         <div class="found-detail">
             <span class="label">📍 Location:</span>
@@ -122,38 +133,73 @@ function displayClaimDetails(claim) {
             <span class="label">📅 Submitted:</span>
             <span class="value">${escapeHtml(claim.submitted_at)}</span>
         </div>
-        <div class="found-detail">
-            <span class="label">⏳ Status:</span>
-            <span class="value"><span class="status-badge ${statusClass}">Pending Review</span></span>
-        </div>
     `;
     
-    document.getElementById('foundItemDetails').innerHTML = detailsHtml;
+    const foundItemDetails = document.getElementById('foundItemDetails');
+    if (foundItemDetails) foundItemDetails.innerHTML = detailsHtml;
     
-    document.getElementById('claimantDetails').innerHTML = `
-        <div class="detail-item">
-            <div class="detail-label">Claimant Name</div>
-            <div class="detail-value">${escapeHtml(claim.claimant_name)}</div>
-        </div>
-        <div class="detail-item">
-            <div class="detail-label">Email Address</div>
-            <div class="detail-value">${escapeHtml(claim.claimant_email)}</div>
-        </div>
-        <div class="detail-item">
-            <div class="detail-label">Phone Number</div>
-            <div class="detail-value">${escapeHtml(claim.claimant_phone || '-')}</div>
-        </div>
-    `;
+    // Claimant Details
+    const claimantDetails = document.getElementById('claimantDetails');
+    if (claimantDetails) {
+        claimantDetails.innerHTML = `
+            <div class="detail-item">
+                <div class="detail-label">Claimant Name</div>
+                <div class="detail-value">${escapeHtml(claim.claimant_name)}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Email Address</div>
+                <div class="detail-value">${escapeHtml(claim.claimant_email)}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Phone Number</div>
+                <div class="detail-value">${escapeHtml(claim.claimant_phone || '-')}</div>
+            </div>
+        `;
+    }
     
-    document.getElementById('staffDetails').innerHTML = `
-        <div class="detail-item">
-            <div class="detail-label">Staff Name</div>
-            <div class="detail-value">${escapeHtml(claim.staff_name)}</div>
-        </div>
-    `;
+    // Staff Details
+    const staffDetails = document.getElementById('staffDetails');
+    if (staffDetails) {
+        staffDetails.innerHTML = `
+            <div class="detail-item">
+                <div class="detail-label">Staff Name</div>
+                <div class="detail-value">${escapeHtml(claim.staff_name)}</div>
+            </div>
+        `;
+    }
     
-    document.getElementById('ownershipProof').innerHTML = claim.ownership_proof || '<em>No proof of ownership provided.</em>';
-    document.getElementById('identifyingDetails').innerHTML = claim.identifying_details || '<em>No identifying details provided.</em>';
+    // Proof of Ownership
+    const ownershipProof = document.getElementById('ownershipProof');
+    if (ownershipProof) {
+        ownershipProof.innerHTML = claim.ownership_proof || '<em>No proof of ownership provided.</em>';
+    }
+    
+    // Identifying Details
+    const identifyingDetails = document.getElementById('identifyingDetails');
+    if (identifyingDetails) {
+        identifyingDetails.innerHTML = claim.identifying_details || '<em>No identifying details provided.</em>';
+    }
+    
+    // Found Item Photo
+    const foundItemPhotoContainer = document.getElementById('foundItemPhotoContainer');
+    if (foundItemPhotoContainer) {
+        if (claim.item_photo) {
+            foundItemPhotoContainer.innerHTML = `<img src="../../../${claim.item_photo}" alt="Found Item">`;
+        } else {
+            foundItemPhotoContainer.innerHTML = '<div class="photo-placeholder"><i class="fas fa-image"></i><p>No photo available</p></div>';
+        }
+    }
+    
+    // Evidence Photo
+    const evidencePhotoContainer = document.getElementById('evidencePhotoContainer');
+    if (evidencePhotoContainer) {
+        if (claim.evidence_photo) {
+            evidencePhotoContainer.innerHTML = `<img src="../../../${claim.evidence_photo}" alt="Evidence Photo">`;
+        } else {
+            evidencePhotoContainer.innerHTML = '<div class="photo-placeholder"><i class="fas fa-camera"></i><p>No evidence photo uploaded</p></div>';
+        }
+    }
+    
     displayLostReport(claim);
 }
 
@@ -170,7 +216,8 @@ function displayLostReport(claim) {
             location_lost: claim.lost_location,
             date_lost: claim.lost_date,
             status: claim.lost_status,
-            description: claim.lost_description || 'No description provided'
+            description: claim.lost_description || 'No description provided',
+            photo: claim.lost_photo
         };
         
         let statusBadge = '';
@@ -215,7 +262,7 @@ function viewLostReportDetails() {
     const modal = document.getElementById('lostReportModal');
     const modalBody = document.getElementById('lostReportModalBody');
     
-    if (!modal) return;
+    if (!modal || !modalBody) return;
     
     let statusClass = '';
     let statusText = '';
@@ -228,6 +275,16 @@ function viewLostReportDetails() {
     } else {
         statusClass = 'status-closed';
         statusText = 'Closed';
+    }
+    
+    let photoHtml = '';
+    if (currentLostReport.photo) {
+        photoHtml = `
+            <div class="modal-row">
+                <div class="modal-label">Photo:</div>
+                <div class="modal-value"><img src="../../../${currentLostReport.photo}" style="max-width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px;"></div>
+            </div>
+        `;
     }
     
     modalBody.innerHTML = `
@@ -251,6 +308,7 @@ function viewLostReportDetails() {
             <div class="modal-label">Description:</div>
             <div class="modal-value">${escapeHtml(currentLostReport.description)}</div>
         </div>
+        ${photoHtml}
     `;
     
     modal.classList.add('active');
@@ -268,12 +326,14 @@ function setProofMatch(match) {
     const yesBtn = document.getElementById('proofMatchYes');
     const noBtn = document.getElementById('proofMatchNo');
     
-    if (match) {
-        yesBtn.classList.add('active');
-        noBtn.classList.remove('active');
-    } else {
-        yesBtn.classList.remove('active');
-        noBtn.classList.add('active');
+    if (yesBtn && noBtn) {
+        if (match) {
+            yesBtn.classList.add('active');
+            noBtn.classList.remove('active');
+        } else {
+            yesBtn.classList.remove('active');
+            noBtn.classList.add('active');
+        }
     }
     updateMatchSummary();
 }
@@ -283,18 +343,39 @@ function setIdentifyingMatch(match) {
     const yesBtn = document.getElementById('identifyingMatchYes');
     const noBtn = document.getElementById('identifyingMatchNo');
     
-    if (match) {
-        yesBtn.classList.add('active');
-        noBtn.classList.remove('active');
-    } else {
-        yesBtn.classList.remove('active');
-        noBtn.classList.add('active');
+    if (yesBtn && noBtn) {
+        if (match) {
+            yesBtn.classList.add('active');
+            noBtn.classList.remove('active');
+        } else {
+            yesBtn.classList.remove('active');
+            noBtn.classList.add('active');
+        }
+    }
+    updateMatchSummary();
+}
+
+function setPhotoMatch(match) {
+    photoMatch = match;
+    const yesBtn = document.getElementById('photoMatchYes');
+    const noBtn = document.getElementById('photoMatchNo');
+    
+    if (yesBtn && noBtn) {
+        if (match) {
+            yesBtn.classList.add('active');
+            noBtn.classList.remove('active');
+        } else {
+            yesBtn.classList.remove('active');
+            noBtn.classList.add('active');
+        }
     }
     updateMatchSummary();
 }
 
 function updateMatchSummary() {
     const summaryDiv = document.getElementById('matchSummary');
+    if (!summaryDiv) return;
+    
     let html = '<strong>📋 Comparison Summary:</strong><br>';
     
     if (proofMatch === true) {
@@ -306,11 +387,19 @@ function updateMatchSummary() {
     }
     
     if (identifyingMatch === true) {
-        html += '<span class="match-good">✓ Identifying details match the found item</span>';
+        html += '<span class="match-good">✓ Identifying details match the found item</span><br>';
     } else if (identifyingMatch === false) {
-        html += '<span class="match-bad">✗ Identifying details do NOT match the found item</span>';
+        html += '<span class="match-bad">✗ Identifying details do NOT match the found item</span><br>';
     } else {
-        html += '<span class="match-pending">○ Please verify if identifying details match</span>';
+        html += '<span class="match-pending">○ Please verify if identifying details match</span><br>';
+    }
+    
+    if (photoMatch === true) {
+        html += '<span class="match-good">✓ Photos match the found item</span><br>';
+    } else if (photoMatch === false) {
+        html += '<span class="match-bad">✗ Photos do NOT match the found item</span><br>';
+    } else {
+        html += '<span class="match-pending">○ Please verify if photos match</span><br>';
     }
     
     summaryDiv.innerHTML = html;
@@ -318,16 +407,17 @@ function updateMatchSummary() {
 
 async function submitDecision(decision) {
     if (decision === 'rejected') {
-        const reviewNote = document.getElementById('review_note').value.trim();
-        if (!reviewNote) {
+        const reviewNote = document.getElementById('review_note');
+        const reviewNoteValue = reviewNote ? reviewNote.value.trim() : '';
+        if (!reviewNoteValue) {
             showToast('Please provide a reason for rejection', 'error');
             return;
         }
     }
     
     if (decision === 'approved') {
-        if (proofMatch === null || identifyingMatch === null) {
-            showToast('Please verify if the claimant\'s proof and details match the found item', 'error');
+        if (proofMatch === null || identifyingMatch === null || photoMatch === null) {
+            showToast('Please verify all comparison criteria (proof, details, and photos)', 'error');
             return;
         }
     }
@@ -335,19 +425,23 @@ async function submitDecision(decision) {
     const approveBtn = document.getElementById('approveBtn');
     const rejectBtn = document.getElementById('rejectBtn');
     
-    approveBtn.disabled = true;
-    rejectBtn.disabled = true;
+    if (approveBtn) approveBtn.disabled = true;
+    if (rejectBtn) rejectBtn.disabled = true;
     
-    if (decision === 'approved') {
-        approveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    } else {
-        rejectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    if (approveBtn) {
+        if (decision === 'approved') {
+            approveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        } else if (rejectBtn) {
+            rejectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        }
     }
+    
+    const reviewNoteValue = document.getElementById('review_note') ? document.getElementById('review_note').value : '';
     
     const formData = new FormData();
     formData.append('claim_id', claimId);
     formData.append('decision', decision);
-    formData.append('review_note', document.getElementById('review_note').value);
+    formData.append('review_note', reviewNoteValue);
     
     try {
         const response = await fetch('review_claims.php', {
@@ -363,29 +457,31 @@ async function submitDecision(decision) {
             }, 2000);
         } else {
             showToast(data.message || 'Failed to process claim', 'error');
-            approveBtn.disabled = false;
-            rejectBtn.disabled = false;
-            approveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Approve Claim';
-            rejectBtn.innerHTML = '<i class="fas fa-times-circle"></i> Reject Claim';
+            if (approveBtn) approveBtn.disabled = false;
+            if (rejectBtn) rejectBtn.disabled = false;
+            if (approveBtn) approveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Approve Claim';
+            if (rejectBtn) rejectBtn.innerHTML = '<i class="fas fa-times-circle"></i> Reject Claim';
         }
     } catch (error) {
         console.error('Error:', error);
         showToast('Network error occurred', 'error');
-        approveBtn.disabled = false;
-        rejectBtn.disabled = false;
-        approveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Approve Claim';
-        rejectBtn.innerHTML = '<i class="fas fa-times-circle"></i> Reject Claim';
+        if (approveBtn) approveBtn.disabled = false;
+        if (rejectBtn) rejectBtn.disabled = false;
+        if (approveBtn) approveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Approve Claim';
+        if (rejectBtn) rejectBtn.innerHTML = '<i class="fas fa-times-circle"></i> Reject Claim';
     }
 }
 
 function showError(message) {
     const errorDiv = document.getElementById('errorDiv');
-    errorDiv.textContent = message;
-    errorDiv.style.display = 'block';
-    
-    setTimeout(() => {
-        errorDiv.style.display = 'none';
-    }, 5000);
+    if (errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 5000);
+    }
 }
 
 function showToast(message, type) {
@@ -402,9 +498,9 @@ function showToast(message, type) {
     const toastIcon = document.getElementById('toastIcon');
     const toastMessage = document.getElementById('toastMessage');
     
-    toastIcon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    if (toastIcon) toastIcon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
     toast.className = 'toast toast-' + type + ' show';
-    toastMessage.textContent = message;
+    if (toastMessage) toastMessage.textContent = message;
     
     setTimeout(() => {
         toast.classList.remove('show');

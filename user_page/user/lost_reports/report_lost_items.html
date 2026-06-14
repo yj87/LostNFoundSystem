@@ -11,9 +11,15 @@
     <div class="dashboard-container">
         <aside id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🔍</div>
-                <h3>Lost & Found</h3>
-                <p>User Panel</p>
+                <div class="logo-nav">
+                    <div class="brand-logo">
+                        <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-name">Lost<span>Find</span></div>
+                        <div class="admin-tag">User Panel</div>
+                    </div>
+                </div>
             </div>
             <nav>
                 <div class="nav-group">
@@ -99,12 +105,12 @@
                 <div class="form-container">
                     <form id="reportForm">
                         <div class="form-group">
-                            <label>Item Name *</label>
+                            <label>Item Name <span style="color: #dc3545;">*</span></label>
                             <input type="text" id="item_name" name="item_name" required placeholder="e.g., iPhone 13, Laptop, Wallet">
                         </div>
 
                         <div class="form-group">
-                            <label>Category *</label>
+                            <label>Category <span style="color: #dc3545;">*</span></label>
                             <select id="category_id" name="category_id" required>
                                 <option value="">Loading categories...</option>
                             </select>
@@ -116,12 +122,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Location Lost *</label>
+                            <label>Location Lost <span style="color: #dc3545;">*</span></label>
                             <input type="text" id="location_lost" name="location_lost" required placeholder="e.g., Library, Cafeteria, Classroom DK1">
                         </div>
 
                         <div class="form-group">
-                            <label>Date Lost *</label>
+                            <label>Date Lost <span style="color: #dc3545;">*</span></label>
                             <input type="date" id="date_lost" name="date_lost" required>
                         </div>
                         

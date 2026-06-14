@@ -42,7 +42,8 @@ if (isset($_GET['id'])) {
         'user_name' => htmlspecialchars($row['user_name']),
         'user_email' => htmlspecialchars($row['user_email']),
         'user_phone' => htmlspecialchars($row['user_phone'] ?? '-'),
-        'created_at' => date('d F Y, h:i A', strtotime($row['created_at']))
+        'created_at' => date('d F Y, h:i A', strtotime($row['created_at'])),
+        'photo' => $row['photo'] ?? null  // ← ADD THIS LINE
     ];
     
     echo json_encode(['success' => true, 'report' => $report]);
@@ -81,7 +82,8 @@ $count_query = "SELECT COUNT(*) as total FROM lost_reports lr $where";
 $count_result = mysqli_query($conn, $count_query);
 $total_count = mysqli_fetch_assoc($count_result)['total'];
 
-$query = "SELECT lr.*, u.name as user_name, u.email as user_email,
+$query = "SELECT lr.report_id, lr.item_name, lr.location_lost, lr.date_lost, lr.lost_status, lr.photo,
+          u.name as user_name, u.email as user_email,
           c.category_name
           FROM lost_reports lr
           JOIN users u ON lr.user_id = u.user_id
@@ -108,7 +110,8 @@ while ($row = mysqli_fetch_assoc($result)) {
         'status_label' => $status_label,
         'category_name' => $row['category_name'] ?? 'Uncategorized',
         'user_name' => htmlspecialchars($row['user_name']),
-        'user_email' => htmlspecialchars($row['user_email'])
+        'user_email' => htmlspecialchars($row['user_email']),
+         'photo' => $row['photo'] ?? null
     ];
 }
 

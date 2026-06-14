@@ -84,6 +84,58 @@
     color: #856404;
 }
 
+.logo-nav {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-logo {
+    width: 65px;
+    height: 65px;
+    border-radius: 14px;
+    overflow: hidden;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brand-logo img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.brand-text {
+    text-align: left;
+}
+
+.brand-name {
+    font-size: 26px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.brand-name span {
+    color: #fbedee;
+    font-weight: 800;
+}
+
+.admin-tag {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-top: 4px;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+}
+
 /* Reference Card */
 .reference-card {
     border-left: 4px solid #fa8a9c;
@@ -189,6 +241,83 @@
     color: #004085;
 }
 
+/* Photo Comparison Grid */
+.photo-comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.photo-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+
+.photo-card-header {
+    padding: 12px 15px;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.photo-card-header i {
+    font-size: 16px;
+    color: #fa8a9c;
+}
+
+.photo-card-header h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2b2d42;
+}
+
+.photo-card-body {
+    padding: 20px;
+    text-align: center;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-card-body img {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.photo-placeholder {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+}
+
+.photo-placeholder i {
+    font-size: 48px;
+    margin-bottom: 10px;
+    display: block;
+    opacity: 0.5;
+}
+
+.photo-placeholder p {
+    font-size: 12px;
+    margin: 0;
+}
+
+.photo-comparison-actions {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
+}
+
 /* Comparison Container */
 .comparison-container {
     display: flex;
@@ -231,11 +360,13 @@
     font-weight: 600;
     color: #2b2d42;
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .verdict-buttons {
     display: flex;
     gap: 10px;
+    justify-content: center;
 }
 
 .verdict-yes,
@@ -373,8 +504,8 @@
 
 /* Decision Card */
 .decision-card {
-    border: 1px solid #ffc107;
-    background: #fff8e1;
+    border: 1px solid #fa8a9c;
+    background: #fff5f6;
 }
 
 .form-group {
@@ -680,5 +811,9 @@
     .modal-row .modal-label {
         width: 100%;
         margin-bottom: 5px;
+    }
+    .photo-comparison-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
     }
 }

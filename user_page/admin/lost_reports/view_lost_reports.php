@@ -3,6 +3,8 @@ require_once '../../../config/db_connect.php';
 
 session_start();
 
+header('Content-Type: application/json');
+
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'Not logged in']);
     exit();
@@ -12,8 +14,6 @@ if ($_SESSION['role'] !== 'admin') {
     echo json_encode(['success' => false, 'message' => 'Not authorized']);
     exit();
 }
-
-header('Content-Type: application/json');
 
 if (isset($_GET['action']) && $_GET['action'] === 'categories') {
     $query = "SELECT category_id, category_name FROM categories ORDER BY category_name";
@@ -28,7 +28,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'categories') {
 
 if (isset($_GET['id'])) {
     $report_id = intval($_GET['id']);
-    $query = "SELECT lr.*, u.name as user_name, u.email as user_email, u.phone as user_phone,
+    
+    $query = "SELECT lr.report_id, lr.item_name, lr.description, lr.location_lost, lr.date_lost, lr.lost_status, lr.photo, lr.created_at,
+              u.name as user_name, u.email as user_email, u.phone as user_phone,
               c.category_name, c.category_id
               FROM lost_reports lr
               JOIN users u ON lr.user_id = u.user_id
@@ -46,7 +48,7 @@ if (isset($_GET['id'])) {
     $report = [
         'report_id' => $row['report_id'],
         'item_name' => htmlspecialchars($row['item_name']),
-        'description' => nl2br(htmlspecialchars($row['description'])),
+        'description' => nl2br(htmlspecialchars($row['description'] ?? '')),
         'location_lost' => htmlspecialchars($row['location_lost']),
         'date_lost' => $row['date_lost'],
         'lost_status' => $row['lost_status'],
@@ -55,7 +57,8 @@ if (isset($_GET['id'])) {
         'user_name' => htmlspecialchars($row['user_name']),
         'user_email' => htmlspecialchars($row['user_email']),
         'user_phone' => htmlspecialchars($row['user_phone'] ?? '-'),
-        'created_at' => date('d F Y, h:i A', strtotime($row['created_at']))
+        'created_at' => date('d F Y, h:i A', strtotime($row['created_at'])),
+        'photo' => $row['photo'] ?? null
     ];
     
     echo json_encode(['success' => true, 'report' => $report]);
@@ -94,7 +97,8 @@ $count_query = "SELECT COUNT(*) as total FROM lost_reports lr $where";
 $count_result = mysqli_query($conn, $count_query);
 $total_count = mysqli_fetch_assoc($count_result)['total'];
 
-$query = "SELECT lr.*, u.name as user_name, u.email as user_email,
+$query = "SELECT lr.report_id, lr.item_name, lr.description, lr.location_lost, lr.date_lost, lr.lost_status, lr.photo,
+          u.name as user_name, u.email as user_email,
           c.category_name
           FROM lost_reports lr
           JOIN users u ON lr.user_id = u.user_id
@@ -115,14 +119,15 @@ while ($row = mysqli_fetch_assoc($result)) {
     $reports[] = [
         'report_id' => $row['report_id'],
         'item_name' => htmlspecialchars($row['item_name']),
-        'description' => htmlspecialchars(substr($row['description'], 0, 100)),
+        'description' => htmlspecialchars(substr($row['description'] ?? '', 0, 100)),
         'location_lost' => htmlspecialchars($row['location_lost']),
         'date_lost' => date('d M Y', strtotime($row['date_lost'])),
         'lost_status' => $row['lost_status'],
         'status_label' => $status_label,
         'category_name' => $row['category_name'] ?? 'Uncategorized',
         'user_name' => htmlspecialchars($row['user_name']),
-        'user_email' => htmlspecialchars($row['user_email'])
+        'user_email' => htmlspecialchars($row['user_email']),
+        'photo' => $row['photo'] ?? null
     ];
 }
 

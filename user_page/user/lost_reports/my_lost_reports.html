@@ -11,9 +11,15 @@
     <div class="dashboard-container">
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🔍</div>
-                <h3>Lost & Found</h3>
-                <p>User Panel</p>
+                <div class="logo-nav">
+                    <div class="brand-logo">
+                        <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-name">Lost<span>Find</span></div>
+                        <div class="admin-tag">User Panel</div>
+                    </div>
+                </div>
             </div>
             <nav>
                 <div class="nav-group">
@@ -126,6 +132,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Photo</th>
                                     <th>Item Name</th>
                                     <th>Location Lost</th>
                                     <th>Date Lost</th>
@@ -135,7 +142,7 @@
                             </thead>
                             <tbody id="reportsTableBody">
                                 <tr>
-                                    <td colspan="6" class="text-center">Loading reports...</td>
+                                    <td colspan="7" class="text-center">Loading reports...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -147,19 +154,6 @@
             <footer>
                 <p>&copy; 2026 Lost & Found System - Universiti Teknologi Malaysia</p>
             </footer>
-        </div>
-    </div>
-
-    <div id="viewModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Report Details</h3>
-                <button class="modal-close" onclick="closeViewModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="modalBody"></div>
-            <div class="modal-footer">
-                <button class="btn" onclick="closeViewModal()">Close</button>
-            </div>
         </div>
     </div>
 

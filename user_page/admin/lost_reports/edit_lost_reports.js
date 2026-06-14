@@ -41,7 +41,7 @@ async function loadReport() {
     const loadingDiv = document.getElementById('loadingDiv');
     const formContainer = document.getElementById('formContainer');
     
-    loadingDiv.style.display = 'block';
+    if (loadingDiv) loadingDiv.style.display = 'block';
     
     try {
         const response = await fetch('view_lost_reports.php?id=' + reportId);
@@ -49,7 +49,7 @@ async function loadReport() {
         
         if (data.success) {
             displayReportData(data.report);
-            formContainer.style.display = 'block';
+            if (formContainer) formContainer.style.display = 'block';
         } else {
             showAlert(data.message || 'Failed to load report', 'error');
         }
@@ -57,7 +57,7 @@ async function loadReport() {
         console.error('Error:', error);
         showAlert('Network error occurred', 'error');
     } finally {
-        loadingDiv.style.display = 'none';
+        if (loadingDiv) loadingDiv.style.display = 'none';
     }
 }
 
@@ -70,17 +70,24 @@ function displayReportData(report) {
     document.getElementById('description').value = description;
     document.getElementById('location_lost').value = report.location_lost;
     
-    // FIX: Set date correctly for input type="date"
     if (report.date_lost) {
-        let dateValue = report.date_lost;
-        console.log('Original date from API:', dateValue);
-        document.getElementById('date_lost').value = dateValue;
+        document.getElementById('date_lost').value = report.date_lost;
     }
     
     document.getElementById('lost_status').value = report.lost_status;
     
     if (report.category_id && document.getElementById('category_id')) {
         document.getElementById('category_id').value = report.category_id;
+    }
+    
+    // Display current photo
+    const photoContainer = document.getElementById('currentPhotoContainer');
+    if (photoContainer) {
+        if (report.photo) {
+            photoContainer.innerHTML = '<img src="../../../' + report.photo + '" style="max-width: 300px; max-height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">';
+        } else {
+            photoContainer.innerHTML = '<div style="padding: 20px; background: #f8f9fa; border-radius: 8px; color: #999;"><i class="fas fa-image"></i> No photo uploaded</div>';
+        }
     }
 }
 
@@ -104,9 +111,16 @@ async function saveReport() {
     formData.append('lost_status', document.getElementById('lost_status').value);
     formData.append('category_id', document.getElementById('category_id').value);
     
+    const photoFile = document.getElementById('photo').files[0];
+    if (photoFile) {
+        formData.append('photo', photoFile);
+    }
+    
     const saveBtn = document.querySelector('.btn-save');
-    saveBtn.disabled = true;
-    saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    }
     
     try {
         const response = await fetch('edit_lost_reports.php', {
@@ -122,25 +136,31 @@ async function saveReport() {
             }, 1500);
         } else {
             showAlert(data.message || 'Failed to edit report', 'error');
-            saveBtn.disabled = false;
-            saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+            }
         }
     } catch (error) {
         console.error('Error:', error);
         showAlert('Network error occurred', 'error');
-        saveBtn.disabled = false;
-        saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        if (saveBtn) {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        }
     }
 }
 
 function showAlert(message, type) {
     const alertDiv = document.getElementById('alertMessage');
-    alertDiv.textContent = message;
-    alertDiv.className = 'alert alert-' + type + ' show';
-    
-    setTimeout(function() {
-        alertDiv.classList.remove('show');
-    }, 3000);
+    if (alertDiv) {
+        alertDiv.textContent = message;
+        alertDiv.className = 'alert alert-' + type + ' show';
+        
+        setTimeout(function() {
+            alertDiv.classList.remove('show');
+        }, 3000);
+    }
 }
 
 function escapeHtml(str) {

@@ -155,6 +155,22 @@
     text-align: right;
 }
 
+/* Lost Report Photo */
+.lost-report-photo {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e9ecef;
+}
+
+.lost-report-photo .photo-card-body {
+    padding: 10px;
+    min-height: 150px;
+}
+
+.lost-report-photo img {
+    max-height: 150px;
+}
+
 .btn-view-lost {
     background: #ff9800;
     color: white;
@@ -187,6 +203,83 @@
 .status-closed {
     background: #cce5ff;
     color: #004085;
+}
+
+/* Photo Comparison Grid */
+.photo-comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.photo-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e9ecef;
+}
+
+.photo-card-header {
+    padding: 12px 15px;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.photo-card-header i {
+    font-size: 16px;
+    color: #42a5f5;
+}
+
+.photo-card-header h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2b2d42;
+}
+
+.photo-card-body {
+    padding: 20px;
+    text-align: center;
+    min-height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.photo-card-body img {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.photo-placeholder {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+}
+
+.photo-placeholder i {
+    font-size: 48px;
+    margin-bottom: 10px;
+    display: block;
+    opacity: 0.5;
+}
+
+.photo-placeholder p {
+    font-size: 12px;
+    margin: 0;
+}
+
+.photo-comparison-actions {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #e9ecef;
+    text-align: center;
 }
 
 /* Comparison Container */
@@ -236,6 +329,7 @@
 .verdict-buttons {
     display: flex;
     gap: 10px;
+    justify-content: center;
 }
 
 .verdict-yes,
@@ -525,7 +619,7 @@
     background: #dc3545;
 }
 
-/* MODAL POPUP STYLES - WORKING */
+/* MODAL POPUP STYLES */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -680,5 +774,9 @@
     .modal-row .modal-label {
         width: 100%;
         margin-bottom: 5px;
+    }
+    .photo-comparison-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
     }
 }

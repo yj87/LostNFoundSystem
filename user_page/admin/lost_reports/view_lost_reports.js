@@ -91,7 +91,7 @@ async function loadReports() {
         console.error('Error:', error);
         alert('Network error: ' + error.message);
         if (tableBody) {
-            tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:red;">Error loading reports</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:red;">Error loading reports</td></tr>';
         }
     } finally {
         if (loadingRow) loadingRow.style.display = 'none';
@@ -115,7 +115,7 @@ function renderReportsTable(reports) {
     if (!tableBody) return;
     
     if (!reports || reports.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 40px;">No lost reports found</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 40px;">No lost reports found</td></tr>'; 
         return;
     }
     
@@ -127,17 +127,28 @@ function renderReportsTable(reports) {
         if (report.lost_status === 'found') statusClass = 'status-found';
         if (report.lost_status === 'closed') statusClass = 'status-closed';
         
+        // Photo thumbnail
+        let photoHtml = '';
+        if (report.photo) {
+            photoHtml = '<img src="../../../' + report.photo + '" class="photo-thumb" alt="Photo">';
+        } else {
+            photoHtml = '<div class="photo-placeholder"><i class="fas fa-image"></i></div>';
+        }
+        
         html += '<tr>';
         html += '<td>' + report.report_id + '</td>';
+        html += '<td>' + photoHtml + '</td>';  // ADD THIS LINE
         html += '<td><strong>' + escapeHtml(report.item_name) + '</strong></td>';
         html += '<td>' + escapeHtml(report.user_name) + '</td>';
         html += '<td>' + escapeHtml(report.location_lost) + '</td>';
         html += '<td>' + report.date_lost + '</td>';
         html += '<td><span class="status-badge ' + statusClass + '">' + report.status_label + '</span></td>';
-        html += '<td class="action-buttons">';
+        html += '<td>';
+        html += '<div class="action-buttons">';
         html += '<button class="btn btn-primary btn-sm" onclick="viewReport(' + report.report_id + ')"><i class="fas fa-eye"></i> View</button>';
         html += '<button class="btn btn-warning btn-sm" onclick="editReport(' + report.report_id + ')"><i class="fas fa-edit"></i> Edit</button>';
         html += '<button class="btn btn-danger btn-sm" onclick="deleteReport(' + report.report_id + ', \'' + escapeHtml(report.item_name) + '\')"><i class="fas fa-trash"></i> Delete</button>';
+        html += '</div>';
         html += '</td>';
         html += '</tr>';
     }
@@ -192,84 +203,9 @@ function updateCategoryFilter(categories) {
     }
 }
 
-async function viewReport(reportId) {
-    try {
-        const response = await fetch('view_lost_reports.php?id=' + reportId);
-        const data = await response.json();
-        
-        if (data.success) {
-            showReportModal(data.report);
-        } else {
-            alert('Failed to load report details: ' + (data.message || 'Unknown error'));
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Network error: ' + error.message);
-    }
-}
-
-function showReportModal(report) {
-    const modal = document.getElementById('viewModal');
-    const modalBody = document.getElementById('modalBody');
-    
-    let statusClass = '';
-    if (report.lost_status === 'searching') statusClass = 'status-searching';
-    if (report.lost_status === 'found') statusClass = 'status-found';
-    if (report.lost_status === 'closed') statusClass = 'status-closed';
-    
-    let statusLabel = '';
-    if (report.lost_status === 'searching') statusLabel = 'Searching';
-    if (report.lost_status === 'found') statusLabel = 'Found';
-    if (report.lost_status === 'closed') statusLabel = 'Closed';
-    
-    modalBody.innerHTML = 
-        '<div class="detail-row">' +
-            '<div class="detail-label">Item Name:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.item_name) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Category:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.category_name) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Description:</div>' +
-            '<div class="detail-value">' + report.description + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Location Lost:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.location_lost) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Date Lost:</div>' +
-            '<div class="detail-value">' + report.date_lost + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Status:</div>' +
-            '<div class="detail-value"><span class="status-badge ' + statusClass + '">' + statusLabel + '</span></div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Reported By:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.user_name) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Email:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.user_email) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Phone:</div>' +
-            '<div class="detail-value">' + escapeHtml(report.user_phone) + '</div>' +
-        '</div>' +
-        '<div class="detail-row">' +
-            '<div class="detail-label">Reported At:</div>' +
-            '<div class="detail-value">' + report.created_at + '</div>' +
-        '</div>';
-    
-    modal.classList.add('active');
-}
-
-function closeViewModal() {
-    const modal = document.getElementById('viewModal');
-    modal.classList.remove('active');
+function viewReport(reportId) {
+    // Redirect to global view_item_details page
+    window.location.href = '../../item_details/view_item_details.html?id=' + reportId + '&from=admin&type=lost';
 }
 
 function editReport(reportId) {
@@ -277,27 +213,41 @@ function editReport(reportId) {
 }
 
 async function deleteReport(reportId, itemName) {
-    if (confirm('Are you sure you want to delete "' + itemName + '"? This action cannot be undone.')) {
-        try {
-            const formData = new FormData();
-            formData.append('report_id', reportId);
-            
-            const response = await fetch('delete_lost_reports.php', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
-            
-            if (data.success) {
-                alert('Report deleted successfully');
-                loadReports();
-            } else {
-                alert('Failed to delete: ' + (data.message || 'Unknown error'));
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Network error occurred');
+    if (!confirm('Are you sure you want to delete "' + itemName + '"? This action cannot be undone.')) {
+        return;
+    }
+    
+    try {
+        console.log('Deleting report ID:', reportId);
+        
+        const formData = new FormData();
+        formData.append('report_id', reportId);
+        
+        const response = await fetch('delete_lost_reports.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        // Check if response is OK
+        if (!response.ok) {
+            const text = await response.text();
+            console.error('Server response:', text);
+            alert('Server error. Check console.');
+            return;
         }
+        
+        const data = await response.json();
+        console.log('Response data:', data);
+        
+        if (data.success) {
+            alert('Report deleted successfully');
+            loadReports(); // Refresh the table
+        } else {
+            alert('Failed to delete: ' + (data.message || 'Unknown error'));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Network error: ' + error.message);
     }
 }
 

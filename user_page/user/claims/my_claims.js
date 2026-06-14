@@ -213,6 +213,7 @@ async function viewClaimDetails(claimId) {
     }
 }
 
+// Add evidence photo to modal
 function showClaimModal(claim) {
     const modal = document.getElementById('claimModal');
     const modalBody = document.getElementById('modalBody');
@@ -229,6 +230,21 @@ function showClaimModal(claim) {
     } else if (claim.claim_status === 'rejected') {
         statusClass = 'status-rejected';
         statusText = 'Rejected';
+    }
+    
+    // Build evidence photo HTML
+    let evidencePhotoHtml = '';
+    if (claim.evidence_photo) {
+        evidencePhotoHtml = `
+            <div class="detail-row">
+                <div class="detail-label">Evidence Photo</div>
+                <div class="detail-value">
+                    <a href="../../../${claim.evidence_photo}" target="_blank">
+                        <img src="../../../${claim.evidence_photo}" style="max-width: 200px; max-height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd; margin-top: 5px;">
+                    </a>
+                </div>
+            </div>
+        `;
     }
     
     modalBody.innerHTML = `
@@ -266,16 +282,17 @@ function showClaimModal(claim) {
         ` : ''}
         <div class="detail-row">
             <div class="detail-label">Ownership Proof</div>
-            <div class="detail-value">${escapeHtml(claim.ownership_proof)}</div>
+            <div class="detail-value">${claim.ownership_proof}</div>
         </div>
         <div class="detail-row">
             <div class="detail-label">Identifying Details</div>
-            <div class="detail-value">${escapeHtml(claim.identifying_details)}</div>
+            <div class="detail-value">${claim.identifying_details}</div>
         </div>
+        ${evidencePhotoHtml}
         ${claim.review_note ? `
         <div class="detail-row">
             <div class="detail-label">Review Note</div>
-            <div class="detail-value">${escapeHtml(claim.review_note)}</div>
+            <div class="detail-value">${claim.review_note}</div>
         </div>
         ` : ''}
     `;

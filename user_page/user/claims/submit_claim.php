@@ -55,15 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     }
     
     echo json_encode([
-    'success' => true,
-    'item' => [
-        'item_id' => $item['item_id'],
-        'item_name' => htmlspecialchars($item['item_name']),
-        'description' => $item['description'], 
-        'location_found' => htmlspecialchars($item['location_found']),
-        'date_found' => date('d M Y', strtotime($item['date_found'])),
-        'found_status' => $item['found_status'],
-        'category_name' => $item['category_name'] ?? 'Uncategorized'
+        'success' => true,
+        'item' => [
+            'item_id' => $item['item_id'],
+            'item_name' => htmlspecialchars($item['item_name']),
+            'description' => nl2br(htmlspecialchars($item['description'])),
+            'location_found' => htmlspecialchars($item['location_found']),
+            'date_found' => date('d M Y', strtotime($item['date_found'])),
+            'found_status' => $item['found_status'],
+            'category_name' => $item['category_name'] ?? 'Uncategorized'
         ]
     ]);
     exit();
@@ -112,12 +112,88 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
     }
     
+    // Handle evidence photo upload
+    $evidence_photo = null;
+    $upload_dir = "../../../uploads/claims/";
+    
+    if (!file_exists($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
+    }
+    
+    if (isset($_FILES['evidence_photo']) && $_FILES['evidence_photo']['error'] === UPLOAD_ERR_OK) {
+        $file = $_FILES['evidence_photo'];
+        $file_size = $file['size'];
+        $file_tmp = $file['tmp_name'];
+        $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $allowed_ext = ['jpg', 'jpeg', 'png', 'pdf'];
+        
+        if ($file_size > 5 * 1024 * 1024) {
+            echo json_encode(['success' => false, 'message' => 'File size too large. Max 5MB']);
+            exit();
+        }
+        
+        if (!in_array($file_ext, $allowed_ext)) {
+            echo json_encode(['success' => false, 'message' => 'Only JPG, PNG, PDF files are allowed']);
+            exit();
+        }
+        
+        $new_filename = time() . '_' . uniqid() . '.' . $file_ext;
+        $destination = $upload_dir . $new_filename;
+        
+        if (move_uploaded_file($file_tmp, $destination)) {
+            $evidence_photo = "uploads/claims/" . $new_filename;
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to upload evidence photo']);
+            exit();
+        }
+    }
+    
+    $photo_column = $evidence_photo ? ", evidence_photo" : "";
+    $photo_value  = $evidence_photo ? ", '$evidence_photo'" : "";
+
     if ($lost_report_id) {
-        $query = "INSERT INTO claims (item_id, user_id, ownership_proof, identifying_details, claim_status, submitted_at, lost_report_id) 
-                  VALUES ($item_id, $user_id, '$ownership_proof', '$identifying_details', 'pending', NOW(), $lost_report_id)";
+
+    $query = "INSERT INTO claims (
+                item_id,
+                user_id,
+                ownership_proof,
+                identifying_details,
+                claim_status,
+                submitted_at,
+                lost_report_id
+                $photo_column
+              )
+              VALUES (
+                $item_id,
+                $user_id,
+                '$ownership_proof',
+                '$identifying_details',
+                'pending',
+                NOW(),
+                $lost_report_id
+                $photo_value
+              )";
+
     } else {
-        $query = "INSERT INTO claims (item_id, user_id, ownership_proof, identifying_details, claim_status, submitted_at) 
-                  VALUES ($item_id, $user_id, '$ownership_proof', '$identifying_details', 'pending', NOW())";
+
+    $query = "INSERT INTO claims (
+                item_id,
+                user_id,
+                ownership_proof,
+                identifying_details,
+                claim_status,
+                submitted_at
+                $photo_column
+              )
+              VALUES (
+                $item_id,
+                $user_id,
+                '$ownership_proof',
+                '$identifying_details',
+                'pending',
+                NOW()
+                $photo_value
+              )";
     }
     
     if (mysqli_query($conn, $query)) {
