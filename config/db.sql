@@ -57,7 +57,7 @@ CREATE TABLE claims (
   review_note       TEXT,
   submitted_at      DATETIME DEFAULT CURRENT_TIMESTAMP,
   reviewed_at       DATETIME,
-  evidence_photo    VARCHAR(255) NULL;
+  evidence_photo    VARCHAR(255) NULL,
   FOREIGN KEY (item_id)     REFERENCES found_items(item_id),
   FOREIGN KEY (user_id)     REFERENCES users(user_id),
   FOREIGN KEY (reviewed_by) REFERENCES users(user_id)
