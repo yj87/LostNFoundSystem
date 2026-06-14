@@ -172,7 +172,7 @@ async function loadItems() {
 
     tbody.innerHTML = `
         <tr>
-            <td colspan="6" style="text-align:center;padding:24px;">
+            <td colspan="7" style="text-align:center;padding:24px;">
                 <i class="fas fa-spinner fa-spin"></i> Loading…
             </td>
         </tr>
@@ -224,6 +224,9 @@ async function loadItems() {
 
                 return `
                     <tr>
+
+                        <td>F${escapeHtml(item.item_id)}</td>
+
                         <td>${imageHtml}</td>
 
                         <td>
@@ -255,7 +258,7 @@ async function loadItems() {
 
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="6">
+                    <td colspan="7">
                         <div class="empty-state">
                             <i class="fas fa-box-open"></i>
                             No found items match your search.
@@ -271,7 +274,7 @@ async function loadItems() {
 
         tbody.innerHTML = `
             <tr>
-                <td colspan="6" style="text-align:center;color:red;padding:20px;">
+                <td colspan="7" style="text-align:center;color:red;padding:20px;">
                     Failed to load items.
                 </td>
             </tr>

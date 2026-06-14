@@ -1,6 +1,4 @@
 <?php
-// get_admin_items.php
-
 require_once '../../../config/db_connect.php';
 require_once '../../../includes/auth_check.php';
 
@@ -9,33 +7,73 @@ require_once '../../../includes/role_check.php';
 
 header('Content-Type: application/json');
 
-$search = isset($_GET['search']) ? mysqli_real_escape_string($conn, trim($_GET['search'])) : '';
-$status = isset($_GET['status']) ? mysqli_real_escape_string($conn, trim($_GET['status'])) : '';
-$category = isset($_GET['category']) ? mysqli_real_escape_string($conn, trim($_GET['category'])) : '';
+// search filter
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+
+// status filter
+$status = isset($_GET['status']) ? trim($_GET['status']) : '';
+
+// category filter
+$category = isset($_GET['category']) ? trim($_GET['category']) : '';
 
 $where_clauses = [];
+$types = "";
+$params = [];
 
+// Search by item ID, F-item ID, item name, location, description, category, or reporter
 if (!empty($search)) {
+    /*
+        Allow admin to search by:
+        - item ID: 14
+        - displayed item ID: F14
+        - item name
+        - location
+        - description
+        - category name
+        - reporter name
+    */
+
+    $cleanSearch = strtoupper($search);
+    $cleanSearch = str_replace('F', '', $cleanSearch);
+
     $where_clauses[] = "(
-        f.item_name LIKE '%$search%' 
-        OR f.location_found LIKE '%$search%' 
-        OR f.description LIKE '%$search%' 
-        OR c.category_name LIKE '%$search%' 
-        OR u.name LIKE '%$search%'
+        f.item_name LIKE ?
+        OR f.location_found LIKE ?
+        OR f.description LIKE ?
+        OR c.category_name LIKE ?
+        OR u.name LIKE ?
+        OR CAST(f.item_id AS CHAR) LIKE ?
     )";
+
+    $searchTerm = '%' . $search . '%';
+    $idSearchTerm = '%' . $cleanSearch . '%';
+
+    $types .= "ssssss";
+    $params[] = $searchTerm;
+    $params[] = $searchTerm;
+    $params[] = $searchTerm;
+    $params[] = $searchTerm;
+    $params[] = $searchTerm;
+    $params[] = $idSearchTerm;
 }
 
 if (!empty($status)) {
-    $where_clauses[] = "f.found_status = '$status'";
+    $where_clauses[] = "f.found_status = ?";
+    $types .= "s";
+    $params[] = $status;
 }
 
 if (!empty($category)) {
-    $where_clauses[] = "f.category_id = '$category'";
+    $where_clauses[] = "f.category_id = ?";
+    $types .= "i";
+    $params[] = intval($category);
 }
 
-$where_sql = count($where_clauses) > 0
-    ? 'WHERE ' . implode(' AND ', $where_clauses)
-    : '';
+$where_sql = "";
+
+if (count($where_clauses) > 0) {
+    $where_sql = "WHERE " . implode(" AND ", $where_clauses);
+}
 
 $query = "SELECT 
             f.item_id,
@@ -56,16 +94,23 @@ $query = "SELECT
           $where_sql
           ORDER BY f.date_found DESC";
 
-$result = mysqli_query($conn, $query);
+$stmt = mysqli_prepare($conn, $query);
 
-if (!$result) {
+if (!$stmt) {
     echo json_encode([
         'success' => false,
-        'message' => 'Database error: ' . mysqli_error($conn)
+        'message' => 'Database prepare error: ' . mysqli_error($conn),
+        'data' => []
     ]);
-    mysqli_close($conn);
     exit;
 }
+
+if (!empty($params)) {
+    mysqli_stmt_bind_param($stmt, $types, ...$params);
+}
+
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
 
 $items = [];
 

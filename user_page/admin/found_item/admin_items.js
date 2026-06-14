@@ -222,11 +222,10 @@ async function loadItems() {
 
                 return `
                 <tr>
-                <td>${imageHtml}</td>
 
-                <td>
-                <strong>#${escapeHtml(item.item_id)}</strong>
-                </td>
+                <td>F${escapeHtml(item.item_id)}</td>
+
+                <td>${imageHtml}</td>
 
                 <td>
                 <strong>${escapeHtml(item.item_name)}</strong>
