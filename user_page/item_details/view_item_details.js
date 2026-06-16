@@ -57,7 +57,7 @@ function getModuleConfig(from) {
         admin: {
             dashboardCss: '../admin/admin_dashboard.css',
             avatar: 'A',
-            profileUrl: '../profile/profile_page.php',
+            profileUrl: '../profile/profile.php',
             logoutUrl: '../../mainpage/logout/logout.php',
 
             getBackUrl: function (itemType) {
@@ -79,12 +79,12 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">User Management</div>
-                    <a href="../admin/user_management/manage_page.php" class="nav-item">
+                    <a href="../admin/user_management/manage.php" class="nav-item">
                         <span class="icon"><i class="fas fa-users"></i></span>
                         <span>Manage Users</span>
                     </a>
 
-                    <a href="../admin/user_management/add_page.php" class="nav-item">
+                    <a href="../admin/user_management/add.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-plus"></i></span>
                         <span>Add User</span>
                     </a>
@@ -92,7 +92,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../admin/found_item/admin_found_items_page.php" class="nav-item">
+                    <a href="../admin/found_item/admin_found_items.php" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>View All Items</span>
                     </a>
@@ -100,7 +100,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="../admin/lost_reports/view_lost_reports_page.php" class="nav-item">
+                    <a href="../admin/lost_reports/view_lost_reports.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View All Reports</span>
                     </a>
@@ -108,7 +108,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="../admin/claims/view_claims_page.php" class="nav-item">
+                    <a href="../admin/claims/view_claims.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View All Claims</span>
                     </a>
@@ -116,7 +116,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Reports & Statistics</div>
-                    <a href="../admin/statistic/monthly_stats_page.php" class="nav-item">
+                    <a href="../admin/statistic/monthly_stats.php" class="nav-item">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
                         <span>Statistics</span>
                     </a>
@@ -124,7 +124,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../profile/profile_page.php" class="nav-item">
+                    <a href="../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -140,7 +140,7 @@ function getModuleConfig(from) {
         staff: {
             dashboardCss: '../staff/staff_dashboard.css',
             avatar: 'S',
-            profileUrl: '../profile/profile_page.php',
+            profileUrl: '../profile/profile.php',
             logoutUrl: '../../mainpage/logout/logout.php',
 
             getBackUrl: function (itemType) {
@@ -191,7 +191,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../profile/profile_page.php" class="nav-item">
+                    <a href="../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -207,7 +207,7 @@ function getModuleConfig(from) {
         user: {
             dashboardCss: '../user/dashboard.css',
             avatar: 'U',
-            profileUrl: '../profile/profile_page.php',
+            profileUrl: '../profile/profile.php',
             logoutUrl: '../../mainpage/logout/logout.php',
 
             getBackUrl: function (itemType) {
@@ -258,7 +258,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../profile/profile_page.php" class="nav-item">
+                    <a href="../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
