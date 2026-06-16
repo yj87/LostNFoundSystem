@@ -49,36 +49,6 @@ function logoutUser() {
 }
 
 // ============================================
-// LOAD ADMIN INFO
-// ============================================
-
-async function loadAdminInfo() {
-    try {
-        const response = await fetch('admin_info.php');
-        const data = await response.json();
-        
-        if (data.success) {
-            const userAvatar = document.getElementById('userAvatar');
-            const copyrightEl = document.getElementById('copyright');
-            
-            if (userAvatar) userAvatar.textContent = data.user_avatar || 'A';
-            if (copyrightEl) copyrightEl.innerHTML = `© ${data.current_year || new Date().getFullYear()} Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.`;
-        } else {
-            const copyrightEl = document.getElementById('copyright');
-            if (copyrightEl) {
-                copyrightEl.innerHTML = `© ${new Date().getFullYear()} Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.`;
-            }
-        }
-    } catch (error) {
-        console.error('Error loading admin info:', error);
-        const copyrightEl = document.getElementById('copyright');
-        if (copyrightEl) {
-            copyrightEl.innerHTML = `© ${new Date().getFullYear()} Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.`;
-        }
-    }
-}
-
-// ============================================
 // FORM VALIDATION FUNCTIONS
 // ============================================
 
@@ -308,9 +278,12 @@ document.getElementById('password').addEventListener('input', validatePassword);
 
 function showAlert(message, type) {
     const alertDiv = document.getElementById('alertMessage');
-    alertDiv.className = `alert alert-${type}`;
+    alertDiv.className = 'alert alert-' + type;
     alertDiv.textContent = message;
     alertDiv.style.display = 'block';
+    
+    // Scroll to alert
+    alertDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
     
     setTimeout(() => {
         alertDiv.style.display = 'none';
@@ -318,7 +291,7 @@ function showAlert(message, type) {
 }
 
 // ============================================
-// FORM SUBMISSION
+// FORM SUBMISSION - Posts to adduser.php
 // ============================================
 
 document.getElementById('addUserForm').addEventListener('submit', async function(e) {
@@ -348,24 +321,56 @@ document.getElementById('addUserForm').addEventListener('submit', async function
     try {
         const formData = new FormData(this);
         
-        const response = await fetch('add.php', {
+        const response = await fetch('adduser.php', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         });
+        
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Received non-JSON:', text.substring(0, 200));
+            throw new Error('Server returned HTML instead of JSON');
+        }
         
         const result = await response.json();
         
         if (result.success) {
             showAlert(result.message, 'success');
+            // Reset form
+            document.getElementById('addUserForm').reset();
+            document.querySelectorAll('.form-control').forEach(el => {
+                el.classList.remove('valid', 'invalid');
+            });
+            document.querySelectorAll('.validation-hint').forEach(el => {
+                el.classList.remove('visible', 'valid-hint', 'invalid-hint');
+                el.textContent = '';
+            });
+            // Reset validation flags
+            isUsernameValid = false;
+            isNameValid = false;
+            isEmailValid = false;
+            isPhoneValid = true;
+            isPasswordValid = false;
+            isConfirmValid = false;
+            
             setTimeout(() => {
-                window.location.href = 'manage.html';
+                window.location.href = 'manage.php';
             }, 1500);
         } else {
             showAlert(result.message, 'danger');
         }
     } catch (error) {
         console.error('Error:', error);
-        showAlert('Network error. Please try again.', 'danger');
+        showAlert('Network error: ' + error.message, 'danger');
     } finally {
         btnSpan.style.display = 'inline-flex';
         spinner.style.display = 'none';
@@ -413,5 +418,4 @@ window.addEventListener('resize', function() {
 
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
-    loadAdminInfo();
 });

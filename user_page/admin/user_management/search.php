@@ -10,7 +10,8 @@ require_once("../../../config/db_connect.php");
 $search = $_GET['search'] ?? '';
 
 if (!empty($search)) {
-    $search = "%{$search}%";
+    // Only match from the beginning - removes leading %
+    $search = "{$search}%";
     $stmt = mysqli_prepare($conn, "SELECT user_id, username, name, email, role, phone, created_at 
                                     FROM users 
                                     WHERE username LIKE ? 

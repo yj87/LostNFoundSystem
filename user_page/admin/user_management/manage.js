@@ -161,7 +161,7 @@ function displayUsers(users) {
                 <td>${user.phone ? escapeHtml(user.phone) : '-'}</td>
                 <td>${user.created_at || '-'}</td>
                 <td class="action-buttons" style="text-align: center;">
-                    <a href="edit.html?id=${user.user_id}" class="btn-edit"><i class="fas fa-edit"></i> Edit</a>
+                    <a href="edit.php?id=${user.user_id}" class="btn-edit"><i class="fas fa-edit"></i> Edit</a>
                     <button onclick="deleteUser(${user.user_id}, '${escapeHtml(user.username)}')" class="btn-delete"><i class="fas fa-trash"></i>Delete</button>
                 </td>
             </tr>

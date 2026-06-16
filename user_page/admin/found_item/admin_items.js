@@ -248,7 +248,7 @@ async function loadItems() {
                                 <i class="fas fa-eye"></i> View
                             </a>
 
-                            <a href="admin_edit_found_item.html?id=${item.item_id}"
+                            <a href="admin_edit_found_item.php?id=${item.item_id}"
                                class="btn-edit"
                                title="Edit">
                                 <i class="fas fa-edit"></i> Edit

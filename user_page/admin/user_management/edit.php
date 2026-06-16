@@ -1,3 +1,13 @@
+<?php
+// 1. Set required role FIRST
+$required_role = 'admin';
+
+// 2. Include auth and database files
+require_once("../../../includes/auth_check.php");
+require_once("../../../includes/role_check.php");
+require_once("../../../config/db_connect.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +38,7 @@
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="../dashboard.html" class="nav-item">
+                    <a href="../dashboard_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
@@ -36,11 +46,11 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">User Management</div>
-                    <a href="manage.html" class="nav-item">
+                    <a href="manage.php" class="nav-item">
                         <span class="icon"><i class="fas fa-users"></i></span>
                         <span>Manage Users</span>
                     </a>
-                    <a href="add.html" class="nav-item">
+                    <a href="add.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-plus"></i></span>
                         <span>Add User</span>
                     </a>
@@ -48,7 +58,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/admin_found_items.html" class="nav-item">
+                    <a href="../found_item/admin_found_items.php" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>View All Items</span>
                     </a>
@@ -56,7 +66,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="../lost_reports/view_lost_reports.html" class="nav-item">
+                    <a href="../lost_reports/view_lost_reports.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View All Reports</span>
                     </a>
@@ -64,7 +74,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="../claims/admin_claims.html" class="nav-item">
+                    <a href="../claims/admin_claims.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View All Claims</span>
                     </a>
@@ -72,7 +82,7 @@
                 
                 <div class="nav-group">
                     <div class="nav-group-title">Reports & Statistics</div>
-                    <a href="../statistic/monthly_stats.html" class="nav-item">
+                    <a href="../statistic/monthly_stats.php" class="nav-item">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
                         <span>Statistics</span>
                     </a>
@@ -80,7 +90,7 @@
                 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../../profile/profile.html" class="nav-item">
+                    <a href="../../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -106,7 +116,7 @@
                         <div class="user-avatar" id="userAvatar">A</div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../../profile/profile.html">
+                        <a href="../../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>
@@ -173,7 +183,7 @@
                         <span><i class="fas fa-save"></i> Update User</span>
                         <span class="spinner" style="display: none;"></span>
                     </button>
-                    <a href="manage.html" class="btn btn-secondary">
+                    <a href="manage.php" class="btn btn-secondary">
                         <i class="fas fa-times"></i> Cancel
                     </a>
                 </div>

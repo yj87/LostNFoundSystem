@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const itemId = params.get('id');
 
     if (!itemId) {
-        window.location.href = 'admin_found_items.html';
+        window.location.href = 'admin_found_items.php';
         return;
     }
 
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         if (!itemData.success) {
             showAlert(itemData.message || 'Item not found. Redirecting…', 'error');
-            setTimeout(() => window.location.href = 'admin_found_items.html', 2500);
+            setTimeout(() => window.location.href = 'admin_found_items.php', 2500);
             return;
         }
 
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             if (result.success) {
                 showAlert('Item updated successfully! Redirecting…', 'success');
-                setTimeout(() => window.location.href = 'admin_found_items.html', 1800);
+                setTimeout(() => window.location.href = 'admin_found_items.php', 1800);
             } else {
                 showAlert(result.message || 'Update failed. Please try again.', 'error');
                 saveBtn.disabled  = false;

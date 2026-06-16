@@ -54,7 +54,7 @@ $current_year = date('Y');
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="../dashboard.html" class="nav-item">
+                    <a href="../dashboard_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
@@ -62,11 +62,11 @@ $current_year = date('Y');
 
                 <div class="nav-group">
                     <div class="nav-group-title">User Management</div>
-                    <a href="manage.html" class="nav-item active">
+                    <a href="manage.php" class="nav-item active">
                         <span class="icon"><i class="fas fa-users"></i></span>
                         <span>Manage Users</span>
                     </a>
-                    <a href="add.html" class="nav-item">
+                    <a href="add.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-plus"></i></span>
                         <span>Add User</span>
                     </a>
@@ -74,7 +74,7 @@ $current_year = date('Y');
 
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/admin_found_items.html" class="nav-item">
+                    <a href="../found_item/admin_found_items.php" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>View All Items</span>
                     </a>
@@ -82,7 +82,7 @@ $current_year = date('Y');
 
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="../lost_reports/view_lost_reports.html" class="nav-item">
+                    <a href="../lost_reports/view_lost_reports.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View All Reports</span>
                     </a>
@@ -90,7 +90,7 @@ $current_year = date('Y');
 
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="../claims/view_claims.html" class="nav-item">
+                    <a href="../claims/view_claims.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View All Claims</span>
                     </a>
@@ -98,7 +98,7 @@ $current_year = date('Y');
 
                 <div class="nav-group">
                     <div class="nav-group-title">Reports & Statistics</div>
-                    <a href="../statistic/monthly_stats.html" class="nav-item">
+                    <a href="../statistic/monthly_stats.php" class="nav-item">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
                         <span>Statistics</span>
                     </a>
@@ -106,7 +106,7 @@ $current_year = date('Y');
 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../../profile/profile.html" class="nav-item">
+                    <a href="../../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -132,7 +132,7 @@ $current_year = date('Y');
                         <div class="user-avatar" id="userAvatar"><?php echo $user_avatar; ?></div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../../profile/profile.html">
+                        <a href="../../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>
@@ -158,7 +158,7 @@ $current_year = date('Y');
                             <i class="fas fa-times"></i> Clear
                         </button>
                     </div>
-                    <a class="btn-add" href="add.html">
+                    <a class="btn-add" href="add.php">
                         <i class="fas fa-user-plus"></i> Add New User
                     </a>
                 </div>
@@ -194,7 +194,7 @@ $current_year = date('Y');
                                     <td><?php echo htmlspecialchars($user['phone'] ?? 'N/A'); ?></td>
                                     <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
                                     <td class="actions">
-                                        <a href="edit.html?id=<?php echo $user['user_id']; ?>" class="btn-edit">
+                                        <a href="edit.php?id=<?php echo $user['user_id']; ?>" class="btn-edit">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <button onclick="deleteUser(<?php echo $user['user_id']; ?>)" class="btn-delete">

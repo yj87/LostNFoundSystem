@@ -60,7 +60,23 @@ function animateNumber(element, start, end, duration) {
 // Load monthly data
 async function loadMonthlyData() {
     try {
-        const response = await fetch('monthly_stats.php');
+        const response = await fetch('monthly_stats.php', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Received non-JSON:', text.substring(0, 200));
+            throw new Error('Server returned HTML instead of JSON');
+        }
+        
         const data = await response.json();
         
         if (data.success) {
@@ -77,7 +93,7 @@ async function loadMonthlyData() {
             if (monthTitle) monthTitle.innerHTML = `<i class="fas fa-calendar-alt"></i> ${data.month_name}`;
             if (chartMonth) chartMonth.textContent = data.month_name;
             
-            // Update stats cards with animations (no comparison text)
+            // Update stats cards with animations
             const stats = data.stats;
             
             const lostEl = document.getElementById('lostReports');
@@ -90,24 +106,17 @@ async function loadMonthlyData() {
             if (claimsEl) animateNumber(claimsEl, 0, stats.claims, 500);
             if (usersEl) animateNumber(usersEl, 0, stats.new_users, 500);
             
-            // Remove comparison texts or show simple message
-            const lostComparison = document.getElementById('lostComparison');
-            const foundComparison = document.getElementById('foundComparison');
-            const claimsComparison = document.getElementById('claimsComparison');
-            const usersComparison = document.getElementById('usersComparison');
-            
-            if (lostComparison) lostComparison.innerHTML = `This month`;
-            if (foundComparison) foundComparison.innerHTML = `This month`;
-            if (claimsComparison) claimsComparison.innerHTML = `This month`;
-            if (usersComparison) usersComparison.innerHTML = `This month`;
-            
             // Render bar chart
             renderBarChart(data.daily_stats, data.total_days);
+        } else {
+            console.error('Error loading data:', data.message);
+            const chartContainer = document.getElementById('barChart');
+            if (chartContainer) chartContainer.innerHTML = '<div class="loading-spinner" style="color: red;">' + (data.message || 'Error loading data') + '</div>';
         }
     } catch (error) {
         console.error('Error loading monthly data:', error);
         const chartContainer = document.getElementById('barChart');
-        if (chartContainer) chartContainer.innerHTML = '<div class="loading-spinner" style="color: red;">Error loading data</div>';
+        if (chartContainer) chartContainer.innerHTML = '<div class="loading-spinner" style="color: red;">Error loading data: ' + error.message + '</div>';
     }
 }
 
@@ -152,44 +161,13 @@ function renderBarChart(dailyStats, totalDays) {
     chartContainer.innerHTML = html;
 }
 
-// Close dropdown when clicking outside
-document.addEventListener('click', function(event) {
-    const dropdown = document.getElementById('userDropdownMenu');
-    const userInfoWrapper = document.querySelector('.user-info-wrapper');
-    
-    if (dropdown && userInfoWrapper && dropdown.classList.contains('show')) {
-        if (!userInfoWrapper.contains(event.target) && !dropdown.contains(event.target)) {
-            dropdown.classList.remove('show');
-        }
-    }
-    
-    // Close sidebar when clicking outside on mobile
-    const sidebar = document.getElementById('sidebar');
-    const menuToggle = document.querySelector('.menu-toggle');
-    const overlay = document.querySelector('.sidebar-overlay');
-    
-    if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
-        if (menuToggle && !menuToggle.contains(event.target) && !sidebar.contains(event.target)) {
-            sidebar.classList.remove('active');
-            if (overlay) overlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-});
-
-// Handle window resize
-window.addEventListener('resize', function() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.querySelector('.sidebar-overlay');
-    
-    if (window.innerWidth > 768 && sidebar) {
-        sidebar.classList.remove('active');
-        if (overlay) overlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-});
-
 // Initialize dashboard
 document.addEventListener('DOMContentLoaded', function() {
+    // Set user avatar from PHP session data
+    const userAvatarEl = document.getElementById('userAvatar');
+    if (userAvatarEl && typeof userAvatar !== 'undefined') {
+        userAvatarEl.textContent = userAvatar;
+    }
+    
     loadMonthlyData();
 });
