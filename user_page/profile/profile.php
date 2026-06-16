@@ -1,10 +1,13 @@
 <?php
-require_once '../../config/db_connect.php';
-require_once '../../includes/auth_check.php';
-$required_role = 'admin';
-require_once '../../includes/role_check.php';
+require_once("../../config/db_connect.php");
+require_once("../../includes/auth_check.php");
 
-$current_year = date('Y');
+// ============================================
+// SET REQUIRED ROLE BEFORE role_check.php
+// ============================================
+$required_role = ['admin', 'staff', 'user']; // Allow all roles
+
+require_once '../../includes/role_check.php';
 ?>
 
 <!DOCTYPE html>

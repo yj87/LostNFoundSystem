@@ -1,3 +1,10 @@
+<?php
+require_once '../../../config/db_connect.php';
+require_once '../../../includes/auth_check.php';
+$required_role = 'staff';
+require_once '../../../includes/role_check.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,39 +26,39 @@
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="../dashboard.html" class="nav-item">
+                    <a href="../dashboard_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/add_found_item.html" class="nav-item">
+                    <a href="../found_item/add_found_item_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Add Found Item</span>
                     </a>
-                    <a href="../found_item/staff_found_items.html" class="nav-item">
+                    <a href="../found_item/staff_found_items_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>My Found Items</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="view_claims.html" class="nav-item">
+                    <a href="view_claims_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View Claims</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="../lost_reports/view_lost_items.html" class="nav-item">
+                    <a href="../lost_reports/view_lost_items_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View Lost Items</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../../profile/profile.html" class="nav-item">
+                    <a href="../../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -76,7 +83,7 @@
                         <div class="user-avatar" id="userAvatar">S</div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../../profile/profile.html">
+                        <a href="../../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>
@@ -303,7 +310,7 @@
         }
 
         function goBack() {
-            window.location.href = 'view_claims.html';
+            window.location.href = 'view_claims_page.php';
         }
 
         function logoutUser() {

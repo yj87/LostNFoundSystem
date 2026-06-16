@@ -414,7 +414,7 @@ async function submitDecision(decision) {
         if (data.success) {
             showToast(data.message, 'success');
             setTimeout(() => {
-                window.location.href = 'view_claims.html';
+                window.location.href = 'view_claims_page.php';
             }, 2000);
         } else {
             showToast(data.message || 'Failed to process claim', 'error');
