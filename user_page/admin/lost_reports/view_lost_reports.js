@@ -295,42 +295,27 @@ async function deleteReport(reportId, itemName) {
         
         const response = await fetch('delete_lost_reports.php', {
             method: 'POST',
-            body: formData,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
+            body: formData
         });
-        
-        if (!response.ok) {
-            const text = await response.text();
-            console.error('Server response:', text);
-            showError('Server error. Please try again.');
-            return;
-        }
-        
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            const text = await response.text();
-            console.error('Received non-JSON:', text.substring(0, 200));
-            showError('Server returned HTML instead of JSON');
-            return;
-        }
         
         const data = await response.json();
         console.log('Response data:', data);
         
         if (data.success) {
             showToast('Report deleted successfully', 'success');
-            loadReports();
+            setTimeout(() => {
+                loadReports();
+            }, 1500);
         } else {
-            showError('Failed to delete: ' + (data.message || 'Unknown error'));
+            showToast(data.message, 'error');
         }
     } catch (error) {
         console.error('Error:', error);
-        showError('Network error: ' + error.message);
+        showToast('Network error: ' + error.message, 'error');
     }
 }
 
+// Show Toast
 function showToast(message, type = 'success') {
     let toast = document.getElementById('toast');
     
@@ -345,13 +330,23 @@ function showToast(message, type = 'success') {
     const toastIcon = document.getElementById('toastIcon');
     const toastMessage = document.getElementById('toastMessage');
     
-    if (toastIcon) toastIcon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
-    toast.className = 'toast toast-' + type + ' show';
-    if (toastMessage) toastMessage.textContent = message;
+    if (toastIcon) {
+        toastIcon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    }
     
-    setTimeout(() => {
+    toast.className = 'toast toast-' + type + ' show';
+    
+    if (toastMessage) {
+        toastMessage.textContent = message;
+    }
+    
+    if (toast._timeout) {
+        clearTimeout(toast._timeout);
+    }
+    
+    toast._timeout = setTimeout(() => {
         toast.classList.remove('show');
-    }, 3000);
+    }, 5000); 
 }
 
 function escapeHtml(str) {

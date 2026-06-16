@@ -109,7 +109,7 @@ async function submitReport() {
             loadCategories();
             // Clear file input
             document.getElementById('photo').value = '';
-            window.location.href = 'my_lost_reports.php';
+            window.location.href = 'my_lost_reports_page.php';
         } else {
             showAlert(data.message || 'Failed to submit report', 'error');
         }
