@@ -483,7 +483,7 @@ function goToStep4() {
 }
 
 function goBack() {
-    window.location.href = '../found_item/browse_found_items.html';
+    window.location.href = '../found_item/browse_found_items.php';
 }
 
 async function submitClaim() {
@@ -533,7 +533,7 @@ async function submitClaim() {
         if (data.success) {
             showToast('Claim submitted successfully! You will be notified once reviewed.', 'success');
             setTimeout(() => {
-                window.location.href = 'my_claims.html';
+                window.location.href = 'my_claims.php';
             }, 2000);
         } else {
             showToast(data.message || 'Failed to submit claim', 'error');

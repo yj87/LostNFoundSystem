@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     form.reset();
 
                     setTimeout(() => {
-                        window.location.href = 'staff_found_items.html';
+                        window.location.href = 'staff_found_items.php';
                     }, 1200);
                 } else {
                     throw new Error(result.message || 'Operation failed.');
