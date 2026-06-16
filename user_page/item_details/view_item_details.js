@@ -62,7 +62,7 @@ function getModuleConfig(from) {
 
             getBackUrl: function (itemType) {
                 if (itemType === 'lost') {
-                    return '../admin/lost_reports/view_lost_reports_page.php';
+                    return '../admin/lost_reports/view_lost_reports.php';
                 }
 
                 return '../admin/found_item/admin_found_items.php';
@@ -100,7 +100,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="../admin/lost_reports/view_lost_reports_page.php" class="nav-item">
+                    <a href="../admin/lost_reports/view_lost_reports.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View All Reports</span>
                     </a>
@@ -108,7 +108,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="../admin/claims/view_claims_page.php" class="nav-item">
+                    <a href="../admin/claims/view_claims.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View All Claims</span>
                     </a>
@@ -116,7 +116,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Reports & Statistics</div>
-                    <a href="../admin/statistic/monthly_stats_page.php" class="nav-item">
+                    <a href="../admin/statistic/monthly_stats.php" class="nav-item">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
                         <span>Statistics</span>
                     </a>
@@ -145,7 +145,7 @@ function getModuleConfig(from) {
 
             getBackUrl: function (itemType) {
                 if (itemType === 'lost') {
-                    return '../staff/lost_reports/view_lost_items_page.php';
+                    return '../staff/lost_reports/view_lost_items.php';
                 }
 
                 return '../staff/found_item/staff_found_items_page.php';
