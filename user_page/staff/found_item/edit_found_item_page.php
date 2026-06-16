@@ -41,9 +41,7 @@ require_once '../../../includes/role_check.php';
                     <div class="nav-group-title">Main</div>
 
                     <a href="../dashboard_page.php" class="nav-item">
-                        <span class="icon">
-                            <i class="fas fa-tachometer-alt"></i>
-                        </span>
+                        <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
                 </div>
@@ -52,16 +50,12 @@ require_once '../../../includes/role_check.php';
                     <div class="nav-group-title">Found Items</div>
 
                     <a href="add_found_item_page.php" class="nav-item">
-                        <span class="icon">
-                            <i class="fas fa-plus-circle"></i>
-                        </span>
+                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Add Found Item</span>
                     </a>
 
                     <a href="staff_found_items_page.php" class="nav-item active">
-                        <span class="icon">
-                            <i class="fas fa-box"></i>
-                        </span>
+                        <span class="icon"><i class="fas fa-box"></i></span>
                         <span>My Found Items</span>
                     </a>
                 </div>
@@ -70,9 +64,7 @@ require_once '../../../includes/role_check.php';
                     <div class="nav-group-title">Claims</div>
 
                     <a href="../claims/view_claims_page.php" class="nav-item">
-                        <span class="icon">
-                            <i class="fas fa-clipboard-list"></i>
-                        </span>
+                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View Claims</span>
                     </a>
                 </div>
@@ -81,9 +73,7 @@ require_once '../../../includes/role_check.php';
                     <div class="nav-group-title">Lost Reports</div>
 
                     <a href="../lost_reports/view_lost_items_page.php" class="nav-item">
-                        <span class="icon">
-                            <i class="fas fa-search"></i>
-                        </span>
+                        <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View Lost Items</span>
                     </a>
                 </div>
@@ -92,16 +82,12 @@ require_once '../../../includes/role_check.php';
                     <div class="nav-group-title">Account</div>
 
                     <a href="../../profile/profile_page.php" class="nav-item">
-                        <span class="icon">
-                            <i class="fas fa-user-circle"></i>
-                        </span>
+                        <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
 
-                    <a href="../../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
-                        <span class="icon">
-                            <i class="fas fa-sign-out-alt"></i>
-                        </span>
+                    <a href="../../../mainpage/logout/logout.php" class="nav-item" id="logoutLink">
+                        <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                         <span>Logout</span>
                     </a>
                 </div>
@@ -114,15 +100,15 @@ require_once '../../../includes/role_check.php';
             <!-- Top Header -->
             <header class="top-header">
                 <div class="header-left">
-                    <button class="menu-toggle" onclick="toggleSidebar()">
+                    <button class="menu-toggle" id="menuToggle" type="button">
                         <i class="fas fa-bars"></i>
                     </button>
 
-                    <div class="page-title-header">Edit Found Item</div>
+                    <div class="page-title-header" id="pageTitleHeader">Edit Found Item</div>
                 </div>
 
                 <div class="user-dropdown">
-                    <div class="user-info-wrapper" onclick="toggleUserDropdown()">
+                    <div class="user-info-wrapper" id="userInfoWrapper">
                         <div class="user-avatar" id="userAvatar">
                             <?php
                                 echo isset($_SESSION['user_name'])
@@ -140,7 +126,7 @@ require_once '../../../includes/role_check.php';
 
                         <div class="dropdown-divider"></div>
 
-                        <a href="../../../mainpage/logout/logout.php" onclick="return logoutUser();">
+                        <a href="../../../mainpage/logout/logout.php" id="dropdownLogoutLink">
                             <i class="fas fa-sign-out-alt"></i>
                             Logout
                         </a>
@@ -150,132 +136,115 @@ require_once '../../../includes/role_check.php';
 
             <!-- Page Content -->
             <article>
-                <div class="page-title">
-                    <h1 id="editTitle">Edit Found Item</h1>
-                    <p>Update the details of this found item.</p>
-                </div>
+                <div class="edit-wrapper">
 
-                <div id="alertBox"></div>
+                    <div class="page-title">
+                        <h1 id="editTitle">Edit Found Item</h1>
+                        <p>Update the selected found item record.</p>
+                    </div>
 
-                <div class="meta-strip" id="itemMeta">
-                    <span>
-                        <i class="fas fa-hashtag"></i>
-                        Item ID: <strong id="metaItemId">-</strong>
-                    </span>
+                    <div id="alertBox"></div>
 
-                    <span>
-                        <i class="fas fa-calendar-alt"></i>
-                        Date Found: <strong id="metaDateFound">-</strong>
-                    </span>
+                    <div class="form-card">
+                        <form id="editFoundItemForm" enctype="multipart/form-data">
 
-                    <span>
-                        <i class="fas fa-info-circle"></i>
-                        Status: <strong id="metaStatus">-</strong>
-                    </span>
-                </div>
+                            <input type="hidden" id="itemId" name="item_id">
 
-                <div class="form-card">
-                    <form id="editFoundItemForm" enctype="multipart/form-data">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="itemName">Item Name <span>*</span></label>
+                                    <input
+                                        type="text"
+                                        id="itemName"
+                                        name="item_name"
+                                        required
+                                    >
+                                </div>
 
-                        <input type="hidden" id="itemId" name="item_id">
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="itemName">Item Name *</label>
-                                <input
-                                    type="text"
-                                    id="itemName"
-                                    name="item_name"
-                                    placeholder="e.g., Wallet, iPhone, Water Bottle"
-                                    required
-                                >
+                                <div class="form-group">
+                                    <label for="categorySelect">Category <span>*</span></label>
+                                    <select id="categorySelect" name="category_id" required>
+                                        <option value="">-- Select Category --</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="categorySelect">Category *</label>
-                                <select id="categorySelect" name="category_id" required>
-                                    <option value="">-- Select Category --</option>
-                                </select>
-                            </div>
-                        </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="locationFound">Location Found <span>*</span></label>
+                                    <input
+                                        type="text"
+                                        id="locationFound"
+                                        name="location_found"
+                                        required
+                                    >
+                                </div>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="locationFound">Location Found *</label>
-                                <input
-                                    type="text"
-                                    id="locationFound"
-                                    name="location_found"
-                                    placeholder="e.g., Library, Cafeteria, DK1"
-                                    required
-                                >
-                            </div>
-
-                            <div class="form-group">
-                                <label for="dateFound">Date Found *</label>
-                                <input
-                                    type="date"
-                                    id="dateFound"
-                                    name="date_found"
-                                    required
-                                >
-                            </div>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="statusSelect">Status *</label>
-                                <select id="statusSelect" name="found_status" required>
-                                    <option value="unclaimed">Unclaimed</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="claimed">Claimed</option>
-                                </select>
+                                <div class="form-group">
+                                    <label for="dateFound">Date Found <span>*</span></label>
+                                    <input
+                                        type="date"
+                                        id="dateFound"
+                                        name="date_found"
+                                        required
+                                    >
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="photo">Replace Photo</label>
-                                <input
-                                    type="file"
-                                    id="photo"
-                                    name="photo"
-                                    accept="image/jpeg, image/png, image/jpg"
-                                >
-                                <small>
-                                    Optional. Upload JPG or PNG only. Maximum file size: 5MB.
-                                </small>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="statusSelect">Status <span>*</span></label>
+                                    <select id="statusSelect" name="found_status" required>
+                                        <option value="unclaimed">Unclaimed</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="claimed">Claimed</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="photo">Replace Photo (Optional)</label>
+                                    <input
+                                        type="file"
+                                        id="photo"
+                                        name="photo"
+                                        accept="image/jpeg, image/png, image/jpg"
+                                    >
+                                    <small>Leave empty if you do not want to change the current photo.</small>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="current-photo-box" id="currentPhotoBox">
-                            <label>Current Photo</label>
-                            <img id="currentPhoto" src="" alt="Current item photo">
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group full-width">
-                                <label for="description">Description</label>
-                                <textarea
-                                    id="description"
-                                    name="description"
-                                    placeholder="Describe the item, such as colour, brand, size, or unique details..."
-                                    rows="5"
-                                ></textarea>
+                            <div class="current-photo-box" id="currentPhotoBox">
+                                <label>Current Photo</label>
+                                <div class="current-photo-frame">
+                                    <img id="currentPhoto" src="" alt="Current item photo">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-actions">
-                            <a href="staff_found_items_page.php" class="btn-cancel">
-                                <i class="fas fa-arrow-left"></i>
-                                Back to List
-                            </a>
+                            <div class="form-row">
+                                <div class="form-group full-width">
+                                    <label for="description">Description</label>
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        rows="5"
+                                    ></textarea>
+                                </div>
+                            </div>
 
-                            <button type="submit" id="submitBtn" class="btn-submit">
-                                <i class="fas fa-save"></i>
-                                Update Record
-                            </button>
-                        </div>
+                            <div class="form-actions">
+                                <a href="staff_found_items_page.php" class="btn-cancel">
+                                    Cancel
+                                </a>
 
-                    </form>
+                                <button type="submit" id="submitBtn" class="btn-submit">
+                                    <i class="fas fa-save"></i>
+                                    Update Record
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
                 </div>
             </article>
 

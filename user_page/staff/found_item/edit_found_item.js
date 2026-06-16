@@ -8,6 +8,8 @@ function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const body = document.body;
 
+    if (!sidebar) return;
+
     let overlay = document.querySelector('.sidebar-overlay');
 
     if (!overlay) {
@@ -32,21 +34,63 @@ function toggleSidebar() {
 }
 
 function toggleUserDropdown() {
-    document.getElementById('userDropdownMenu')?.classList.toggle('show');
+    const dropdown = document.getElementById('userDropdownMenu');
+
+    if (!dropdown) return;
+
+    dropdown.classList.toggle('show');
 }
 
-function logoutUser() {
-    if (confirm('Are you sure you want to logout?')) {
+function logoutUser(event) {
+    if (event) {
+        event.preventDefault();
+    }
+
+    const confirmLogout = confirm('Are you sure you want to logout?');
+
+    if (confirmLogout) {
         window.location.href = '../../../mainpage/logout/logout.php';
-        return true;
     }
 
     return false;
 }
 
+// ==============================
+// GLOBAL EVENTS
+// ==============================
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.getElementById('menuToggle');
+    const userInfoWrapper = document.getElementById('userInfoWrapper');
+    const logoutLink = document.getElementById('logoutLink');
+    const dropdownLogoutLink = document.getElementById('dropdownLogoutLink');
+
+    if (menuToggle) {
+        menuToggle.addEventListener('click', function (event) {
+            event.preventDefault();
+            toggleSidebar();
+        });
+    }
+
+    if (userInfoWrapper) {
+        userInfoWrapper.addEventListener('click', function (event) {
+            event.stopPropagation();
+            toggleUserDropdown();
+        });
+    }
+
+    if (logoutLink) {
+        logoutLink.addEventListener('click', logoutUser);
+    }
+
+    if (dropdownLogoutLink) {
+        dropdownLogoutLink.addEventListener('click', logoutUser);
+    }
+});
+
 document.addEventListener('click', function (event) {
     const dropdown = document.getElementById('userDropdownMenu');
-    const wrapper = document.querySelector('.user-info-wrapper');
+    const wrapper = document.getElementById('userInfoWrapper');
 
     if (dropdown && dropdown.classList.contains('show')) {
         if (wrapper && !wrapper.contains(event.target) && !dropdown.contains(event.target)) {
@@ -55,7 +99,7 @@ document.addEventListener('click', function (event) {
     }
 
     const sidebar = document.getElementById('sidebar');
-    const menuToggle = document.querySelector('.menu-toggle');
+    const menuToggle = document.getElementById('menuToggle');
     const overlay = document.querySelector('.sidebar-overlay');
 
     if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
@@ -85,65 +129,6 @@ window.addEventListener('resize', function () {
         document.body.style.overflow = '';
     }
 });
-
-function escapeHtml(str) {
-    if (str === null || str === undefined || str === '') return '-';
-
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-}
-
-function showAlert(message, type = 'success') {
-    const alertBox = document.getElementById('alertBox');
-
-    if (!alertBox) {
-        alert(message);
-        return;
-    }
-
-    const bgColor = type === 'success' ? '#d4edda' : '#f8d7da';
-    const textColor = type === 'success' ? '#155724' : '#721c24';
-    const borderColor = type === 'success' ? '#c3e6cb' : '#f5c6cb';
-    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
-
-    alertBox.innerHTML = `
-        <div style="
-            background:${bgColor};
-            color:${textColor};
-            border:1px solid ${borderColor};
-            padding:12px 16px;
-            border-radius:8px;
-            margin-bottom:16px;
-            font-size:14px;
-            display:flex;
-            align-items:center;
-            gap:10px;
-        ">
-            <i class="fas ${icon}"></i>
-            <span>${escapeHtml(message)}</span>
-        </div>
-    `;
-
-    alertBox.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest'
-    });
-}
-
-function setButtonLoading(isLoading) {
-    const submitBtn = document.getElementById('submitBtn');
-
-    if (!submitBtn) return;
-
-    if (isLoading) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
-    } else {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Record';
-    }
-}
 
 // ==============================
 // LOAD CATEGORIES
@@ -209,11 +194,14 @@ async function loadItemDetails(itemId) {
             showAlert(result.message || 'Item not found.', 'error');
 
             setTimeout(() => {
-                window.location.href = 'staff_found_items.html';
+                window.location.href = 'staff_found_items_page.php';
             }, 1800);
 
             return null;
         }
+
+        console.log('Loaded item:', result.data);
+        console.log('Photo path:', result.data.photo);
 
         return result.data;
     } catch (error) {
@@ -241,7 +229,7 @@ function fillForm(item) {
     const titleText = item.item_name ? `Edit Record: ${item.item_name}` : 'Edit Found Item';
 
     const editTitle = document.getElementById('editTitle');
-    const pageHeaderTitle = document.getElementById('pageHeaderTitle');
+    const pageHeaderTitle = document.getElementById('pageTitleHeader');
 
     if (editTitle) editTitle.textContent = titleText;
     if (pageHeaderTitle) pageHeaderTitle.textContent = titleText;
@@ -252,39 +240,31 @@ function fillForm(item) {
 }
 
 function renderCurrentPhoto(photoPath) {
-    const preview = document.getElementById('currentPhotoPreview');
+    const currentPhotoBox = document.getElementById('currentPhotoBox');
+    const currentPhoto = document.getElementById('currentPhoto');
 
-    if (!preview) return;
+    if (!currentPhotoBox || !currentPhoto) {
+        console.error('Current photo elements not found.');
+        return;
+    }
 
-    if (photoPath) {
-        preview.innerHTML = `
-            <img src="../../../${escapeHtml(photoPath)}"
-                 alt="Current found item photo"
-                 style="
-                    width: 120px;
-                    height: 90px;
-                    object-fit: cover;
-                    border-radius: 8px;
-                    border: 1px solid #ddd;
-                    background: #f8f8f8;
-                 ">
-        `;
+    if (photoPath && photoPath !== 'NULL' && photoPath !== 'null') {
+        const imagePath = '../../../' + photoPath;
+
+        currentPhoto.src = imagePath;
+        currentPhoto.alt = 'Current found item photo';
+
+        currentPhoto.onerror = function () {
+            console.error('Image failed to load:', imagePath);
+            currentPhotoBox.style.display = 'none';
+        };
+
+        currentPhoto.onload = function () {
+            currentPhotoBox.style.display = 'block';
+        };
     } else {
-        preview.innerHTML = `
-            <div class="no-image" style="
-                width: 120px;
-                height: 90px;
-                border: 1px dashed #ccc;
-                border-radius: 8px;
-                background: #f8f8f8;
-                color: #aaa;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            ">
-                <i class="fas fa-image"></i>
-            </div>
-        `;
+        currentPhoto.removeAttribute('src');
+        currentPhotoBox.style.display = 'none';
     }
 }
 
@@ -294,9 +274,10 @@ function renderCurrentPhoto(photoPath) {
 
 function setupNewPhotoPreview() {
     const photoInput = document.getElementById('photo');
-    const preview = document.getElementById('currentPhotoPreview');
+    const currentPhotoBox = document.getElementById('currentPhotoBox');
+    const currentPhoto = document.getElementById('currentPhoto');
 
-    if (!photoInput || !preview) return;
+    if (!photoInput || !currentPhotoBox || !currentPhoto) return;
 
     photoInput.addEventListener('change', function () {
         const file = this.files[0];
@@ -320,21 +301,22 @@ function setupNewPhotoPreview() {
         const reader = new FileReader();
 
         reader.onload = function (event) {
-            preview.innerHTML = `
-                <div style="display:flex; flex-direction:column; gap:8px;">
-                    <img src="${event.target.result}"
-                         alt="New selected photo"
-                         style="
-                            width: 120px;
-                            height: 90px;
-                            object-fit: cover;
-                            border-radius: 8px;
-                            border: 1px solid #ddd;
-                            background: #f8f8f8;
-                         ">
-                    <small style="color:#666;">New photo selected. It will replace the current photo after update.</small>
-                </div>
-            `;
+            currentPhoto.src = event.target.result;
+            currentPhoto.alt = 'New selected photo';
+            currentPhotoBox.style.display = 'block';
+
+            let note = document.getElementById('newPhotoNote');
+
+            if (!note) {
+                note = document.createElement('small');
+                note.id = 'newPhotoNote';
+                note.style.display = 'block';
+                note.style.marginTop = '8px';
+                note.style.color = '#666';
+                currentPhotoBox.appendChild(note);
+            }
+
+            note.textContent = 'New photo selected. It will replace the current photo after update.';
         };
 
         reader.readAsDataURL(file);
@@ -382,7 +364,7 @@ function setupFormSubmit() {
                 showAlert('Item updated successfully.', 'success');
 
                 setTimeout(() => {
-                    window.location.href = 'staff_found_items.html';
+                    window.location.href = 'staff_found_items_page.php';
                 }, 1000);
             } else {
                 showAlert(result.message || 'Failed to update item.', 'error');
@@ -408,7 +390,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         showAlert('Invalid item ID. Redirecting...', 'error');
 
         setTimeout(() => {
-            window.location.href = 'staff_found_items.html';
+            window.location.href = 'staff_found_items_page.php';
         }, 1200);
 
         return;
