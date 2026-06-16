@@ -1,11 +1,18 @@
+<?php
+require_once '../../../config/db_connect.php';
+require_once '../../../includes/auth_check.php';
+$required_role = 'staff';
+require_once '../../../includes/role_check.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Claims - Lost & Found</title>
-    <link rel="stylesheet" href="../dashboard.css">
-    <link rel="stylesheet" href="my_claims.css">
+    <title>Staff - View Claims</title>
+    <link rel="stylesheet" href="../staff_dashboard.css">
+    <link rel="stylesheet" href="view_claims.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -18,46 +25,46 @@
                     </div>
                     <div class="brand-text">
                         <div class="brand-name">Lost<span>Find</span></div>
-                        <div class="admin-tag">User Panel</div>
+                        <div class="admin-tag">Staff Panel</div>
                     </div>
                 </div>
             </div>
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="../dashboard.html" class="nav-item">
+                    <a href="../dashboard_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
                 </div>
                 <div class="nav-group">
-                    <div class="nav-group-title">Lost Items</div>
-                    <a href="../lost_reports/report_lost_items.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
-                        <span>Report Lost Item</span>
-                    </a>
-                    <a href="../lost_reports/my_lost_reports.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-history"></i></span>
-                        <span>My Lost Reports</span>
-                    </a>
-                </div>
-                <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/browse_found_items.html" class="nav-item">
-                        <span class="icon"><i class="fas fa-search"></i></span>
-                        <span>Browse Found Items</span>
+                    <a href="../found_item/add_found_item_page.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
+                        <span>Add Found Item</span>
+                    </a>
+                    <a href="../found_item/staff_found_items_page.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-box"></i></span>
+                        <span>My Found Items</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="my_claims.html" class="nav-item active">
+                    <a href="view_claims_page.php" class="nav-item active">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
-                        <span>My Claims</span>
+                        <span>View Claims</span>
+                    </a>
+                </div>
+                <div class="nav-group">
+                    <div class="nav-group-title">Lost Reports</div>
+                    <a href="../lost_reports/view_lost_items_page.php" class="nav-item">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>View Lost Items</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../../profile/profile.html" class="nav-item">
+                    <a href="../../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -75,14 +82,14 @@
                     <button class="menu-toggle" onclick="toggleSidebar()">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <div class="page-title-header">My Claims</div>
+                    <div class="page-title-header">Claims Management</div>
                 </div>
                 <div class="user-dropdown">
                     <div class="user-info-wrapper" onclick="toggleUserDropdown()">
-                        <div class="user-avatar" id="userAvatar">U</div>
+                        <div class="user-avatar" id="userAvatar">S</div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../../profile/profile.html">
+                        <a href="../../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>
@@ -95,8 +102,28 @@
 
             <article class="content-area">
                 <div class="page-header">
-                    <h1>My Claims</h1>
-                    <p>View all your claim requests and their status</p>
+                    <h1>Claims on My Items</h1>
+                    <p>Review and manage claims submitted by users</p>
+                </div>
+
+                <!-- Stats Row -->
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <h3>Pending</h3>
+                        <div class="number" id="statPending">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Approved</h3>
+                        <div class="number" id="statApproved">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Rejected</h3>
+                        <div class="number" id="statRejected">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <h3>Total</h3>
+                        <div class="number" id="statTotal">0</div>
+                    </div>
                 </div>
 
                 <!-- Filter Bar -->
@@ -112,20 +139,39 @@
                     </div>
                     <div class="filter-group">
                         <label for="searchInput">Search</label>
-                        <input type="text" id="searchInput" placeholder="Item name...">
+                        <input type="text" id="searchInput" placeholder="Item name, claimant...">
                     </div>
                     <div class="filter-actions">
                         <button class="btn btn-primary" id="searchBtn">Search</button>
-                        <button class="btn" id="resetBtn">Reset</button>
+                        <button class="btn btn-outline" id="resetBtn">Reset</button>
                     </div>
                 </div>
 
-                <!-- Claims Container -->
+                <!-- Claims Table -->
                 <div id="loadingDiv" class="loading" style="display: none;">
                     <i class="fas fa-spinner fa-spin"></i> Loading claims...
                 </div>
 
-                <div id="claimsContainer" class="claims-container"></div>
+                <div class="claims-table-container" id="claimsContainer">
+                    <table class="claims-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Item Name</th>
+                                <th>Claimant</th>
+                                <th>Location Found</th>
+                                <th>Submitted Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="claimsTableBody">
+                            <tr>
+                                <td colspan="7" class="text-center">Loading claims...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <!-- Pagination -->
                 <div id="pagination" class="pagination-container"></div>
@@ -146,12 +192,13 @@
             </div>
             <div class="modal-body" id="modalBody"></div>
             <div class="modal-footer">
+                <a href="review_claims_page.php" id="reviewClaimBtn" class="btn-review">Review Claim</a>
                 <button class="btn" onclick="closeModal()">Close</button>
             </div>
         </div>
     </div>
 
-    <script src="my_claims.js"></script>
+    <script src="view_claims.js"></script>
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');

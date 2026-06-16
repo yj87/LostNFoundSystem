@@ -69,7 +69,7 @@ require_once '../../includes/role_check.php';
 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../profile/profile_page.php" class="nav-item">
+                    <a href="../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -96,7 +96,7 @@ require_once '../../includes/role_check.php';
                         <div class="user-avatar" id="userAvatar">S</div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../profile/profile_page.php">
+                        <a href="../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>

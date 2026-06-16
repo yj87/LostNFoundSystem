@@ -205,7 +205,7 @@ $current_year = date('Y');
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
-                    <a href="../../logout.php" class="nav-item" onclick="return logoutUser();">
+                    <a href="../../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
                         <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                         <span>Logout</span>
                     </a>

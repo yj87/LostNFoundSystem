@@ -1,3 +1,10 @@
+<?php
+require_once '../../../config/db_connect.php';
+require_once '../../../includes/auth_check.php';
+$required_role = 'user';
+require_once '../../../includes/role_check.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,39 +31,39 @@
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="../dashboard.html" class="nav-item">
+                    <a href="../dashboard_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Items</div>
-                    <a href="report_lost_items.html" class="nav-item active">
+                    <a href="report_lost_items_page.php" class="nav-item active">
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Report Lost Item</span>
                     </a>
-                    <a href="my_lost_reports.html" class="nav-item">
+                    <a href="my_lost_reports_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-history"></i></span>
                         <span>My Lost Reports</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/browse_found_items.html" class="nav-item">
+                    <a href="../found_item/browse_found_items_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>Browse Found Items</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="../claims/my_claims.html" class="nav-item">
+                    <a href="../claims/my_claims_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>My Claims</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../../profile/profile.html" class="nav-item">
+                    <a href="../../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -79,7 +86,7 @@
                 <div class="user-dropdown">
                     <div class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">U</div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../../profile/profile.html">
+                        <a href="../../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>
