@@ -65,7 +65,7 @@ function getModuleConfig(from) {
                     return '../admin/lost_reports/view_lost_reports_page.php';
                 }
 
-                return '../admin/found_item/admin_found_items_page.php';
+                return '../admin/found_item/admin_found_items.php';
             },
 
             navHtml: `
@@ -92,7 +92,7 @@ function getModuleConfig(from) {
 
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../admin/found_item/admin_found_items_page.php" class="nav-item">
+                    <a href="../admin/found_item/admin_found_items.php" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>View All Items</span>
                     </a>
