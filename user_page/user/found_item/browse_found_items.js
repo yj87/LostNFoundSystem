@@ -210,7 +210,7 @@ async function loadItems() {
 
                 const claimButton = canClaim
                     ? `
-                        <a href="../claims/submit_claim.php?item_id=${encodeURIComponent(item.item_id)}" 
+                        <a href="../claims/submit_claim_page.php?item_id=${encodeURIComponent(item.item_id)}" 
                            class="btn-claim" 
                            title="Claim this item">
                             <i class="fas fa-hand-paper"></i> Claim
