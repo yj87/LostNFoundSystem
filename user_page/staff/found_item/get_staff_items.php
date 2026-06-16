@@ -27,7 +27,6 @@ if (!empty($search)) {
     /*
         Allow staff to search by:
         - item ID: 14
-        - displayed item ID: F14
         - item name
         - location
         - description
