@@ -215,7 +215,7 @@ async function viewClaimDetails(claimId) {
             showClaimModal(data.claim);
             const reviewBtn = document.getElementById('reviewClaimBtn');
             if (reviewBtn) {
-                reviewBtn.href = 'review_claims.html?id=' + claimId;
+                reviewBtn.href = 'review_claims.php?id=' + claimId;
             }
         } else {
             alert('Failed to load claim details');

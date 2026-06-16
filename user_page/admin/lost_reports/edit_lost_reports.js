@@ -1,9 +1,15 @@
-const urlParams = new URLSearchParams(window.location.search);
-const reportId = urlParams.get('id');
+// reportId is already declared in the inline script in PHP
+// const reportId = urlParams.get('id');
 
 let categories = [];
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Set user avatar from PHP session data
+    const userAvatarEl = document.getElementById('userAvatar');
+    if (userAvatarEl && typeof userAvatar !== 'undefined') {
+        userAvatarEl.textContent = userAvatar;
+    }
+    
     if (!reportId) {
         showAlert('No report ID specified', 'error');
         return;
@@ -15,7 +21,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function loadCategories() {
     try {
-        const response = await fetch('view_lost_reports.php?action=categories');
+        const response = await fetch('view_lost_reports.php?action=categories', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
         const data = await response.json();
         if (data.success) {
             categories = data.categories;
@@ -44,7 +59,23 @@ async function loadReport() {
     if (loadingDiv) loadingDiv.style.display = 'block';
     
     try {
-        const response = await fetch('view_lost_reports.php?id=' + reportId);
+        const response = await fetch('view_lost_reports.php?id=' + reportId, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Received non-JSON:', text.substring(0, 200));
+            throw new Error('Server returned HTML instead of JSON');
+        }
+        
         const data = await response.json();
         
         if (data.success) {
@@ -55,7 +86,7 @@ async function loadReport() {
         }
     } catch (error) {
         console.error('Error:', error);
-        showAlert('Network error occurred', 'error');
+        showAlert('Network error occurred: ' + error.message, 'error');
     } finally {
         if (loadingDiv) loadingDiv.style.display = 'none';
     }
@@ -80,11 +111,25 @@ function displayReportData(report) {
         document.getElementById('category_id').value = report.category_id;
     }
     
-    // Display current photo
+    // FIXED: Display current photo - clean HTML without nested quotes
     const photoContainer = document.getElementById('currentPhotoContainer');
     if (photoContainer) {
         if (report.photo) {
-            photoContainer.innerHTML = '<img src="../../../' + report.photo + '" style="max-width: 300px; max-height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;">';
+            // Use a simpler approach - create the image element with proper error handling
+            const img = document.createElement('img');
+            img.src = '../../../' + report.photo;
+            img.style.cssText = 'max-width: 300px; max-height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid #ddd;';
+            img.alt = 'Item Photo';
+            img.onerror = function() {
+                this.style.display = 'none';
+                const placeholder = document.createElement('div');
+                placeholder.style.cssText = 'padding: 20px; background: #f8f9fa; border-radius: 8px; color: #999;';
+                placeholder.innerHTML = '<i class="fas fa-image"></i> Photo not found';
+                photoContainer.innerHTML = '';
+                photoContainer.appendChild(placeholder);
+            };
+            photoContainer.innerHTML = '';
+            photoContainer.appendChild(img);
         } else {
             photoContainer.innerHTML = '<div style="padding: 20px; background: #f8f9fa; border-radius: 8px; color: #999;"><i class="fas fa-image"></i> No photo uploaded</div>';
         }
@@ -125,8 +170,16 @@ async function saveReport() {
     try {
         const response = await fetch('edit_lost_reports.php', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         });
+        
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
         const data = await response.json();
         
         if (data.success) {
@@ -143,7 +196,7 @@ async function saveReport() {
         }
     } catch (error) {
         console.error('Error:', error);
-        showAlert('Network error occurred', 'error');
+        showAlert('Network error occurred: ' + error.message, 'error');
         if (saveBtn) {
             saveBtn.disabled = false;
             saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
@@ -159,7 +212,7 @@ function showAlert(message, type) {
         
         setTimeout(function() {
             alertDiv.classList.remove('show');
-        }, 3000);
+        }, 4000);
     }
 }
 

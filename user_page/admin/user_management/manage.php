@@ -1,3 +1,30 @@
+<?php
+// 1. Set required role FIRST
+$required_role = 'admin';
+
+// 2. Include auth and database files
+require_once("../../../includes/auth_check.php");
+require_once("../../../includes/role_check.php");
+require_once("../../../config/db_connect.php");
+
+// 3. Fetch users data
+$sql = "SELECT user_id, username, name, email, role, phone, created_at FROM users ORDER BY user_id ASC";
+$result = mysqli_query($conn, $sql);
+
+$users = [];
+if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+        $users[] = $row;
+    }
+}
+
+mysqli_close($conn);
+
+// 4. Get user info from session
+$user_name = $_SESSION['USER'] ?? 'Admin';
+$user_avatar = strtoupper(substr($user_name, 0, 1));
+$current_year = date('Y');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +34,6 @@
     <title>Manage Users - Lost & Found System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="manage.css">
-
 </head>
 <body>
     <div class="dashboard-container">
@@ -28,7 +54,7 @@
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="../dashboard.html" class="nav-item">
+                    <a href="../dashboard_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
@@ -36,11 +62,11 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">User Management</div>
-                    <a href="manage.html" class="nav-item active">
+                    <a href="manage.php" class="nav-item active">
                         <span class="icon"><i class="fas fa-users"></i></span>
                         <span>Manage Users</span>
                     </a>
-                    <a href="add.html" class="nav-item">
+                    <a href="add.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-plus"></i></span>
                         <span>Add User</span>
                     </a>
@@ -48,7 +74,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/admin_found_items.html" class="nav-item">
+                    <a href="../found_item/admin_found_items.php" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>View All Items</span>
                     </a>
@@ -56,7 +82,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="../lost_reports/view_lost_reports.html" class="nav-item">
+                    <a href="../lost_reports/view_lost_reports.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View All Reports</span>
                     </a>
@@ -64,7 +90,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="../claims/view_claims.html" class="nav-item">
+                    <a href="../claims/view_claims.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View All Claims</span>
                     </a>
@@ -72,7 +98,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Reports & Statistics</div>
-                    <a href="../statistic/monthly_stats.html" class="nav-item">
+                    <a href="../statistic/monthly_stats.php" class="nav-item">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
                         <span>Statistics</span>
                     </a>
@@ -80,7 +106,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../../profile/profile.html" class="nav-item">
+                    <a href="../../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -103,10 +129,10 @@
                 
                 <div class="user-dropdown">
                     <div class="user-info-wrapper" onclick="toggleUserDropdown()">
-                        <div class="user-avatar" id="userAvatar">A</div>
+                        <div class="user-avatar" id="userAvatar"><?php echo $user_avatar; ?></div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../../profile/profile.html">
+                        <a href="../../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>
@@ -132,7 +158,7 @@
                             <i class="fas fa-times"></i> Clear
                         </button>
                     </div>
-                    <a class="btn-add" href="add.html">
+                    <a class="btn-add" href="add.php">
                         <i class="fas fa-user-plus"></i> Add New User
                     </a>
                 </div>
@@ -153,9 +179,35 @@
                             </tr>
                         </thead>
                         <tbody id="userTableBody">
-                            <tr class="loading-row">
-                                <td colspan="8">Loading users...</td>
-                            </tr>
+                            <?php if (count($users) > 0): ?>
+                                <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($user['user_id']); ?></td>
+                                    <td><?php echo htmlspecialchars($user['username']); ?></td>
+                                    <td><?php echo htmlspecialchars($user['name']); ?></td>
+                                    <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                    <td>
+                                        <span class="role-badge role-<?php echo strtolower($user['role']); ?>">
+                                            <?php echo htmlspecialchars($user['role']); ?>
+                                        </span>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($user['phone'] ?? 'N/A'); ?></td>
+                                    <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
+                                    <td class="actions">
+                                        <a href="edit.php?id=<?php echo $user['user_id']; ?>" class="btn-edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button onclick="deleteUser(<?php echo $user['user_id']; ?>)" class="btn-delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="8" class="text-center">No users found</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -165,11 +217,22 @@
             </article>
             
             <footer>
-                <p id="copyright">© 2026 Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
+                <p id="copyright">© <?php echo $current_year; ?> Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
             </footer>
         </div>
     </div>
 
+    <!-- Pass user data to JavaScript -->
+    <script>
+        // Users data for JavaScript
+        const usersData = <?php echo json_encode($users); ?>;
+        
+        // Session data
+        const sessionData = {
+            userName: '<?php echo addslashes($user_name); ?>',
+            userAvatar: '<?php echo $user_avatar; ?>'
+        };
+    </script>
     <script src="manage.js"></script>
 </body>
 </html>

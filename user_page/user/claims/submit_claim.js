@@ -2,7 +2,8 @@ let itemData = null;
 let lostReportsList = [];
 let selectedEvidenceFile = null;
 const urlParams = new URLSearchParams(window.location.search);
-const itemId = urlParams.get('item_id');
+// Try both 'id' and 'item_id' parameters
+const itemId = urlParams.get('id') || urlParams.get('item_id');
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Page loaded, itemId:', itemId);
@@ -11,6 +12,12 @@ document.addEventListener('DOMContentLoaded', function() {
         showError('No item selected. Please go back and select an item to claim.');
         document.getElementById('formContainer').style.display = 'none';
         return;
+    }
+    
+    // Set the hidden field value
+    const itemIdField = document.getElementById('item_id');
+    if (itemIdField) {
+        itemIdField.value = itemId;
     }
     
     loadItemDetails();
@@ -130,16 +137,39 @@ function setupEvidencePhotoUpload() {
 
 async function loadLostReports() {
     try {
-        const response = await fetch('submit_claim.php?action=get_lost_reports');
+        console.log('Loading lost reports...');
+        const response = await fetch('submit_claim.php?action=get_lost_reports', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        // Check if response is OK
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Received non-JSON response:', text.substring(0, 200));
+            throw new Error('Server returned HTML instead of JSON');
+        }
+        
         const data = await response.json();
+        console.log('Lost reports data:', data);
         
         if (data.success && data.reports.length > 0) {
             lostReportsList = data.reports;
             populateLostReportsDropdown(data.reports);
             setupLostReportPreview();
+        } else {
+            console.log('No lost reports found or data.success is false');
         }
     } catch (error) {
         console.error('Error loading lost reports:', error);
+        // Don't show error to user - this is optional feature
     }
 }
 
@@ -205,8 +235,28 @@ async function loadItemDetails() {
     loadingDiv.style.display = 'block';
     
     try {
-        const response = await fetch('submit_claim.php?action=get_item&item_id=' + itemId);
+        console.log('Loading item details for ID:', itemId);
+        const response = await fetch('submit_claim.php?action=get_item&item_id=' + itemId, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        // Check if response is OK
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Received non-JSON response:', text.substring(0, 200));
+            throw new Error('Server returned HTML instead of JSON');
+        }
+        
         const data = await response.json();
+        console.log('Item data:', data);
         
         if (data.success) {
             itemData = data.item;
@@ -221,7 +271,7 @@ async function loadItemDetails() {
         }
     } catch (error) {
         console.error('Error:', error);
-        showError('Network error occurred');
+        showError('Failed to load item details: ' + error.message);
         formContainer.style.display = 'none';
     } finally {
         loadingDiv.style.display = 'none';
@@ -459,8 +509,24 @@ async function submitClaim() {
     try {
         const response = await fetch('submit_claim.php', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         });
+        
+        // Check if response is OK
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Received non-JSON response:', text.substring(0, 200));
+            throw new Error('Server returned HTML instead of JSON');
+        }
 
         const data = await response.json();
         
@@ -476,7 +542,7 @@ async function submitClaim() {
         }
     } catch (error) {
         console.error('Error:', error);
-        showToast('Network error occurred', 'error');
+        showToast('Network error occurred: ' + error.message, 'error');
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Claim';
     }

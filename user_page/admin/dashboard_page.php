@@ -1,3 +1,11 @@
+<?php
+require_once '../../config/db_connect.php';
+require_once '../../includes/auth_check.php';
+$required_role = 'admin';
+require_once '../../includes/role_check.php';
+
+$current_year = date('Y');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,7 +34,7 @@
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="dashboard.html" class="nav-item active">
+                    <a href="dashboard_page.php" class="nav-item active">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
@@ -34,11 +42,11 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">User Management</div>
-                    <a href="user_management/manage.html" class="nav-item">
+                    <a href="user_management/manage.php" class="nav-item">
                         <span class="icon"><i class="fas fa-users"></i></span>
                         <span>Manage Users</span>
                     </a>
-                    <a href="user_management/add.html" class="nav-item">
+                    <a href="user_management/add.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-plus"></i></span>
                         <span>Add User</span>
                     </a>
@@ -46,7 +54,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="found_item/admin_found_items.html" class="nav-item">
+                    <a href="found_item/admin_found_items.php" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>View All Items</span>
                     </a>
@@ -54,7 +62,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="lost_reports/view_lost_reports.html" class="nav-item">
+                    <a href="lost_reports/view_lost_reports.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View All Reports</span>
                     </a>
@@ -62,7 +70,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="claims/view_claims.html" class="nav-item">
+                    <a href="claims/view_claims.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View All Claims</span>
                     </a>
@@ -70,7 +78,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Reports & Statistics</div>
-                    <a href="statistic/monthly_stats.html" class="nav-item">
+                    <a href="statistic/monthly_stats.php" class="nav-item">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
                         <span>Statistics</span>
                     </a>
@@ -78,7 +86,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../profile/profile.html" class="nav-item">
+                    <a href="../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -105,7 +113,7 @@
                         <div class="user-avatar" id="userAvatar">A</div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../profile/profile.html">
+                        <a href="../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>
@@ -124,7 +132,7 @@
                 
                 <!-- Statistics Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card" data-page="user_management/manage.html">
+                    <div class="stat-card" data-page="user_management/manage.php">
                         <div class="stat-info">
                             <h3>Total Users</h3>
                             <div class="stat-number" id="totalUsers">-</div>
@@ -132,7 +140,7 @@
                         <div class="stat-icon"><i class="fas fa-users"></i></div>
                     </div>
                     
-                    <div class="stat-card" data-page="../found_item/admin_found_items.html">
+                    <div class="stat-card" data-page="../found_item/admin_found_items.php">
                         <div class="stat-info">
                             <h3>Found Items</h3>
                             <div class="stat-number" id="totalItems">-</div>
@@ -140,7 +148,7 @@
                         <div class="stat-icon"><i class="fas fa-box"></i></div>
                     </div>
                     
-                    <div class="stat-card" data-page="../lost_reports/view_lost_reports.html">
+                    <div class="stat-card" data-page="../lost_reports/view_lost_reports.php">
                         <div class="stat-info">
                             <h3>Lost Reports</h3>
                             <div class="stat-number" id="totalLostReports">-</div>
@@ -148,7 +156,7 @@
                         <div class="stat-icon"><i class="fas fa-search"></i></div>
                     </div>
                     
-                    <div class="stat-card" data-page="../claims/view_claims.html">
+                    <div class="stat-card" data-page="../claims/view_claims.php">
                         <div class="stat-info">
                             <h3>Total Claims</h3>
                             <div class="stat-number" id="totalClaims">-</div>
@@ -156,7 +164,7 @@
                         <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
                     </div>
                     
-                    <div class="stat-card" data-page="../claims/view_claims.html?status=pending">
+                    <div class="stat-card" data-page="../claims/view_claims.php?status=pending">
                         <div class="stat-info">
                             <h3>Pending Claims</h3>
                             <div class="stat-number" id="pendingClaims">-</div>
@@ -164,7 +172,7 @@
                         <div class="stat-icon"><i class="fas fa-clock"></i></div>
                     </div>
                     
-                    <div class="stat-card" data-page="../claims/view_claims.html?status=approved">
+                    <div class="stat-card" data-page="../claims/view_claims.php?status=approved">
                         <div class="stat-info">
                             <h3>Approved Claims</h3>
                             <div class="stat-number" id="approvedClaims">-</div>
@@ -175,22 +183,22 @@
                 
                 <!-- Quick Actions -->
                 <div class="quick-actions-grid">
-                    <div class="action-card" data-page="user_management/add.html">
+                    <div class="action-card" data-page="user_management/add.php">
                         <i class="fas fa-user-plus"></i>
                         <h3>Add New User</h3>
                         <p>Create a new staff or admin account</p>
                     </div>
-                    <div class="action-card" data-page="found_item/admin_found_items.html">
+                    <div class="action-card" data-page="found_item/admin_found_items.php">
                         <i class="fas fa-box"></i>
                         <h3>Manage Found Items</h3>
                         <p>View, edit, or delete found items</p>
                     </div>
-                    <div class="action-card" data-page="lost_reports/view_lost_reports.html">
+                    <div class="action-card" data-page="lost_reports/view_lost_reports.php">
                         <i class="fas fa-search"></i>
                         <h3>Manage Lost Reports</h3>
                         <p>View and manage lost item reports</p>
                     </div>
-                    <div class="action-card" data-page="claims/view_claims.html">
+                    <div class="action-card" data-page="claims/view_claims.php">
                         <i class="fas fa-clipboard-list"></i>
                         <h3>View Claims</h3>
                         <p>Approve or reject pending claims</p>
@@ -201,7 +209,7 @@
                 <div class="recent-section">
                     <div class="section-header">
                         <h3>Recent Found Items</h3>
-                        <a href="found_item/admin_found_items.html" class="view-all">View All →</a>
+                        <a href="found_item/admin_found_items.php" class="view-all">View All →</a>
                     </div>
                     <div class="data-table">
                         <table>

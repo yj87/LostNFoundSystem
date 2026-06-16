@@ -8,6 +8,13 @@ let currentFilters = {
 };
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Set user avatar from PHP session data
+    const userAvatarEl = document.getElementById('userAvatar');
+    if (userAvatarEl && typeof userAvatar !== 'undefined') {
+        userAvatarEl.textContent = userAvatar;
+    }
+    
+    loadCategories();
     loadReports();
     setupEventListeners();
 });
@@ -60,6 +67,28 @@ function resetFilters() {
     applyFilters();
 }
 
+async function loadCategories() {
+    try {
+        const response = await fetch('view_lost_reports.php?action=categories', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            updateCategoryFilter(data.categories);
+        }
+    } catch (error) {
+        console.error('Error loading categories:', error);
+    }
+}
+
 async function loadReports() {
     const tableBody = document.getElementById('reportsTableBody');
     const loadingRow = document.getElementById('loadingRow');
@@ -76,25 +105,51 @@ async function loadReports() {
         params.append('date_from', currentFilters.date_from);
         params.append('date_to', currentFilters.date_to);
         
-        const response = await fetch('view_lost_reports.php?' + params.toString());
+        const response = await fetch('view_lost_reports.php?' + params.toString(), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        // Check if response is OK
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Received non-JSON response:', text.substring(0, 200));
+            throw new Error('Server returned HTML instead of JSON');
+        }
+        
         const data = await response.json();
         
         if (data.success) {
             updateStats(data.status_counts, data.total);
             renderReportsTable(data.reports);
             renderPagination(data);
-            updateCategoryFilter(data.categories);
         } else {
-            alert('Failed to load reports: ' + (data.message || 'Unknown error'));
+            showError('Failed to load reports: ' + (data.message || 'Unknown error'));
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Network error: ' + error.message);
+        showError('Network error: ' + error.message);
         if (tableBody) {
-            tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:red;">Error loading reports</td></tr>';
+            tableBody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:red;padding:40px;"><i class="fas fa-exclamation-circle"></i> Error loading reports. Please try again.</td></tr>';
         }
     } finally {
         if (loadingRow) loadingRow.style.display = 'none';
+    }
+}
+
+function showError(message) {
+    console.error(message);
+    if (typeof showToast === 'function') {
+        showToast(message, 'error');
+    } else {
+        alert(message);
     }
 }
 
@@ -107,7 +162,7 @@ function updateStats(statusCounts, total) {
     if (searchingEl) searchingEl.textContent = statusCounts.searching || 0;
     if (foundEl) foundEl.textContent = statusCounts.found || 0;
     if (closedEl) closedEl.textContent = statusCounts.closed || 0;
-    if (totalEl) totalEl.textContent = total;
+    if (totalEl) totalEl.textContent = total || 0;
 }
 
 function renderReportsTable(reports) {
@@ -117,7 +172,7 @@ function renderReportsTable(reports) {
     if (!reports || reports.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="9" class="empty-state">
+                <td colspan="8" class="empty-state">
                     <div class="empty-state-content">
                         <i class="fas fa-search"></i>
                         <h3>No Lost Reports Found</h3>
@@ -142,13 +197,13 @@ function renderReportsTable(reports) {
         const report = reports[i];
         let statusClass = '';
         if (report.lost_status === 'searching') statusClass = 'status-searching';
-        if (report.lost_status === 'found') statusClass = 'status-found';
-        if (report.lost_status === 'closed') statusClass = 'status-closed';
+        else if (report.lost_status === 'found') statusClass = 'status-found';
+        else if (report.lost_status === 'closed') statusClass = 'status-closed';
         
-        // Photo thumbnail
+        // FIXED: Photo thumbnail - clean HTML without stray characters
         let photoHtml = '';
         if (report.photo) {
-            photoHtml = '<img src="../../../' + report.photo + '" class="photo-thumb" alt="Photo">';
+            photoHtml = '<img src="../../../' + report.photo + '" class="photo-thumb" alt="Photo" onerror="this.style.display=\'none\'">';
         } else {
             photoHtml = '<div class="photo-placeholder"><i class="fas fa-image"></i></div>';
         }
@@ -163,8 +218,8 @@ function renderReportsTable(reports) {
         html += '<td><span class="status-badge ' + statusClass + '">' + report.status_label + '</span></td>';
         html += '<td>';
         html += '<div class="action-buttons">';
-        html += '<button class="btn btn-primary btn-sm" onclick="viewReport(' + report.report_id + ')"><i class="fas fa-eye"></i> View</button>';
-        html += '<button class="btn btn-warning btn-sm" onclick="editReport(' + report.report_id + ')"><i class="fas fa-edit"></i> Edit</button>';
+        html += '<button class="btn btn-primary btn-sm" onclick="viewReport(' + report.report_id + ')"><i class="fas fa-eye"></i> View</button> ';
+        html += '<button class="btn btn-warning btn-sm" onclick="editReport(' + report.report_id + ')"><i class="fas fa-edit"></i> Edit</button> ';
         html += '<button class="btn btn-danger btn-sm" onclick="deleteReport(' + report.report_id + ', \'' + escapeHtml(report.item_name) + '\')"><i class="fas fa-trash"></i> Delete</button>';
         html += '</div>';
         html += '</td>';
@@ -206,28 +261,25 @@ function goToPage(page) {
 
 function updateCategoryFilter(categories) {
     const categoryFilter = document.getElementById('categoryFilter');
-    if (!categoryFilter || !categories) return;
+    if (!categoryFilter) return;
     
     const currentValue = categoryFilter.value;
     
     let options = '<option value="0">All Categories</option>';
     for (let i = 0; i < categories.length; i++) {
-        options += '<option value="' + categories[i].category_id + '">' + escapeHtml(categories[i].category_name) + '</option>';
+        const selected = (categories[i].category_id == currentValue) ? ' selected' : '';
+        options += '<option value="' + categories[i].category_id + '"' + selected + '>' + escapeHtml(categories[i].category_name) + '</option>';
     }
     
     categoryFilter.innerHTML = options;
-    if (currentValue && currentValue !== '0') {
-        categoryFilter.value = currentValue;
-    }
 }
 
 function viewReport(reportId) {
-    // Redirect to global view_item_details page
     window.location.href = '../../item_details/view_item_details.html?id=' + reportId + '&from=admin&type=lost';
 }
 
 function editReport(reportId) {
-    window.location.href = 'edit_lost_reports.html?id=' + reportId;
+    window.location.href = 'edit_lost_reports.php?id=' + reportId;
 }
 
 async function deleteReport(reportId, itemName) {
@@ -243,14 +295,24 @@ async function deleteReport(reportId, itemName) {
         
         const response = await fetch('delete_lost_reports.php', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         });
         
-        // Check if response is OK
         if (!response.ok) {
             const text = await response.text();
             console.error('Server response:', text);
-            alert('Server error. Check console.');
+            showError('Server error. Please try again.');
+            return;
+        }
+        
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Received non-JSON:', text.substring(0, 200));
+            showError('Server returned HTML instead of JSON');
             return;
         }
         
@@ -258,15 +320,38 @@ async function deleteReport(reportId, itemName) {
         console.log('Response data:', data);
         
         if (data.success) {
-            alert('Report deleted successfully');
-            loadReports(); // Refresh the table
+            showToast('Report deleted successfully', 'success');
+            loadReports();
         } else {
-            alert('Failed to delete: ' + (data.message || 'Unknown error'));
+            showError('Failed to delete: ' + (data.message || 'Unknown error'));
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Network error: ' + error.message);
+        showError('Network error: ' + error.message);
     }
+}
+
+function showToast(message, type = 'success') {
+    let toast = document.getElementById('toast');
+    
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        toast.className = 'toast';
+        toast.innerHTML = '<i class="fas fa-check-circle" id="toastIcon"></i><span id="toastMessage"></span>';
+        document.body.appendChild(toast);
+    }
+    
+    const toastIcon = document.getElementById('toastIcon');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    if (toastIcon) toastIcon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-exclamation-circle';
+    toast.className = 'toast toast-' + type + ' show';
+    if (toastMessage) toastMessage.textContent = message;
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
 }
 
 function escapeHtml(str) {

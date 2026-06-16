@@ -87,7 +87,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const userId = urlParams.get('id');
 
 if (!userId) {
-    window.location.href = 'manage.html';
+    window.location.href = 'manage.php';
 }
 
 // Load user data
@@ -104,7 +104,7 @@ fetch(`get_user.php?id=${userId}`)
         } else {
             showAlert(data.message, 'danger');
             setTimeout(() => {
-                window.location.href = 'manage.html';
+                window.location.href = 'manage.php';
             }, 2000);
         }
     })
@@ -112,7 +112,7 @@ fetch(`get_user.php?id=${userId}`)
         console.error('Error:', error);
         showAlert('Error loading user data', 'danger');
         setTimeout(() => {
-            window.location.href = 'manage.html';
+            window.location.href = 'manage.php';
         }, 2000);
     });
 
@@ -176,7 +176,7 @@ document.getElementById('editUserForm').addEventListener('submit', async functio
         if (result.success) {
             showAlert(result.message, 'success');
             setTimeout(() => {
-                window.location.href = 'manage.html';
+                window.location.href = 'manage.php';
             }, 1500);
         } else {
             showAlert(result.message, 'danger');

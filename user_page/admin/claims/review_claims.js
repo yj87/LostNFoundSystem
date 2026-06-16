@@ -1,6 +1,3 @@
-const urlParams = new URLSearchParams(window.location.search);
-const claimId = urlParams.get('id');
-
 let claimData = null;
 let proofMatch = null;
 let identifyingMatch = null;
@@ -8,6 +5,8 @@ let photoMatch = null;
 let currentLostReport = null;
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, claimId:', claimId);
+    
     if (!claimId) {
         showError('No claim ID specified');
         return;
@@ -64,8 +63,14 @@ function setupEventListeners() {
 
 async function loadAdminInfo() {
     try {
-        const response = await fetch('view_claims.php?action=user');
+        console.log('Loading admin info...');
+        const response = await fetch('review_claims.php?action=user', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
         const data = await response.json();
+        console.log('Admin info response:', data);
         if (data.success) {
             const userAvatar = document.getElementById('userAvatar');
             if (userAvatar) userAvatar.textContent = data.user_avatar;
@@ -80,46 +85,103 @@ async function loadClaimDetails() {
     const reviewContainer = document.getElementById('reviewContainer');
     const errorDiv = document.getElementById('errorDiv');
     
-    if (loadingDiv) loadingDiv.style.display = 'block';
+    if (loadingDiv) {
+        loadingDiv.style.display = 'block';
+        loadingDiv.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading claim details...';
+    }
+    
+    console.log('Loading claim details for ID:', claimId);
     
     try {
-        const response = await fetch('review_claims.php?id=' + claimId);
+        const url = 'review_claims.php?id=' + claimId;
+        console.log('Fetching from:', url);
+        
+        const response = await fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
+        console.log('Response status:', response.status);
+        
+        // Check if response is OK
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        console.log('Content-Type:', contentType);
+        
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Received non-JSON response:', text.substring(0, 500));
+            throw new Error('Server returned HTML instead of JSON');
+        }
+        
         const data = await response.json();
+        console.log('Claim data response:', data);
         
         if (data.success) {
             claimData = data.claim;
+            console.log('Claim data loaded successfully:', claimData);
             displayClaimDetails(data.claim);
-            if (reviewContainer) reviewContainer.style.display = 'block';
+            
+            // Show the review container
+            if (reviewContainer) {
+                reviewContainer.style.display = 'block';
+            }
         } else {
             showError(data.message || 'Failed to load claim details');
+            if (reviewContainer) {
+                reviewContainer.style.display = 'none';
+            }
         }
     } catch (error) {
-        console.error('Error:', error);
-        showError('Network error occurred');
+        console.error('Error loading claim details:', error);
+        showError('Failed to load claim details: ' + error.message);
+        if (reviewContainer) {
+            reviewContainer.style.display = 'none';
+        }
     } finally {
-        if (loadingDiv) loadingDiv.style.display = 'none';
+        if (loadingDiv) {
+            loadingDiv.style.display = 'none';
+        }
     }
 }
 
 function displayClaimDetails(claim) {
-    // Found Item Details
-    const foundItemName = document.getElementById('foundItemName');
-    if (foundItemName) foundItemName.innerHTML = escapeHtml(claim.item_name);
+    console.log('Displaying claim details:', claim);
     
+    // Found Item Name
+    const foundItemName = document.getElementById('foundItemName');
+    if (foundItemName) {
+        foundItemName.textContent = claim.item_name || 'Unknown Item';
+    }
+    
+    // Found Item Meta
     const foundItemMeta = document.getElementById('foundItemMeta');
     if (foundItemMeta) {
-        foundItemMeta.innerHTML = `<i class="fas fa-calendar-alt"></i> Found on ${escapeHtml(claim.date_found)}`;
+        foundItemMeta.innerHTML = `
+            <i class="fas fa-calendar-alt"></i> Found on ${claim.date_found || 'N/A'} 
+            <span class="separator">|</span>
+            <i class="fas fa-map-marker-alt"></i> ${claim.location_found || 'Unknown location'}
+        `;
     }
     
     // Found Item Details
     let detailsHtml = `
         <div class="found-detail">
             <span class="label">📍 Location:</span>
-            <span class="value">${escapeHtml(claim.location_found)}</span>
+            <span class="value">${claim.location_found || 'Unknown'}</span>
+        </div>
+        <div class="found-detail">
+            <span class="label">📅 Date Found:</span>
+            <span class="value">${claim.date_found || 'Unknown'}</span>
         </div>
     `;
     
-    if (claim.item_description) {
+    if (claim.item_description && claim.item_description !== '') {
         detailsHtml += `
             <div class="found-detail">
                 <span class="label">📝 Description:</span>
@@ -131,12 +193,18 @@ function displayClaimDetails(claim) {
     detailsHtml += `
         <div class="found-detail">
             <span class="label">📅 Submitted:</span>
-            <span class="value">${escapeHtml(claim.submitted_at)}</span>
+            <span class="value">${claim.submitted_at || 'Unknown'}</span>
+        </div>
+        <div class="found-detail">
+            <span class="label">📊 Status:</span>
+            <span class="value"><span class="status-badge status-${claim.claim_status || 'pending'}">${(claim.claim_status || 'PENDING').toUpperCase()}</span></span>
         </div>
     `;
     
     const foundItemDetails = document.getElementById('foundItemDetails');
-    if (foundItemDetails) foundItemDetails.innerHTML = detailsHtml;
+    if (foundItemDetails) {
+        foundItemDetails.innerHTML = detailsHtml;
+    }
     
     // Claimant Details
     const claimantDetails = document.getElementById('claimantDetails');
@@ -144,11 +212,11 @@ function displayClaimDetails(claim) {
         claimantDetails.innerHTML = `
             <div class="detail-item">
                 <div class="detail-label">Claimant Name</div>
-                <div class="detail-value">${escapeHtml(claim.claimant_name)}</div>
+                <div class="detail-value">${escapeHtml(claim.claimant_name || 'Unknown')}</div>
             </div>
             <div class="detail-item">
                 <div class="detail-label">Email Address</div>
-                <div class="detail-value">${escapeHtml(claim.claimant_email)}</div>
+                <div class="detail-value">${escapeHtml(claim.claimant_email || 'Unknown')}</div>
             </div>
             <div class="detail-item">
                 <div class="detail-label">Phone Number</div>
@@ -163,7 +231,7 @@ function displayClaimDetails(claim) {
         staffDetails.innerHTML = `
             <div class="detail-item">
                 <div class="detail-label">Staff Name</div>
-                <div class="detail-value">${escapeHtml(claim.staff_name)}</div>
+                <div class="detail-value">${escapeHtml(claim.staff_name || 'Unknown')}</div>
             </div>
         `;
     }
@@ -184,7 +252,7 @@ function displayClaimDetails(claim) {
     const foundItemPhotoContainer = document.getElementById('foundItemPhotoContainer');
     if (foundItemPhotoContainer) {
         if (claim.item_photo) {
-            foundItemPhotoContainer.innerHTML = `<img src="../../../${claim.item_photo}" alt="Found Item">`;
+            foundItemPhotoContainer.innerHTML = `<img src="../../../${claim.item_photo}" alt="Found Item" onerror="this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'><i class=\\'fas fa-image\\'></i><p>Image not found</p></div>'">`;
         } else {
             foundItemPhotoContainer.innerHTML = '<div class="photo-placeholder"><i class="fas fa-image"></i><p>No photo available</p></div>';
         }
@@ -194,7 +262,7 @@ function displayClaimDetails(claim) {
     const evidencePhotoContainer = document.getElementById('evidencePhotoContainer');
     if (evidencePhotoContainer) {
         if (claim.evidence_photo) {
-            evidencePhotoContainer.innerHTML = `<img src="../../../${claim.evidence_photo}" alt="Evidence Photo">`;
+            evidencePhotoContainer.innerHTML = `<img src="../../../${claim.evidence_photo}" alt="Evidence Photo" onerror="this.parentElement.innerHTML='<div class=\\'photo-placeholder\\'><i class=\\'fas fa-camera\\'></i><p>Image not found</p></div>'">`;
         } else {
             evidencePhotoContainer.innerHTML = '<div class="photo-placeholder"><i class="fas fa-camera"></i><p>No evidence photo uploaded</p></div>';
         }
@@ -239,8 +307,8 @@ function displayLostReport(claim) {
                         ${escapeHtml(claim.lost_item_name)}
                     </div>
                     <div class="lost-report-meta">
-                        <i class="fas fa-map-marker-alt"></i> ${escapeHtml(claim.lost_location)} &nbsp;|&nbsp;
-                        <i class="fas fa-calendar"></i> ${escapeHtml(claim.lost_date)}
+                        <i class="fas fa-map-marker-alt"></i> ${escapeHtml(claim.lost_location || 'Unknown')} &nbsp;|&nbsp;
+                        <i class="fas fa-calendar"></i> ${escapeHtml(claim.lost_date || 'Unknown')}
                     </div>
                 </div>
                 <div class="lost-report-status">${statusBadge}</div>
@@ -282,7 +350,7 @@ function viewLostReportDetails() {
         photoHtml = `
             <div class="modal-row">
                 <div class="modal-label">Photo:</div>
-                <div class="modal-value"><img src="../../../${currentLostReport.photo}" style="max-width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px;"></div>
+                <div class="modal-value"><img src="../../../${currentLostReport.photo}" style="max-width: 100%; max-height: 150px; object-fit: cover; border-radius: 8px;" onerror="this.parentElement.innerHTML='No photo available'"></div>
             </div>
         `;
     }
@@ -294,11 +362,11 @@ function viewLostReportDetails() {
         </div>
         <div class="modal-row">
             <div class="modal-label">Location Lost:</div>
-            <div class="modal-value">${escapeHtml(currentLostReport.location_lost)}</div>
+            <div class="modal-value">${escapeHtml(currentLostReport.location_lost || 'Unknown')}</div>
         </div>
         <div class="modal-row">
             <div class="modal-label">Date Lost:</div>
-            <div class="modal-value">${escapeHtml(currentLostReport.date_lost)}</div>
+            <div class="modal-value">${escapeHtml(currentLostReport.date_lost || 'Unknown')}</div>
         </div>
         <div class="modal-row">
             <div class="modal-label">Status:</div>
@@ -306,7 +374,7 @@ function viewLostReportDetails() {
         </div>
         <div class="modal-row">
             <div class="modal-label">Description:</div>
-            <div class="modal-value">${escapeHtml(currentLostReport.description)}</div>
+            <div class="modal-value">${escapeHtml(currentLostReport.description || 'No description')}</div>
         </div>
         ${photoHtml}
     `;
@@ -428,12 +496,10 @@ async function submitDecision(decision) {
     if (approveBtn) approveBtn.disabled = true;
     if (rejectBtn) rejectBtn.disabled = true;
     
-    if (approveBtn) {
-        if (decision === 'approved') {
-            approveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-        } else if (rejectBtn) {
-            rejectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-        }
+    if (approveBtn && decision === 'approved') {
+        approveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    } else if (rejectBtn && decision === 'rejected') {
+        rejectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
     }
     
     const reviewNoteValue = document.getElementById('review_note') ? document.getElementById('review_note').value : '';
@@ -442,33 +508,50 @@ async function submitDecision(decision) {
     formData.append('claim_id', claimId);
     formData.append('decision', decision);
     formData.append('review_note', reviewNoteValue);
+    formData.append('action', 'decide');
     
     try {
         const response = await fetch('review_claims.php', {
             method: 'POST',
-            body: formData
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
         });
+        
+        if (!response.ok) {
+            throw new Error('HTTP error! status: ' + response.status);
+        }
+        
         const data = await response.json();
         
         if (data.success) {
             showToast(data.message, 'success');
             setTimeout(() => {
-                window.location.href = 'view_claims.html';
+                window.location.href = 'view_claims.php';
             }, 2000);
         } else {
             showToast(data.message || 'Failed to process claim', 'error');
-            if (approveBtn) approveBtn.disabled = false;
-            if (rejectBtn) rejectBtn.disabled = false;
-            if (approveBtn) approveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Approve Claim';
-            if (rejectBtn) rejectBtn.innerHTML = '<i class="fas fa-times-circle"></i> Reject Claim';
+            if (approveBtn) {
+                approveBtn.disabled = false;
+                approveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Approve Claim';
+            }
+            if (rejectBtn) {
+                rejectBtn.disabled = false;
+                rejectBtn.innerHTML = '<i class="fas fa-times-circle"></i> Reject Claim';
+            }
         }
     } catch (error) {
         console.error('Error:', error);
-        showToast('Network error occurred', 'error');
-        if (approveBtn) approveBtn.disabled = false;
-        if (rejectBtn) rejectBtn.disabled = false;
-        if (approveBtn) approveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Approve Claim';
-        if (rejectBtn) rejectBtn.innerHTML = '<i class="fas fa-times-circle"></i> Reject Claim';
+        showToast('Network error occurred: ' + error.message, 'error');
+        if (approveBtn) {
+            approveBtn.disabled = false;
+            approveBtn.innerHTML = '<i class="fas fa-check-circle"></i> Approve Claim';
+        }
+        if (rejectBtn) {
+            rejectBtn.disabled = false;
+            rejectBtn.innerHTML = '<i class="fas fa-times-circle"></i> Reject Claim';
+        }
     }
 }
 
