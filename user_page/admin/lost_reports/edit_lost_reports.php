@@ -180,7 +180,7 @@ $current_year = date('Y');
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="view_lost_reports.html" class="nav-item">
+                    <a href="view_lost_reports.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View Lost Reports</span>
                     </a>
@@ -194,14 +194,14 @@ $current_year = date('Y');
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Reports & Statistics</div>
-                    <a href="../../statistic/monthly_stats.html" class="nav-item">
+                    <a href="../../statistic/monthly_stats.php" class="nav-item">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
                         <span>Statistics</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../../../profile/profile.html" class="nav-item">
+                    <a href="../../../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -226,7 +226,7 @@ $current_year = date('Y');
                         <div class="user-avatar" id="userAvatar"><?php echo $user_avatar; ?></div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../../../profile/profile.html">
+                        <a href="../../../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>
@@ -350,7 +350,7 @@ $current_year = date('Y');
         }
 
         function goBack() {
-            window.location.href = 'view_lost_reports.html';
+            window.location.href = 'view_lost_reports.php';
         }
 
         // Photo upload button trigger

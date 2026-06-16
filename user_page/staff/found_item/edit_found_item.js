@@ -194,7 +194,11 @@ async function loadItemDetails(itemId) {
             showAlert(result.message || 'Item not found.', 'error');
 
             setTimeout(() => {
+<<<<<<< HEAD
                 window.location.href = 'staff_found_items_page.php';
+=======
+                window.location.href = 'staff_found_items.php';
+>>>>>>> 28d9b1c958fa2a6a794c5fea0f1fde71fa67dbcf
             }, 1800);
 
             return null;
@@ -364,7 +368,11 @@ function setupFormSubmit() {
                 showAlert('Item updated successfully.', 'success');
 
                 setTimeout(() => {
+<<<<<<< HEAD
                     window.location.href = 'staff_found_items_page.php';
+=======
+                    window.location.href = 'staff_found_items.php';
+>>>>>>> 28d9b1c958fa2a6a794c5fea0f1fde71fa67dbcf
                 }, 1000);
             } else {
                 showAlert(result.message || 'Failed to update item.', 'error');
@@ -390,7 +398,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         showAlert('Invalid item ID. Redirecting...', 'error');
 
         setTimeout(() => {
+<<<<<<< HEAD
             window.location.href = 'staff_found_items_page.php';
+=======
+            window.location.href = 'staff_found_items.php';
+>>>>>>> 28d9b1c958fa2a6a794c5fea0f1fde71fa67dbcf
         }, 1200);
 
         return;

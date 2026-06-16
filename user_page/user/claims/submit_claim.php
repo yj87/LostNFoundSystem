@@ -280,39 +280,39 @@ $current_year = date('Y');
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="../dashboard.html" class="nav-item">
+                    <a href="../dashboard_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Items</div>
-                    <a href="../lost_reports/report_lost_items.html" class="nav-item">
+                    <a href="../lost_reports/report_lost_items.php" class="nav-item">
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Report Lost Item</span>
                     </a>
-                    <a href="../lost_reports/my_lost_reports.html" class="nav-item">
+                    <a href="../lost_reports/my_lost_reports.php" class="nav-item">
                         <span class="icon"><i class="fas fa-history"></i></span>
                         <span>My Lost Reports</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/browse_found_items.html" class="nav-item">
+                    <a href="../found_item/browse_found_items.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>Browse Found Items</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="my_claims.html" class="nav-item">
+                    <a href="my_claims.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>My Claims</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../../profile/profile.html" class="nav-item">
+                    <a href="../../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -337,7 +337,7 @@ $current_year = date('Y');
                         <div class="user-avatar" id="userAvatar"><?php echo $user_avatar; ?></div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../../profile/profile.html">
+                        <a href="../../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>

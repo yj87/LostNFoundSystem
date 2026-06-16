@@ -10,7 +10,10 @@ if (isset($_SESSION['user_id']) && $_SESSION['Login'] === 'YES') {
 } else {
     // User is not logged in - redirect to login page
     // Using absolute path from root
-    header("Location: /LostNFoundSystem/mainpage/login/loginpage.html");
+    echo '<script>
+        alert("Please login to the system first!");
+        window.location.href = "/LostNFoundSystem/mainpage/login/loginpage.html";
+    </script>';
     exit();
 }
 ?>

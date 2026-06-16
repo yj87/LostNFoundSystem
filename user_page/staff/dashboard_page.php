@@ -139,7 +139,7 @@ require_once '../../includes/role_check.php';
                         <div class="stat-icon"><i class="fas fa-clipboard-list"></i></div>
                     </div>
 
-                    <div class="stat-card" data-page="claims/staff_claims.html?status=pending">
+                    <div class="stat-card" data-page="claims/staff_claims.php?status=pending">
                         <div class="stat-info">
                             <h3>Pending Claims</h3>
                             <div class="stat-number" id="pendingClaims">-</div>

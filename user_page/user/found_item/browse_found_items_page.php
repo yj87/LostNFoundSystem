@@ -42,7 +42,7 @@ require_once '../../../includes/role_check.php';
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="../dashboard.html" class="nav-item">
+                    <a href="../dashboard_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
@@ -51,12 +51,12 @@ require_once '../../../includes/role_check.php';
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Items</div>
 
-                    <a href="../lost_reports/report_lost_items.html" class="nav-item">
+                    <a href="../lost_reports/report_lost_items.php" class="nav-item">
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Report Lost Item</span>
                     </a>
 
-                    <a href="../lost_reports/my_lost_reports.html" class="nav-item">
+                    <a href="../lost_reports/my_lost_reports.php" class="nav-item">
                         <span class="icon"><i class="fas fa-history"></i></span>
                         <span>My Lost Reports</span>
                     </a>
@@ -65,7 +65,7 @@ require_once '../../../includes/role_check.php';
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
 
-                    <a href="browse_found_items.html" class="nav-item active">
+                    <a href="browse_found_items.php" class="nav-item active">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>Browse Found Items</span>
                     </a>
@@ -74,7 +74,7 @@ require_once '../../../includes/role_check.php';
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
 
-                    <a href="../claims/my_claims.html" class="nav-item">
+                    <a href="../claims/my_claims.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>My Claims</span>
                     </a>
@@ -83,7 +83,7 @@ require_once '../../../includes/role_check.php';
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
 
-                    <a href="../../profile/profile.html" class="nav-item">
+                    <a href="../../profile/profile.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -112,7 +112,7 @@ require_once '../../../includes/role_check.php';
                     <div class="user-avatar" id="userAvatar" onclick="toggleUserDropdown()">U</div>
 
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../../profile/profile.html">
+                        <a href="../../profile/profile.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
 

@@ -1,5 +1,8 @@
 <?php
 require_once '../../../config/db_connect.php';
+require_once '../../../includes/auth_check.php';
+$required_role = 'admin';
+require_once '../../../includes/role_check.php';
 
 session_start();
 

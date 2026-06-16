@@ -18,19 +18,27 @@ require_once '../../../includes/role_check.php';
 <body>
     <div class="dashboard-container">
         <aside id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">🔍</div>
-                <h3>Lost & Found</h3>
-                <p>Staff Panel</p>
+    <div class="sidebar-header">
+        <div class="logo-nav">
+            <div class="brand-logo">
+                <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
             </div>
-            <nav>
-                <div class="nav-group">
-                    <div class="nav-group-title">Main</div>
-                    <a href="../dashboard_page.php" class="nav-item">
-                        <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-                        <span>Dashboard</span>
-                    </a>
-                </div>
+
+            <div class="brand-text">
+                <div class="brand-name">Lost<span>Find</span></div>
+                <div class="admin-tag">Staff Panel</div>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-group">
+            <div class="nav-group-title">Main</div>
+            <a href="../dashboard_page.php" class="nav-item">
+                <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                <span>Dashboard</span>
+            </a>
+        </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
                     <a href="../found_item/add_found_item_page.php" class="nav-item">
@@ -299,49 +307,80 @@ require_once '../../../includes/role_check.php';
 
     <script src="review_claims.js"></script>
     <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
-        }
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+    }
 
-        function toggleUserDropdown() {
-            const dropdown = document.getElementById('userDropdownMenu');
+    function toggleUserDropdown() {
+        const dropdown = document.getElementById('userDropdownMenu');
+
+        if (dropdown) {
             dropdown.classList.toggle('show');
         }
+    }
 
-        function goBack() {
-            window.location.href = 'view_claims_page.php';
+    function goBack() {
+        window.location.href = 'view_claims_page.php';
+    }
+
+    function logoutUser(event) {
+        if (event) {
+            event.preventDefault();
         }
 
-        function logoutUser() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = '../../../mainpage/logout/logout.php';
-                return true;
-            }
-            return false;
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = '../../../mainpage/logout/logout.php';
         }
 
-        function closeLostReportModal() {
-            const modal = document.getElementById('lostReportModal');
-            if (modal) {
-                modal.classList.remove('active');
+        return false;
+    }
+
+    function closeLostReportModal() {
+        const modal = document.getElementById('lostReportModal');
+
+        if (modal) {
+            modal.classList.remove('active');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const userInfoWrapper = document.getElementById('userInfoWrapper');
+        const logoutLink = document.getElementById('logoutLink');
+        const dropdownLogoutLink = document.getElementById('dropdownLogoutLink');
+
+        if (userInfoWrapper) {
+            userInfoWrapper.addEventListener('click', function (event) {
+                event.stopPropagation();
+                toggleUserDropdown();
+            });
+        }
+
+        if (logoutLink) {
+            logoutLink.addEventListener('click', logoutUser);
+        }
+
+        if (dropdownLogoutLink) {
+            dropdownLogoutLink.addEventListener('click', logoutUser);
+        }
+    });
+
+    document.addEventListener('click', function (event) {
+        const dropdown = document.getElementById('userDropdownMenu');
+        const wrapper = document.getElementById('userInfoWrapper');
+
+        if (dropdown && dropdown.classList.contains('show')) {
+            if (wrapper && !wrapper.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
             }
         }
 
-        document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById('userDropdownMenu');
-            const avatar = document.getElementById('userAvatar');
-            if (dropdown && avatar && dropdown.classList.contains('show')) {
-                if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
-                    dropdown.classList.remove('show');
-                }
-            }
-            
-            const modal = document.getElementById('lostReportModal');
-            if (modal && modal.classList.contains('active') && event.target === modal) {
-                closeLostReportModal();
-            }
-        });
-    </script>
+        const modal = document.getElementById('lostReportModal');
+
+        if (modal && modal.classList.contains('active') && event.target === modal) {
+            closeLostReportModal();
+        }
+    });
+</script>
 </body>
 </html>
