@@ -1,6 +1,4 @@
 <?php
-// get_browse_items.php
-
 require_once '../../../config/db_connect.php';
 require_once '../../../includes/auth_check.php';
 
@@ -51,12 +49,12 @@ require_once '../../../includes/role_check.php';
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Items</div>
 
-                    <a href="../lost_reports/report_lost_items.php" class="nav-item">
+                    <a href="../lost_reports/report_lost_items_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Report Lost Item</span>
                     </a>
 
-                    <a href="../lost_reports/my_lost_reports.php" class="nav-item">
+                    <a href="../lost_reports/my_lost_reports_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-history"></i></span>
                         <span>My Lost Reports</span>
                     </a>
@@ -65,7 +63,7 @@ require_once '../../../includes/role_check.php';
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
 
-                    <a href="browse_found_items.php" class="nav-item active">
+                    <a href="browse_found_items_page.php" class="nav-item active">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>Browse Found Items</span>
                     </a>
@@ -74,7 +72,7 @@ require_once '../../../includes/role_check.php';
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
 
-                    <a href="../claims/my_claims.php" class="nav-item">
+                    <a href="../claims/my_claims_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>My Claims</span>
                     </a>

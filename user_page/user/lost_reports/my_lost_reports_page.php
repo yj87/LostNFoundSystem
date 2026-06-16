@@ -38,25 +38,25 @@ require_once '../../../includes/role_check.php';
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Items</div>
-                    <a href="report_lost_items.php" class="nav-item">
+                    <a href="report_lost_items_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Report Lost Item</span>
                     </a>
-                    <a href="my_lost_reports.php" class="nav-item active">
+                    <a href="my_lost_reports_page.php" class="nav-item active">
                         <span class="icon"><i class="fas fa-history"></i></span>
                         <span>My Lost Reports</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/browse_found_items.php" class="nav-item">
+                    <a href="../found_item/browse_found_items_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>Browse Found Items</span>
                     </a>
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="../claims/my_claims.php" class="nav-item">
+                    <a href="../claims/my_claims_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>My Claims</span>
                     </a>
@@ -103,7 +103,7 @@ require_once '../../../includes/role_check.php';
                         <h1>My Lost Reports</h1>
                         <p>View all your lost item reports</p>
                     </div>
-                    <a href="report_lost_items.php" class="btn-new">
+                    <a href="report_lost_items_page.php" class="btn-new">
                         <i class="fas fa-plus"></i> Report New Item
                     </a>
                 </div>
