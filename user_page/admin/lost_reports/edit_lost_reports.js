@@ -185,7 +185,7 @@ async function saveReport() {
         if (data.success) {
             showAlert('Report edited successfully!', 'success');
             setTimeout(function() {
-                window.location.href = 'view_lost_reports.html';
+                window.location.href = 'view_lost_reports.php';
             }, 1500);
         } else {
             showAlert(data.message || 'Failed to edit report', 'error');
