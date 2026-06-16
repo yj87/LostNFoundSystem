@@ -1,3 +1,30 @@
+<?php
+// 1. Set required role FIRST
+$required_role = 'admin';
+
+// 2. Include auth and database files
+require_once("../../../includes/auth_check.php");
+require_once("../../../includes/role_check.php");
+require_once("../../../config/db_connect.php");
+
+// 3. Fetch users data
+$sql = "SELECT user_id, username, name, email, role, phone, created_at FROM users ORDER BY user_id ASC";
+$result = mysqli_query($conn, $sql);
+
+$users = [];
+if (mysqli_num_rows($result) > 0) {
+    while($row = mysqli_fetch_assoc($result)) {
+        $users[] = $row;
+    }
+}
+
+mysqli_close($conn);
+
+// 4. Get user info from session
+$user_name = $_SESSION['USER'] ?? 'Admin';
+$user_avatar = strtoupper(substr($user_name, 0, 1));
+$current_year = date('Y');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +34,6 @@
     <title>Manage Users - Lost & Found System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="manage.css">
-
 </head>
 <body>
     <div class="dashboard-container">
@@ -103,7 +129,7 @@
                 
                 <div class="user-dropdown">
                     <div class="user-info-wrapper" onclick="toggleUserDropdown()">
-                        <div class="user-avatar" id="userAvatar">A</div>
+                        <div class="user-avatar" id="userAvatar"><?php echo $user_avatar; ?></div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
                         <a href="../../profile/profile.html">
@@ -153,9 +179,35 @@
                             </tr>
                         </thead>
                         <tbody id="userTableBody">
-                            <tr class="loading-row">
-                                <td colspan="8">Loading users...</td>
-                            </tr>
+                            <?php if (count($users) > 0): ?>
+                                <?php foreach ($users as $user): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($user['user_id']); ?></td>
+                                    <td><?php echo htmlspecialchars($user['username']); ?></td>
+                                    <td><?php echo htmlspecialchars($user['name']); ?></td>
+                                    <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                    <td>
+                                        <span class="role-badge role-<?php echo strtolower($user['role']); ?>">
+                                            <?php echo htmlspecialchars($user['role']); ?>
+                                        </span>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($user['phone'] ?? 'N/A'); ?></td>
+                                    <td><?php echo date('M d, Y', strtotime($user['created_at'])); ?></td>
+                                    <td class="actions">
+                                        <a href="edit.html?id=<?php echo $user['user_id']; ?>" class="btn-edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button onclick="deleteUser(<?php echo $user['user_id']; ?>)" class="btn-delete">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="8" class="text-center">No users found</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -165,11 +217,22 @@
             </article>
             
             <footer>
-                <p id="copyright">© 2026 Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
+                <p id="copyright">© <?php echo $current_year; ?> Lost & Found System - Universiti Teknologi Malaysia. All rights reserved.</p>
             </footer>
         </div>
     </div>
 
+    <!-- Pass user data to JavaScript -->
+    <script>
+        // Users data for JavaScript
+        const usersData = <?php echo json_encode($users); ?>;
+        
+        // Session data
+        const sessionData = {
+            userName: '<?php echo addslashes($user_name); ?>',
+            userAvatar: '<?php echo $user_avatar; ?>'
+        };
+    </script>
     <script src="manage.js"></script>
 </body>
 </html>

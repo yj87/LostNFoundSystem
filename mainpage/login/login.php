@@ -48,6 +48,7 @@ if (mysqli_num_rows($result) == 1) {
     // ✅ THEN verify password using MD5
     if ($user['password'] === md5($password)) {
         // Password is correct
+        $_SESSION['Login']      = 'YES';  
         $_SESSION['user_id']    = $user['user_id'];
         $_SESSION['user_name']  = $user['name'];
         $_SESSION['user_email'] = $user['email'];
@@ -72,7 +73,7 @@ mysqli_close($conn);
 
 function getDashboardUrl($role) {
     switch ($role) {
-        case 'admin': return '../../user_page/admin/dashboard.html';
+        case 'admin': return '../../user_page/admin/dashboard.php';
         case 'staff': return '../../user_page/staff/dashboard.html';
         case 'user':  return '../../user_page/user/dashboard.html';
         default:      return 'dashboard.html';
