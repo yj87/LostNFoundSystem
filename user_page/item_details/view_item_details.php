@@ -1,7 +1,4 @@
 <?php
-// user_page/item_details/view_item_details.php
-
-ob_start();
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -9,13 +6,12 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once '../../config/db_connect.php';
 
-ob_clean();
 header('Content-Type: application/json');
 
 $id = intval($_GET['id'] ?? 0);
 $type = $_GET['type'] ?? 'found';
 
-if ($id <= 0) {
+if ($id === 0) {
     echo json_encode([
         'success' => false,
         'message' => 'Invalid item ID.'
@@ -23,12 +19,10 @@ if ($id <= 0) {
     exit;
 }
 
-/* =====================================================
-   LOST REPORT DETAILS
-===================================================== */
+// Handle LOST REPORTS
 if ($type === 'lost') {
     $query = "SELECT 
-                lr.report_id AS item_id,
+                lr.report_id as item_id,
                 lr.item_name,
                 lr.category_id,
                 lr.location_lost,
@@ -43,22 +37,21 @@ if ($type === 'lost') {
               LEFT JOIN categories c ON lr.category_id = c.category_id
               LEFT JOIN users u ON lr.user_id = u.user_id
               WHERE lr.report_id = ?";
-
+    
     $stmt = mysqli_prepare($conn, $query);
-
+    
     if (!$stmt) {
         echo json_encode([
             'success' => false,
-            'message' => 'Database prepare error: ' . mysqli_error($conn)
+            'message' => 'Database error: ' . mysqli_error($conn)
         ]);
         exit;
     }
-
+    
     mysqli_stmt_bind_param($stmt, "i", $id);
     mysqli_stmt_execute($stmt);
-
     $result = mysqli_stmt_get_result($stmt);
-
+    
     if ($row = mysqli_fetch_assoc($result)) {
         echo json_encode([
             'success' => true,
@@ -66,8 +59,8 @@ if ($type === 'lost') {
                 'item_id' => $row['item_id'],
                 'item_name' => $row['item_name'],
                 'category_name' => $row['category_name'] ?? 'Uncategorized',
-                'location_found' => $row['location_lost'],
-                'date_found' => date('d M Y', strtotime($row['date_lost'])),
+                'location_lost' => $row['location_lost'],  
+                'date_lost' => date('d M Y', strtotime($row['date_lost'])), 
                 'description' => $row['description'] ?? 'No description provided',
                 'lost_status' => $row['lost_status'], 
                 'photo' => $row['photo'],
@@ -80,15 +73,13 @@ if ($type === 'lost') {
             'message' => 'Lost report not found.'
         ]);
     }
-
+    
     mysqli_stmt_close($stmt);
     mysqli_close($conn);
     exit;
 }
 
-/* =====================================================
-   FOUND ITEM DETAILS
-===================================================== */
+// Handle FOUND ITEMS (default)
 $query = "SELECT 
             f.item_id,
             f.item_name,
@@ -111,20 +102,29 @@ $stmt = mysqli_prepare($conn, $query);
 if (!$stmt) {
     echo json_encode([
         'success' => false,
-        'message' => 'Database prepare error: ' . mysqli_error($conn)
+        'message' => 'Database error: ' . mysqli_error($conn)
     ]);
     exit;
 }
 
 mysqli_stmt_bind_param($stmt, "i", $id);
 mysqli_stmt_execute($stmt);
-
 $result = mysqli_stmt_get_result($stmt);
 
 if ($row = mysqli_fetch_assoc($result)) {
     echo json_encode([
         'success' => true,
-        'data' => $row
+        'data' => [
+            'item_id' => $row['item_id'],
+            'item_name' => $row['item_name'],
+            'category_name' => $row['category_name'] ?? 'Uncategorized',
+            'location_found' => $row['location_found'],
+            'date_found' => date('d M Y', strtotime($row['date_found'])),
+            'description' => $row['description'] ?? 'No description provided',
+            'found_status' => $row['found_status'],
+            'photo' => $row['photo'],
+            'reported_by' => $row['reported_by'] ?? 'Unknown'
+        ]
     ]);
 } else {
     echo json_encode([
