@@ -382,7 +382,7 @@ function setupFormSubmit() {
                 showAlert('Item updated successfully.', 'success');
 
                 setTimeout(() => {
-                    window.location.href = 'staff_found_items.php';
+                    window.location.href = 'staff_found_items_page.php';
                 }, 1000);
             } else {
                 showAlert(result.message || 'Failed to update item.', 'error');
