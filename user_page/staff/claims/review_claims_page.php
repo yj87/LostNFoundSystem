@@ -17,67 +17,76 @@ require_once '../../../includes/role_check.php';
 </head>
 <body>
     <div class="dashboard-container">
-        <aside id="sidebar">
-            <div class="sidebar-header">
-                <div class="logo-nav">
-                    <div class="brand-logo">
-                        <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
-                    </div>
-                    <div class="brand-text">
-                        <div class="brand-name">Lost<span>Find</span></div>
-                        <div class="admin-tag">Staff Panel</div>
-                    </div>
+    <aside id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-nav">
+                <div class="brand-logo">
+                    <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
+                </div>
+
+                <div class="brand-text">
+                    <div class="brand-name">Lost<span>Find</span></div>
+                    <div class="admin-tag">Staff Panel</div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <nav>
-        <div class="nav-group">
-            <div class="nav-group-title">Main</div>
-            <a href="../dashboard_page.php" class="nav-item">
-                <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-                <span>Dashboard</span>
-            </a>
-        </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">Found Items</div>
-                    <a href="../found_item/add_found_item_page.php" class="nav-item">
-                        <span class="icon"><i class="fas fa-plus-circle"></i></span>
-                        <span>Add Found Item</span>
-                    </a>
-                    <a href="../found_item/staff_found_items_page.php" class="nav-item">
-                        <span class="icon"><i class="fas fa-box"></i></span>
-                        <span>My Found Items</span>
-                    </a>
-                </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">Claims</div>
-                    <a href="view_claims_page.php" class="nav-item">
-                        <span class="icon"><i class="fas fa-clipboard-list"></i></span>
-                        <span>View Claims</span>
-                    </a>
-                </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">Lost Reports</div>
-                    <a href="../lost_reports/view_lost_items_page.php" class="nav-item">
-                        <span class="icon"><i class="fas fa-search"></i></span>
-                        <span>View Lost Items</span>
-                    </a>
-                </div>
-                <div class="nav-group">
-                    <div class="nav-group-title">Account</div>
-                    <a href="../../profile/profile.php" class="nav-item">
-                        <span class="icon"><i class="fas fa-user-circle"></i></span>
-                        <span>My Profile</span>
-                    </a>
-                    <a href="../../../mainpage/logout/logout.php" class="nav-item" onclick="return logoutUser();">
-                        <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </nav>
-        </aside>
+        <nav>
+            <div class="nav-group">
+                <div class="nav-group-title">Main</div>
+                <a href="../dashboard_page.php" class="nav-item">
+                    <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Found Items</div>
+
+                <a href="../found_item/add_found_item_page.php" class="nav-item">
+                    <span class="icon"><i class="fas fa-plus-circle"></i></span>
+                    <span>Add Found Item</span>
+                </a>
+
+                <a href="../found_item/staff_found_items_page.php" class="nav-item">
+                    <span class="icon"><i class="fas fa-box"></i></span>
+                    <span>My Found Items</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Claims</div>
+
+                <a href="view_claims_page.php" class="nav-item active">
+                    <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                    <span>View Claims</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Lost Reports</div>
+
+                <a href="../lost_reports/view_lost_items_page.php" class="nav-item">
+                    <span class="icon"><i class="fas fa-search"></i></span>
+                    <span>View Lost Items</span>
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Account</div>
+
+                <a href="../../profile/profile_page.php" class="nav-item">
+                    <span class="icon"><i class="fas fa-user-circle"></i></span>
+                    <span>My Profile</span>
+                </a>
+
+                <a href="#" class="nav-item" id="logoutLink">
+                    <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
 
         <div class="main-content">
             <header class="top-header">

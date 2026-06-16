@@ -1,5 +1,33 @@
 /* edit_found_item.css */
 
+.meta-strip {
+    background: #eaf7fb;
+    border: 1px solid #a5cbd7;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: #1f2a44;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.meta-strip span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.meta-strip i {
+    color: #2f9bd3;
+}
+
+.meta-strip strong {
+    font-weight: 700;
+}
+
 /* Page layout */
 .main-content article {
     min-height: calc(100vh - 70px);

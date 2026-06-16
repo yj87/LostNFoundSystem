@@ -146,6 +146,22 @@ require_once '../../../includes/role_check.php';
                     </div>
 
                     <div id="alertBox"></div>
+                    <div class="meta-strip" id="itemMeta">
+                        <span>
+                            <i class="fas fa-hashtag"></i>
+                            Item ID: <strong id="metaItemId">-</strong>
+                        </span>
+
+                        <span>
+                            <i class="fas fa-calendar-alt"></i>
+                            Date Found: <strong id="metaDateFound">-</strong>
+                        </span>
+
+                        <span>
+                            <i class="fas fa-info-circle"></i>
+                            Status: <strong id="metaStatus">-</strong>
+                        </span>
+                    </div>
 
                     <div class="form-card">
                         <form id="editFoundItemForm" enctype="multipart/form-data">

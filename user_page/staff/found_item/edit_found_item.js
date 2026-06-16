@@ -46,13 +46,75 @@ function logoutUser(event) {
         event.preventDefault();
     }
 
-    const confirmLogout = confirm('Are you sure you want to logout?');
-
-    if (confirmLogout) {
+    if (confirm('Are you sure you want to logout?')) {
         window.location.href = '../../../mainpage/logout/logout.php';
     }
 
     return false;
+}
+
+function escapeHtml(str) {
+    if (str === null || str === undefined || str === '') return '-';
+
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
+function formatStatus(status) {
+    if (!status) return '-';
+    return status.charAt(0).toUpperCase() + status.slice(1);
+}
+
+function showAlert(message, type = 'success') {
+    const alertBox = document.getElementById('alertBox');
+
+    if (!alertBox) {
+        alert(message);
+        return;
+    }
+
+    const bgColor = type === 'success' ? '#d4edda' : '#f8d7da';
+    const textColor = type === 'success' ? '#155724' : '#721c24';
+    const borderColor = type === 'success' ? '#c3e6cb' : '#f5c6cb';
+    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+
+    alertBox.innerHTML = `
+        <div style="
+            background:${bgColor};
+            color:${textColor};
+            border:1px solid ${borderColor};
+            padding:12px 16px;
+            border-radius:8px;
+            margin-bottom:16px;
+            font-size:14px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+        ">
+            <i class="fas ${icon}"></i>
+            <span>${escapeHtml(message)}</span>
+        </div>
+    `;
+
+    alertBox.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest'
+    });
+}
+
+function setButtonLoading(isLoading) {
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (!submitBtn) return;
+
+    if (isLoading) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...';
+    } else {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-save"></i> Update Record';
+    }
 }
 
 // ==============================
@@ -194,18 +256,11 @@ async function loadItemDetails(itemId) {
             showAlert(result.message || 'Item not found.', 'error');
 
             setTimeout(() => {
-<<<<<<< HEAD
                 window.location.href = 'staff_found_items_page.php';
-=======
-                window.location.href = 'staff_found_items.php';
->>>>>>> 28d9b1c958fa2a6a794c5fea0f1fde71fa67dbcf
             }, 1800);
 
             return null;
         }
-
-        console.log('Loaded item:', result.data);
-        console.log('Photo path:', result.data.photo);
 
         return result.data;
     } catch (error) {
@@ -229,6 +284,14 @@ function fillForm(item) {
     if (dateInput) dateInput.value = item.date_found || '';
     if (statusSelect) statusSelect.value = item.found_status || 'unclaimed';
     if (descriptionInput) descriptionInput.value = item.description || '';
+
+    const metaItemId = document.getElementById('metaItemId');
+    const metaDateFound = document.getElementById('metaDateFound');
+    const metaStatus = document.getElementById('metaStatus');
+
+    if (metaItemId) metaItemId.textContent = item.item_id || '-';
+    if (metaDateFound) metaDateFound.textContent = item.date_found || '-';
+    if (metaStatus) metaStatus.textContent = formatStatus(item.found_status);
 
     const titleText = item.item_name ? `Edit Record: ${item.item_name}` : 'Edit Found Item';
 
@@ -365,10 +428,9 @@ function setupFormSubmit() {
             }
 
             if (result.success) {
-                showAlert('Item updated successfully.', 'success');
+                showAlert(result.message || 'Item updated successfully.', 'success');
 
                 setTimeout(() => {
-<<<<<<< HEAD
                     window.location.href = 'staff_found_items_page.php';
                 }, 1000);
             } else {
@@ -376,7 +438,7 @@ function setupFormSubmit() {
             }
         } catch (error) {
             console.error('Error updating item:', error);
-            showAlert('Failed to update item. Please try again.', 'error');
+            showAlert('Failed to update item. Please check console or PHP response.', 'error');
         } finally {
             setButtonLoading(false);
         }
@@ -395,11 +457,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         showAlert('Invalid item ID. Redirecting...', 'error');
 
         setTimeout(() => {
-<<<<<<< HEAD
             window.location.href = 'staff_found_items_page.php';
-=======
-            window.location.href = 'staff_found_items.php';
->>>>>>> 28d9b1c958fa2a6a794c5fea0f1fde71fa67dbcf
         }, 1200);
 
         return;

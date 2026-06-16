@@ -48,6 +48,12 @@
     color: #2b2d42;
 }
 
+/* ── Table wrapper ───────────────────────────────── */
+.data-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
 /* ── Table alignment ─────────────────────────────── */
 .data-table table {
     width: 100%;
@@ -59,13 +65,19 @@
 .data-table td {
     vertical-align: middle;
     padding: 14px 12px;
+    text-align: center;
+}
+
+.data-table th {
+    background: #f5cfd5;
+    color: #2b2d42;
+    font-weight: 700;
 }
 
 /* Image column */
 .data-table th:nth-child(1),
 .data-table td:nth-child(1) {
     width: 120px;
-    text-align: center;
 }
 
 /* Item name column */
@@ -90,18 +102,17 @@
 .data-table th:nth-child(5),
 .data-table td:nth-child(5) {
     width: 140px;
-    text-align: center;
 }
 
 /* Actions column */
 .data-table th:nth-child(6),
 .data-table td:nth-child(6) {
     width: 240px;
-    text-align: center;
 }
 
 /* ── Item image thumbnail ────────────────────────── */
 .item-thumb,
+.item-photo,
 .no-image {
     width: 70px;
     height: 55px;
@@ -111,7 +122,8 @@
     justify-content: center;
 }
 
-.item-thumb {
+.item-thumb,
+.item-photo {
     object-fit: cover;
     border: 1px solid #ddd;
     background: #f5f5f5;
@@ -123,7 +135,41 @@
     color: #aaa;
 }
 
+/* ── Status badge ────────────────────────────────── */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-unclaimed {
+    background: #d8ecff;
+    color: #0b66b2;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-claimed {
+    background: #d4edda;
+    color: #155724;
+}
+
 /* ── Table action buttons ────────────────────────── */
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+}
+
 .btn-view,
 .btn-edit,
 .btn-delete {
@@ -142,6 +188,7 @@
     transition: background 0.2s;
     vertical-align: middle;
     margin: 2px;
+    white-space: nowrap;
 }
 
 .btn-view {
@@ -346,24 +393,13 @@
     .data-table table {
         min-width: 850px;
     }
-}
 
-/* Item ID column */
-.data-table th:nth-child(2),
-.data-table td:nth-child(2) {
-    width: 90px;
-    text-align: center;
-}
+    .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-/* Keep all headers centered */
-.data-table th {
-    text-align: center;
-    vertical-align: middle;
+    .toolbar select {
+        width: 100%;
+    }
 }
-
-/* Keep all table cells centered */
-.data-table td {
-    text-align: center;
-    vertical-align: middle;
-}
-
