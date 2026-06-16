@@ -1,3 +1,8 @@
+<?php
+require_once '../../includes/auth_check.php';
+$required_role = 'staff';
+require_once '../../includes/role_check.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,7 +25,7 @@
                     </div>
                     <div class="brand-text">
                         <div class="brand-name">Lost<span>Find</span></div>
-                        <div class="admin-tag">Staff Panel</div>
+                        <div class="admin-tag">Admin Panel</div>
                     </div>
                 </div>
             </div>
@@ -28,7 +33,7 @@
             <nav>
                 <div class="nav-group">
                     <div class="nav-group-title">Main</div>
-                    <a href="dashboard.html" class="nav-item active">
+                    <a href="dashboard_page.php" class="nav-item active">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                         <span>Dashboard</span>
                     </a>
@@ -36,11 +41,11 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Found Items</div>
-                    <a href="found_item/add_found_item.html" class="nav-item">
+                    <a href="found_item/add_found_item_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-plus-circle"></i></span>
                         <span>Add Found Item</span>
                     </a>
-                    <a href="found_item/staff_found_items.html" class="nav-item">
+                    <a href="found_item/staff_found_items_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-box"></i></span>
                         <span>My Found Items</span>
                     </a>
@@ -48,7 +53,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Claims</div>
-                    <a href="claims/view_claims.html" class="nav-item">
+                    <a href="claims/view_claims_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-clipboard-list"></i></span>
                         <span>View Claims</span>
                     </a>
@@ -56,7 +61,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Lost Reports</div>
-                    <a href="lost_reports/view_lost_items.html" class="nav-item">
+                    <a href="lost_reports/view_lost_items_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-search"></i></span>
                         <span>View Lost Items</span>
                     </a>
@@ -64,7 +69,7 @@
 
                 <div class="nav-group">
                     <div class="nav-group-title">Account</div>
-                    <a href="../profile/profile.html" class="nav-item">
+                    <a href="../profile/profile_page.php" class="nav-item">
                         <span class="icon"><i class="fas fa-user-circle"></i></span>
                         <span>My Profile</span>
                     </a>
@@ -91,7 +96,7 @@
                         <div class="user-avatar" id="userAvatar">S</div>
                     </div>
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../profile/profile.html">
+                        <a href="../profile/profile_page.php">
                             <i class="fas fa-user-circle"></i> My Profile
                         </a>
                         <div class="dropdown-divider"></div>
@@ -110,7 +115,7 @@
 
                 <!-- Statistics Cards -->
                 <div class="stats-grid">
-                    <div class="stat-card" data-page="found_item/staff_found_items.html">
+                    <div class="stat-card" data-page="found_item/staff_found_items_page.php">
                         <div class="stat-info">
                             <h3>My Found Items</h3>
                             <div class="stat-number" id="myItems">-</div>
@@ -118,7 +123,7 @@
                         <div class="stat-icon"><i class="fas fa-box"></i></div>
                     </div>
 
-                    <div class="stat-card" data-page="found_item/staff_found_items.html">
+                    <div class="stat-card" data-page="found_item/staff_found_items_page.php">
                         <div class="stat-info">
                             <h3>Total Found Items</h3>
                             <div class="stat-number" id="totalItems">-</div>
@@ -126,7 +131,7 @@
                         <div class="stat-icon"><i class="fas fa-database"></i></div>
                     </div>
 
-                    <div class="stat-card" data-page="claims/view_claims.html">
+                    <div class="stat-card" data-page="claims/view_claims_page.php">
                         <div class="stat-info">
                             <h3>Total Claims</h3>
                             <div class="stat-number" id="totalClaims">-</div>
@@ -145,22 +150,22 @@
 
                 <!-- Quick Actions -->
                 <div class="quick-actions-grid">
-                    <div class="action-card" data-page="found_item/add_found_item.html">
+                    <div class="action-card" data-page="found_item/add_found_item_page.php">
                         <i class="fas fa-plus-circle"></i>
                         <h3>Add Found Item</h3>
                         <p>Register a new found item</p>
                     </div>
-                    <div class="action-card" data-page="found_item/staff_found_items.html">
+                    <div class="action-card" data-page="found_item/staff_found_items_page.php">
                         <i class="fas fa-edit"></i>
                         <h3>Manage My Items</h3>
                         <p>Edit or update your found items</p>
                     </div>
-                    <div class="action-card" data-page="claims/view_claims.html">
+                    <div class="action-card" data-page="claims/view_claims_page.php">
                         <i class="fas fa-check-circle"></i>
                         <h3>Review Claims</h3>
                         <p>Approve or reject claims on your items</p>
                     </div>
-                    <div class="action-card" data-page="lost_reports/view_lost_items.html">
+                    <div class="action-card" data-page="lost_reports/view_lost_items_page.php">
                         <i class="fas fa-search"></i>
                         <h3>View Lost Reports</h3>
                         <p>Browse lost items reported by users</p>
@@ -171,7 +176,7 @@
                 <div class="recent-section">
                     <div class="section-header">
                         <h3>Recent Claims on My Items</h3>
-                        <a href="claims/view_claims.html" class="view-all">View All →</a>
+                        <a href="claims/view_claims_page.php" class="view-all">View All →</a>
                     </div>
                     <div class="data-table">
                         <table>
@@ -197,7 +202,7 @@
                 <div class="recent-section" style="margin-top: 30px;">
                     <div class="section-header">
                         <h3>My Recent Found Items</h3>
-                        <a href="found_item/staff_found_items.html" class="view-all">View All →</a>
+                        <a href="found_item/staff_found_items_page.php" class="view-all">View All →</a>
                     </div>
                     <div class="data-table">
                         <table>
