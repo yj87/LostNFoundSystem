@@ -370,9 +370,6 @@ function setupFormSubmit() {
                 setTimeout(() => {
 <<<<<<< HEAD
                     window.location.href = 'staff_found_items_page.php';
-=======
-                    window.location.href = 'staff_found_items.php';
->>>>>>> 28d9b1c958fa2a6a794c5fea0f1fde71fa67dbcf
                 }, 1000);
             } else {
                 showAlert(result.message || 'Failed to update item.', 'error');

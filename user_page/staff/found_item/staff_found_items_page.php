@@ -1,6 +1,14 @@
 <?php
 // user_page/staff/found_item/staff_found_items_page.php
 
+// Add at the very first line
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
+// Your existing PHP code
+session_start();
+
 require_once '../../../includes/auth_check.php';
 
 $required_role = 'staff';

@@ -172,11 +172,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                     form.reset();
 
                     setTimeout(() => {
-<<<<<<< HEAD
                         window.location.href = 'staff_found_items_page.php';
-=======
-                        window.location.href = 'staff_found_items.php';
->>>>>>> 28d9b1c958fa2a6a794c5fea0f1fde71fa67dbcf
                     }, 1200);
                 } else {
                     throw new Error(result.message || 'Operation failed.');
