@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <title>View Item Details</title>
@@ -8,7 +7,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <!-- Dynamic dashboard CSS will be loaded by JS -->
+    <!-- Dynamic dashboard CSS will be loaded by view_item_details.js -->
     <link rel="stylesheet" href="view_item_details.css">
 </head>
 
@@ -28,7 +27,7 @@
         <div class="main-content">
             <header class="top-header">
                 <div class="header-left">
-                    <button class="menu-toggle" onclick="toggleSidebar()">
+                    <button class="menu-toggle" id="menuToggle" type="button">
                         <i class="fas fa-bars"></i>
                     </button>
 
@@ -36,19 +35,21 @@
                 </div>
 
                 <div class="user-dropdown" id="dashboardUserDropdown">
-                    <div class="user-info-wrapper" onclick="toggleUserDropdown()">
+                    <div class="user-info-wrapper" id="userInfoWrapper">
                         <div class="user-avatar" id="userAvatar">U</div>
                     </div>
 
                     <div class="user-dropdown-menu" id="userDropdownMenu">
-                        <a href="../profile/profile.html" id="profileDropdownLink">
-                            <i class="fas fa-user-circle"></i> My Profile
+                        <a href="../profile/profile_page.php" id="profileDropdownLink">
+                            <i class="fas fa-user-circle"></i>
+                            My Profile
                         </a>
 
                         <div class="dropdown-divider"></div>
 
-                        <a href="../../mainpage/logout/logout.php" id="logoutDropdownLink" onclick="return logoutUser();">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+                        <a href="../../mainpage/logout/logout.php" id="logoutDropdownLink">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
                         </a>
                     </div>
                 </div>
@@ -62,7 +63,8 @@
 
                 <div class="form-card detail-card" id="itemDetails">
                     <p style="text-align:center; padding: 20px;">
-                        <i class="fas fa-spinner fa-spin"></i> Loading item details...
+                        <i class="fas fa-spinner fa-spin"></i>
+                        Loading item details...
                     </p>
                 </div>
             </article>
@@ -71,5 +73,4 @@
 
     <script src="view_item_details.js"></script>
 </body>
-
 </html>

@@ -73,7 +73,7 @@ mysqli_close($conn);
 function getDashboardUrl($role) {
     switch ($role) {
         case 'admin': return '../../user_page/admin/dashboard.html';
-        case 'staff': return '../../user_page/staff/dashboard.html';
+        case 'staff': return '../../user_page/staff/dashboard_page.php';
         case 'user':  return '../../user_page/user/dashboard.html';
         default:      return 'dashboard.html';
     }

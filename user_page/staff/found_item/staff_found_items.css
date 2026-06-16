@@ -208,3 +208,125 @@
 .btn-edit {
     vertical-align: middle;
 }
+
+/* Staff Found Items Page Styling */
+
+/* Filter bar like staff dashboard UI */
+.filter-bar {
+    display: grid;
+    grid-template-columns: 1fr 180px 180px;
+    gap: 14px;
+    align-items: center;
+    margin: 22px 0 18px;
+}
+
+.filter-search {
+    position: relative;
+    width: 100%;
+}
+
+.filter-search i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8ca8b2;
+    font-size: 14px;
+}
+
+.filter-search input {
+    width: 100%;
+    height: 38px;
+    padding: 0 14px 0 40px;
+    border: 1px solid #e0c8cb;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #2b2d42;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+}
+
+.filter-search input:focus {
+    border-color: #9ac1ce;
+    box-shadow: 0 0 0 3px rgba(165, 203, 215, 0.25);
+}
+
+.filter-select {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid #e0c8cb;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #2b2d42;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+}
+
+.filter-select:focus {
+    border-color: #9ac1ce;
+    box-shadow: 0 0 0 3px rgba(165, 203, 215, 0.25);
+}
+
+@media (max-width: 900px) {
+    .filter-bar {
+        grid-template-columns: 1fr;
+    }
+}
+.pagination-container {
+    margin-top: 18px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.pagination-container button {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #bde6f2;
+    color: #2b2d42;
+    cursor: pointer;
+}
+
+.pagination-container button.active,
+.pagination-container button:hover {
+    background: #9ac1ce;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.item-photo {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #A5CBD7;
+}
+
+.no-photo {
+    width: 55px;
+    height: 55px;
+    border: 1px dashed #A5CBD7;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #8ca8b2;
+    background: #F8FCFD;
+}
+
+@media (max-width: 900px) {
+    .filter-bar {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions {
+        justify-content: flex-start;
+    }
+}
