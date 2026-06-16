@@ -65,7 +65,7 @@ function getModuleConfig(from) {
                     return '../admin/lost_reports/view_lost_reports_page.php';
                 }
 
-                return '../admin/found_item/admin_found_items_page.php';
+                return '../admin/found_item/admin_found_items.php';
             },
 
             navHtml: `

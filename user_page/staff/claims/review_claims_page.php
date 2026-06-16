@@ -19,9 +19,15 @@ require_once '../../../includes/role_check.php';
     <div class="dashboard-container">
         <aside id="sidebar">
             <div class="sidebar-header">
-                <div class="logo">🔍</div>
-                <h3>Lost & Found</h3>
-                <p>Staff Panel</p>
+                <div class="logo-nav">
+                    <div class="brand-logo">
+                        <img src="../../../logo/lostfind.webp" alt="LostFind Logo">
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-name">Lost<span>Find</span></div>
+                        <div class="admin-tag">Staff Panel</div>
+                    </div>
+                </div>
             </div>
             <nav>
                 <div class="nav-group">
