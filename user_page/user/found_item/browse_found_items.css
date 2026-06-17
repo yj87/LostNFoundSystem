@@ -1,21 +1,69 @@
-/* ── Toolbar ─────────────────────────────────────── */
+/* browse_found_items.css */
+
+/* ==============================
+   Page Layout - Same style as Staff Found Items
+   ============================== */
+
+.main-content article {
+    min-height: calc(100vh - 70px);
+    background: #F8FCF7;
+    padding: 32px 40px;
+}
+
+/* Fixed centered content width */
+.page-title,
+.toolbar,
+.results-summary,
+.recent-section,
+.table-card,
+.available-items-card {
+    width: 1100px;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ==============================
+   Page Title
+   ============================== */
+
+.page-title {
+    margin-bottom: 22px;
+}
+
+.page-title h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: #2b2d42;
+    margin: 0 0 8px;
+}
+
+.page-title p {
+    color: #6c757d;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* ==============================
+   Toolbar
+   ============================== */
+
 .toolbar {
-    display: flex;
-    gap: 12px;
+    display: grid;
+    grid-template-columns: 1fr 180px;
+    gap: 14px;
     align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
 .toolbar .search-box {
     position: relative;
-    flex: 1;
-    min-width: 220px;
+    width: 100%;
 }
 
 .toolbar .search-box i {
     position: absolute;
-    left: 12px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
     color: #9aa59a;
@@ -24,12 +72,15 @@
 
 .toolbar .search-box input {
     width: 100%;
-    padding: 9px 12px 9px 36px;
+    height: 38px;
+    padding: 0 14px 0 40px;
     border: 1px solid #CBDDC3;
     border-radius: 8px;
     font-size: 14px;
     background: #fff;
+    color: #2b2d42;
     outline: none;
+    box-sizing: border-box;
     transition: border 0.2s, box-shadow 0.2s;
 }
 
@@ -39,7 +90,9 @@
 }
 
 .toolbar select {
-    padding: 9px 14px;
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
     border: 1px solid #CBDDC3;
     border-radius: 8px;
     font-size: 14px;
@@ -54,14 +107,225 @@
     box-shadow: 0 0 0 3px rgba(203, 221, 195, 0.35);
 }
 
-/* ── Buttons ─────────────────────────────────────── */
-.btn-view {
-    background: #DFEBE0;
+/* ==============================
+   Results Summary
+   ============================== */
+
+.results-summary {
+    font-size: 13px;
+    color: #6c757d;
+    margin-bottom: 14px;
+}
+
+/* ==============================
+   Table Card
+   ============================== */
+
+.recent-section,
+.table-card,
+.available-items-card {
+    background: #EEF8EC;
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    border: 1px solid #d8efd1;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.section-header h2,
+.section-header h3 {
+    font-size: 18px;
+    font-weight: 800;
+    color: #111827;
+    margin: 0;
+}
+
+/* ==============================
+   Table Layout
+   ============================== */
+
+.data-table {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.data-table table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+.data-table th,
+.data-table td {
+    vertical-align: middle;
+    padding: 14px 12px;
+    text-align: center;
+    border-bottom: 1px solid #cde8c5;
     color: #2b2d42;
+    font-size: 14px;
+}
+
+.data-table th {
+    background: #d2f3c7;
+    color: #2b2d42;
+    font-weight: 700;
+}
+
+.data-table tbody tr:hover {
+    background: #f8fcf7;
+}
+
+/* ID column */
+.data-table th:nth-child(1),
+.data-table td:nth-child(1) {
+    width: 70px;
+}
+
+/* Image column */
+.data-table th:nth-child(2),
+.data-table td:nth-child(2) {
+    width: 100px;
+}
+
+/* Item Name column */
+.data-table th:nth-child(3),
+.data-table td:nth-child(3) {
+    width: 220px;
+}
+
+/* Category column */
+.data-table th:nth-child(4),
+.data-table td:nth-child(4) {
+    width: 160px;
+}
+
+/* Date Found column */
+.data-table th:nth-child(5),
+.data-table td:nth-child(5) {
+    width: 140px;
+}
+
+/* Status column */
+.data-table th:nth-child(6),
+.data-table td:nth-child(6) {
+    width: 130px;
+}
+
+/* Action column */
+.data-table th:nth-child(7),
+.data-table td:nth-child(7) {
+    width: 180px;
+    white-space: nowrap;
+}
+
+/* ==============================
+   Image Thumbnail
+   ============================== */
+
+.item-thumb,
+.item-photo,
+.no-image,
+.no-photo {
+    width: 62px;
+    height: 55px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.item-thumb,
+.item-photo {
+    object-fit: cover;
+    border: 1px solid #CBDDC3;
+    background: #f5f5f5;
+}
+
+.no-image,
+.no-photo {
+    border: 1px dashed #CBDDC3;
+    background: #F7FBF7;
+    color: #A3BCA3;
+}
+
+.no-image i,
+.no-photo i {
+    font-size: 20px;
+}
+
+/* ==============================
+   Item Name
+   ============================== */
+
+.item-name,
+.data-table td strong {
+    display: inline-block;
+    max-width: 180px;
+    font-weight: 700;
+    color: #111827;
+    word-break: break-word;
+    line-height: 1.3;
+}
+
+/* ==============================
+   Status Badge
+   ============================== */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 78px;
+}
+
+.status-unclaimed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-claimed {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* ==============================
+   Action Buttons
+   ============================== */
+
+.action-buttons {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.btn-view,
+.btn-claim {
     border: none;
     border-radius: 6px;
-    padding: 5px 11px;
+    padding: 5px 10px;
     font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
     text-decoration: none;
     display: inline-flex;
@@ -72,6 +336,11 @@
     height: 28px;
     margin: 2px;
     transition: background 0.2s, transform 0.15s;
+}
+
+.btn-view {
+    background: #DFEBE0;
+    color: #2b2d42;
 }
 
 .btn-view:hover {
@@ -82,20 +351,6 @@
 .btn-claim {
     background: #e3f2fd;
     color: #1976d2;
-    border: none;
-    border-radius: 6px;
-    padding: 5px 11px;
-    font-size: 12px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    min-width: 58px;
-    height: 28px;
-    margin: 2px;
-    transition: background 0.2s, transform 0.15s;
 }
 
 .btn-claim:hover {
@@ -103,14 +358,18 @@
     transform: translateY(-1px);
 }
 
-.btn-claim.disabled {
+.btn-claim.disabled,
+.btn-claim:disabled {
     background: #f5f5f5;
     color: #ccc;
     cursor: not-allowed;
     pointer-events: none;
 }
 
-/* ── Toast notification ──────────────────────────── */
+/* ==============================
+   Toast Notification
+   ============================== */
+
 .toast {
     position: fixed;
     bottom: 30px;
@@ -128,18 +387,6 @@
     animation: slideUp 0.3s ease;
 }
 
-@keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
 .toast.show {
     display: flex;
 }
@@ -152,7 +399,22 @@
     background: #e74c3c;
 }
 
-/* ── Empty / loading states ──────────────────────── */
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ==============================
+   Empty / Loading States
+   ============================== */
+
 .empty-state {
     text-align: center;
     padding: 48px 20px;
@@ -166,92 +428,50 @@
     display: block;
 }
 
-.results-summary {
-    font-size: 13px;
-    color: #6c757d;
-    margin-bottom: 10px;
-}
-
-/* ── Image thumbnail ─────────────────────────────── */
-.item-thumb,
-.no-image {
-    width: 70px;
-    height: 55px;
-    border-radius: 8px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.item-thumb {
-    object-fit: cover;
-    border: 1px solid #CBDDC3;
-    background: #f5f5f5;
-}
-
-.no-image {
-    border: 1px dashed #CBDDC3;
-    background: #F7FBF7;
-    color: #A3BCA3;
-}
-
-/* ── Table layout ────────────────────────────────── */
-.data-table table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
-.data-table th,
-.data-table td {
-    vertical-align: middle;
-    padding: 14px 12px;
+.text-center {
     text-align: center;
 }
 
-/* Image column */
-.data-table th:nth-child(1),
-.data-table td:nth-child(1) {
-    width: 120px;
-}
+/* ==============================
+   Responsive
+   ============================== */
 
-/* Item name column */
-.data-table th:nth-child(2),
-.data-table td:nth-child(2) {
-    width: 190px;
-}
+@media (max-width: 1200px) {
+    .page-title,
+    .toolbar,
+    .results-summary,
+    .recent-section,
+    .table-card,
+    .available-items-card {
+        width: 100%;
+        max-width: 100%;
+    }
 
-/* Category column */
-.data-table th:nth-child(3),
-.data-table td:nth-child(3) {
-    width: 160px;
-}
-
-/* Date column */
-.data-table th:nth-child(4),
-.data-table td:nth-child(4) {
-    width: 140px;
-}
-
-/* Status column */
-.data-table th:nth-child(5),
-.data-table td:nth-child(5) {
-    width: 130px;
-}
-
-/* Action column */
-.data-table th:nth-child(6),
-.data-table td:nth-child(6) {
-    width: 190px;
-    white-space: nowrap;
-}
-
-@media (max-width: 900px) {
     .data-table {
         overflow-x: auto;
     }
 
     .data-table table {
-        min-width: 820px;
+        min-width: 1000px;
+    }
+}
+
+@media (max-width: 900px) {
+    .main-content article {
+        padding: 24px 18px;
+    }
+
+    .toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .toolbar select {
+        width: 100%;
+    }
+
+    .recent-section,
+    .table-card,
+    .available-items-card {
+        padding: 18px;
     }
 }

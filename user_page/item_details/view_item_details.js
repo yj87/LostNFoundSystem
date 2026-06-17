@@ -145,7 +145,7 @@ function getModuleConfig(from) {
 
             getBackUrl: function (itemType) {
                 if (itemType === 'lost') {
-                    return '../staff/lost_reports/view_lost_items.php';
+                    return '../staff/lost_reports/view_lost_items_page.php';
                 }
 
                 return '../staff/found_item/staff_found_items_page.php';

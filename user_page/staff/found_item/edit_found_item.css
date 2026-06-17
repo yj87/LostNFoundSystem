@@ -7,30 +7,17 @@
     padding: 34px 40px;
 }
 
+/* Same width for title, meta strip, and form */
 .edit-wrapper {
     max-width: 720px;
     margin: 0 auto;
 }
 
-.edit-wrapper .page-title {
-    width: 720px;
-    max-width: 720px;
-    margin-left: calc((720px - 100vw + 250px + 80px) / 2);
-    margin-right: 0;
-    text-align: left;
-}
-
-.edit-wrapper .page-title h1,
-.edit-wrapper .page-title p {
-    text-align: left;
-}
-
-/* Page title */
+/* Title follows form left edge */
 .page-title {
-    width: 720px;
+    width: 100%;
     max-width: 720px;
-    margin-left: 0;
-    margin-right: auto;
+    margin: 0 auto 18px auto;
     text-align: left;
 }
 

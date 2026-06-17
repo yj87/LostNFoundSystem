@@ -1,45 +1,196 @@
 <?php
+// user_page/admin/found_item/admin_update_found_item.php
+
 require_once '../../../config/db_connect.php';
 require_once '../../../includes/auth_check.php';
+
 $required_role = 'admin';
 require_once '../../../includes/role_check.php';
 
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid request method.'
+    ]);
     exit;
 }
 
-$item_id      = intval($_POST['item_id'] ?? 0);
-$item_name    = mysqli_real_escape_string($conn, trim($_POST['item_name'] ?? ''));
-$category_id  = intval($_POST['category_id'] ?? 0);
-$location_found = mysqli_real_escape_string($conn, trim($_POST['location_found'] ?? ''));
-$date_found   = mysqli_real_escape_string($conn, trim($_POST['date_found'] ?? ''));
-$found_status = mysqli_real_escape_string($conn, trim($_POST['found_status'] ?? ''));
-$description  = mysqli_real_escape_string($conn, trim($_POST['description'] ?? ''));
+$item_id = intval($_POST['item_id'] ?? 0);
+$item_name = trim($_POST['item_name'] ?? '');
+$category_id = intval($_POST['category_id'] ?? 0);
+$location_found = trim($_POST['location_found'] ?? '');
+$date_found = trim($_POST['date_found'] ?? '');
+$found_status = trim($_POST['found_status'] ?? '');
+$description = trim($_POST['description'] ?? '');
 
-// Basic validation
-if ($item_id === 0 || empty($item_name) || $category_id === 0 || empty($location_found) || empty($date_found)) {
-    echo json_encode(['success' => false, 'message' => 'Missing required fields.']);
+if (
+    $item_id <= 0 ||
+    empty($item_name) ||
+    $category_id <= 0 ||
+    empty($location_found) ||
+    empty($date_found) ||
+    empty($found_status)
+) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Missing required fields.'
+    ]);
     exit;
 }
 
-// Admin can update any item (no user_id restriction)
-$query = "UPDATE found_items SET
-            item_name    = '$item_name',
-            category_id  = $category_id,
-            location_found = '$location_found',
-            date_found   = '$date_found',
-            found_status = '$found_status',
-            description  = '$description'
-          WHERE item_id  = $item_id";
+$allowed_status = ['unclaimed', 'pending', 'claimed'];
 
-if (mysqli_query($conn, $query)) {
-    echo json_encode(['success' => true, 'message' => 'Item updated successfully.']);
+if (!in_array($found_status, $allowed_status)) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid item status.'
+    ]);
+    exit;
+}
+
+/* Get current photo first */
+$getQuery = "SELECT photo FROM found_items WHERE item_id = ?";
+$getStmt = mysqli_prepare($conn, $getQuery);
+
+if (!$getStmt) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Database prepare error: ' . mysqli_error($conn)
+    ]);
+    exit;
+}
+
+mysqli_stmt_bind_param($getStmt, "i", $item_id);
+mysqli_stmt_execute($getStmt);
+$getResult = mysqli_stmt_get_result($getStmt);
+
+if (mysqli_num_rows($getResult) === 0) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Item not found.'
+    ]);
+    exit;
+}
+
+$itemRow = mysqli_fetch_assoc($getResult);
+$old_photo = $itemRow['photo'] ?? null;
+$new_photo_path = $old_photo;
+
+mysqli_stmt_close($getStmt);
+
+/* Handle optional new photo upload */
+if (isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
+
+    if ($_FILES['photo']['error'] !== UPLOAD_ERR_OK) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Photo upload error. Please try again.'
+        ]);
+        exit;
+    }
+
+    $upload_dir = '../../../uploads/found_items/';
+
+    if (!is_dir($upload_dir)) {
+        mkdir($upload_dir, 0777, true);
+    }
+
+    $file_name = $_FILES['photo']['name'];
+    $file_tmp = $_FILES['photo']['tmp_name'];
+    $file_size = $_FILES['photo']['size'];
+    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+    $allowed_ext = ['jpg', 'jpeg', 'png'];
+
+    if (!in_array($file_ext, $allowed_ext)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Only JPG, JPEG, and PNG files are allowed.'
+        ]);
+        exit;
+    }
+
+    if ($file_size > 5 * 1024 * 1024) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Photo size must not exceed 5MB.'
+        ]);
+        exit;
+    }
+
+    $new_filename = time() . '_' . rand(1000, 9999) . '.' . $file_ext;
+    $destination = $upload_dir . $new_filename;
+
+    if (!move_uploaded_file($file_tmp, $destination)) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'Failed to save uploaded photo.'
+        ]);
+        exit;
+    }
+
+    // Path stored in database
+    $new_photo_path = 'uploads/found_items/' . $new_filename;
+
+    // Delete old photo file if it exists
+    if (!empty($old_photo)) {
+        $old_file_path = '../../../' . $old_photo;
+
+        if (file_exists($old_file_path)) {
+            unlink($old_file_path);
+        }
+    }
+}
+
+/* Update item including photo */
+$updateQuery = "UPDATE found_items
+                SET item_name = ?,
+                    category_id = ?,
+                    location_found = ?,
+                    date_found = ?,
+                    found_status = ?,
+                    description = ?,
+                    photo = ?
+                WHERE item_id = ?";
+
+$updateStmt = mysqli_prepare($conn, $updateQuery);
+
+if (!$updateStmt) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Database prepare error: ' . mysqli_error($conn)
+    ]);
+    exit;
+}
+
+mysqli_stmt_bind_param(
+    $updateStmt,
+    "sisssssi",
+    $item_name,
+    $category_id,
+    $location_found,
+    $date_found,
+    $found_status,
+    $description,
+    $new_photo_path,
+    $item_id
+);
+
+if (mysqli_stmt_execute($updateStmt)) {
+    echo json_encode([
+        'success' => true,
+        'message' => 'Item updated successfully.',
+        'photo' => $new_photo_path
+    ]);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Database error: ' . mysqli_error($conn)]);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Database update error: ' . mysqli_stmt_error($updateStmt)
+    ]);
 }
 
+mysqli_stmt_close($updateStmt);
 mysqli_close($conn);
 ?>
