@@ -272,7 +272,9 @@ article {
 
 /* Page Title Styling - Stays at top */
 .page-title {
-    margin-bottom: 30px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto 24px;
 }
 
 .page-title h1 {

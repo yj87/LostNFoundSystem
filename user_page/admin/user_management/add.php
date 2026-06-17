@@ -133,11 +133,9 @@ $current_year = date('Y');
                     <h1>Add New User</h1>
                     <p>Create a new user account in the system</p>
                 </div>
-                
                 <div class="form-wrapper">
                     <div class="form-container">
                         <div id="alertMessage" class="alert" style="display: none;"></div>
-                        
                         <form id="addUserForm" method="POST" action="adduser.php">
                             <div class="form-group">
                                 <label>Username <span class="required">*</span></label>
