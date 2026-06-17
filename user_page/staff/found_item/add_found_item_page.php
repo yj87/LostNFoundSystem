@@ -155,6 +155,7 @@ require_once '../../../includes/role_check.php';
 
             <!-- Page Content -->
             <article>
+                <div class="add-wrapper">
                 <div class="page-title">
                     <h1>Add Found Item</h1>
                     <p>Register a newly found item into the system</p>
@@ -275,6 +276,7 @@ require_once '../../../includes/role_check.php';
                         </div>
 
                     </form>
+                    </div>
                 </div>
             </article>
 
