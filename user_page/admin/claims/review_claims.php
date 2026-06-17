@@ -230,7 +230,7 @@ $current_year = date('Y');
                 </div>
                 <div class="nav-group">
                     <div class="nav-group-title">Reports & Statistics</div>
-                    <a href="../reports.php" class="nav-item">
+                    <a href="../statistic/monthly_stats.php" class="nav-item">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
                         <span>Statistics</span>
                     </a>
