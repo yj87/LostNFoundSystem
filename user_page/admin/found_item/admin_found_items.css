@@ -403,20 +403,3 @@
         width: 100%;
     }
 }
-/* Align edit page title to the left */
-.edit-wrapper {
-    max-width: 720px;
-    margin: 0 auto;
-}
-
-.edit-wrapper .page-title {
-    text-align: left;
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-}
-
-.edit-wrapper .page-title h1,
-.edit-wrapper .page-title p {
-    text-align: left;
-}
