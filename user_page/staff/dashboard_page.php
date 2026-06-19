@@ -25,7 +25,7 @@ require_once '../../includes/role_check.php';
                     </div>
                     <div class="brand-text">
                         <div class="brand-name">Lost<span>Find</span></div>
-                        <div class="admin-tag">Admin Panel</div>
+                        <div class="admin-tag">Staff Panel</div>
                     </div>
                 </div>
             </div>
