@@ -181,7 +181,6 @@ function validatePassword() {
         passwordInput.classList.add('invalid');
         passwordInput.classList.remove('valid');
         isPasswordValid = false;
-        passwordInput.focus();
         return false;
     }
     
@@ -192,7 +191,6 @@ function validatePassword() {
         passwordInput.classList.add('invalid');
         passwordInput.classList.remove('valid');
         isPasswordValid = false;
-        passwordInput.focus();
         return false;
     }
     
@@ -254,9 +252,28 @@ confirmInput.addEventListener('blur', validateConfirmPassword);
 
 // Real-time validation for password match
 confirmInput.addEventListener('input', validateConfirmPassword);
+// Replace the existing passwordInput input listener with this:
+// Replace the existing passwordInput input listener with this:
 passwordInput.addEventListener('input', function() {
-    if (passwordInput.value.length > 0) {
-        validatePassword();
+    if (passwordInput.value.length > 0 && passwordInput.value.length < 6) {
+        passwordHint.textContent = 'Password must be at least 6 characters';
+        passwordHint.classList.add('visible', 'invalid-hint');
+        passwordHint.classList.remove('valid-hint');
+        passwordInput.classList.add('invalid');
+        passwordInput.classList.remove('valid');
+        isPasswordValid = false;
+    } else if (passwordInput.value.length >= 6) {
+        passwordHint.textContent = '✓ Strong enough';
+        passwordHint.classList.add('visible', 'valid-hint');
+        passwordHint.classList.remove('invalid-hint');
+        passwordInput.classList.add('valid');
+        passwordInput.classList.remove('invalid');
+        isPasswordValid = true;
+
+        // ✅ Only re-validate confirm if user already typed something there
+        if (confirmInput.value.length > 0) {
+            validateConfirmPassword();
+        }
     }
 });
 
