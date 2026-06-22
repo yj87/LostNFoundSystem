@@ -160,7 +160,7 @@ Start your web server and MySQL services:
 6. Go to the "Import" tab
 7. Click "Choose File" and select the SQL file located at:
    ```
-   /database/db.sql
+   /config/db.sql
    ```
 8. Click "Go" to import
 
