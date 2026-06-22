@@ -1,9 +1,3 @@
-# Lost and Found System - GitHub README
-
-Here's a concise README.md file for your GitHub repository.
-
----
-
 # 🗂️ Lost and Found System
 
 A web-based Lost and Found Management System developed for Universiti Teknologi Malaysia (UTM) to streamline the process of reporting lost items, managing found items, and processing claims.
