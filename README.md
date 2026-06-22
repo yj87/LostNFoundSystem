@@ -188,7 +188,7 @@ if (!$conn) {
 Open your browser and navigate to:
 
 ```
-http://localhost/LostNFoundSystem/mainpage/login/loginpage.html
+http://localhost/LostNFoundSystem/
 ```
 
 ---
