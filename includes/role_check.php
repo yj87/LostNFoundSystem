@@ -7,7 +7,7 @@ if (!isset($required_role)) {
 $allowed_roles = is_array($required_role) ? $required_role : [$required_role];
 
 if (!in_array($_SESSION['role'], $allowed_roles)) {
-    header("Location: ../../../mainpage/login/login.php");
+    header("Location: /LostNFoundSystem/mainpage/login/loginpage.html");
     exit();
 }
 ?>
