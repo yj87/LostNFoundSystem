@@ -99,7 +99,7 @@ function renderClaims(claims) {
             <div class="empty-state">
                 <i class="fas fa-clipboard-list"></i>
                 <p>You haven't submitted any claims yet.</p>
-                <button class="btn-browse" onclick="location.href='../found_item/browse_found_items.php'">
+                <button class="btn-browse" onclick="location.href='../found_item/browse_found_items_page.php'">
                     <i class="fas fa-search"></i> Browse Found Items
                 </button>
             </div>

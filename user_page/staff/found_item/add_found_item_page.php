@@ -169,7 +169,7 @@ require_once '../../../includes/role_check.php';
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="itemName">Item Name *</label>
+                                <label for="itemName">Item Name <span style="color:red">*</span></label>
                                 <input
                                     type="text"
                                     id="itemName"
@@ -180,7 +180,7 @@ require_once '../../../includes/role_check.php';
                             </div>
 
                             <div class="form-group">
-                                <label for="categorySelect">Category *</label>
+                                <label for="categorySelect">Category <span style="color:red">*</span></label>
                                 <select id="categorySelect" name="category_id" required>
                                     <option value="">-- Select Category --</option>
                                 </select>
@@ -189,7 +189,7 @@ require_once '../../../includes/role_check.php';
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="locationFound">Location Found *</label>
+                                <label for="locationFound">Location Found <span style="color:red">*</span></label>
                                 <input
                                     type="text"
                                     id="locationFound"
@@ -200,7 +200,7 @@ require_once '../../../includes/role_check.php';
                             </div>
 
                             <div class="form-group">
-                                <label for="dateFound">Date Found *</label>
+                                <label for="dateFound">Date Found <span style="color:red">*</span></label>
                                 <input
                                     type="date"
                                     id="dateFound"
@@ -212,7 +212,7 @@ require_once '../../../includes/role_check.php';
 
                         <div class="form-row">
                             <div class="form-group full-width">
-                                <label for="description">Description</label>
+                                <label for="description">Description <span style="color:red">*</span></label>
                                 <textarea
                                     id="description"
                                     name="description"
